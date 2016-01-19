@@ -20,12 +20,6 @@
                     <ToolTip Content="Append category..."/>
                 </Button.ToolTip>
             </Button>
-            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding UndoCreateCategoryCommand}">
-                <Image Source="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-9/128/Undo-icon.png" />
-                <Button.ToolTip>
-                    <ToolTip Content="Cancel appended category..."/>
-                </Button.ToolTip>
-            </Button>
         </StackPanel>
         <ListBox Grid.Row="1" ItemsSource="{Binding Categories}">
             <ListBox.ItemTemplate>
