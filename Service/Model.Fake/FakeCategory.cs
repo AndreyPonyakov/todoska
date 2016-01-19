@@ -13,6 +13,11 @@ namespace Todo.Service.Model.Fake
         public string Name { get; set; }
         public Color Color { get; set; }
         public int Order { get; set; }
+
+        /// <summary>
+        /// Create instance of <see cref="FakeCategory"/>
+        /// </summary>
+        /// <param name="id"></param>
         public FakeCategory(int id)
         {
             Id = id;
