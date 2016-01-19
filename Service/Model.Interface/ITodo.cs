@@ -12,6 +12,7 @@ namespace Todo.Service.Model.Interface
         string Desc { get; }
         DateTime Deadline { get; }
         int CategoryId { get; }
+        bool Checked { get; }
         int Order { get; }
 
         void Check();
