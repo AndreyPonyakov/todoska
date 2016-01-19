@@ -59,7 +59,20 @@ namespace Todo.UI.ViewModel
             set { SetField(ref _appended, value); }
         }
 
-        public bool CreateVisibility => !Appended;
+        /// <summary>
+        /// Behind field of Cancelec
+        /// </summary>
+        private bool _canceled;
+        /// <summary>
+        /// True if category is canceled.
+        /// </summary>
+        public bool Canceled
+        {
+            get { return _canceled; }
+            set { SetField(ref _canceled, value); }
+        }
+
+        public bool CreateVisibility => !Appended && !Canceled;
 
         /// <summary>
         /// Behind field of Order
@@ -89,6 +102,20 @@ namespace Todo.UI.ViewModel
         public ICommand CreateCommand { get; }
 
         /// <summary>
+        /// Undo create category command.
+        /// </summary>
+        public ICommand UndoCreateCommand { get; set; }
+
+        /// <summary>
+        /// Create category command.
+        /// </summary>
+        public void UndoCreate()
+        {
+            Canceled = true;
+        }
+
+
+        /// <summary>
         /// Constructor of CategoryViewModel
         /// </summary>
         /// <param name="commandFactory">Factory for <see cref="ICommand"/> instance. </param>
@@ -97,6 +124,7 @@ namespace Todo.UI.ViewModel
         {
             _service = service;
             CreateCommand = commandFactory.CreateCommand(Create);
+            UndoCreateCommand = commandFactory.CreateCommand(UndoCreate);
             this.SetPropertyChanged(
                 nameof(Appended), 
                 () => OnPropertyChanged(nameof(CreateVisibility)));

@@ -42,28 +42,22 @@ namespace Todo.UI.ViewModel
                 category = new CategoryViewModel(_commandFactory, _service);
                 Categories.Add(category);
                 Appending = true;
-                category.SetPropertyChanged(nameof(category.Appended), () => Appending = false);
+                category
+                    .SetPropertyChanged(nameof(category.Appended), () => Appending = false)
+                    .SetPropertyChanged(nameof(category.Canceled), () => UndoCreate(category));
             }
         }
 
-        /// <summary>
-        /// Undo create category command.
-        /// </summary>
-        public ICommand UndoCreateCategoryCommand { get; set; }
 
         /// <summary>
         /// Create category command.
         /// </summary>
-        public void UndoCreateCategory()
+        public void UndoCreate(CategoryViewModel category)
         {
-            var category = Categories.FirstOrDefault(c => c.Model == null);
-            if (category != null)
-            {
-                Categories.Remove(category);
-                Appending = false;
-            }
-        }
+            Categories.Remove(category);
+            Appending = false;
 
+        }
 
         /// <summary>
         /// Behind field af Appending
@@ -89,7 +83,6 @@ namespace Todo.UI.ViewModel
             _commandFactory = commandFactory;
             Categories = new ObservableCollection<CategoryViewModel>();
             CreateCategoryCommand = commandFactory.CreateCommand(CreateCategory);
-            UndoCreateCategoryCommand = commandFactory.CreateCommand(UndoCreateCategory, () => Appending);
         }
     }
 }
