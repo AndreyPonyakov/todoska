@@ -1,0 +1,14 @@
+D:\Projects\TodoSystem\Runner\bin\Debug\Runner.exe.config
+D:\Projects\TodoSystem\Runner\bin\Debug\Runner.exe
+D:\Projects\TodoSystem\Runner\bin\Debug\Runner.pdb
+D:\Projects\TodoSystem\Runner\obj\Debug\Runner.csprojResolveAssemblyReference.cache
+D:\Projects\TodoSystem\Runner\obj\Debug\MainWindow.g.cs
+D:\Projects\TodoSystem\Runner\obj\Debug\App.g.cs
+D:\Projects\TodoSystem\Runner\obj\Debug\Runner_MarkupCompile.cache
+D:\Projects\TodoSystem\Runner\obj\Debug\Runner_MarkupCompile.lref
+D:\Projects\TodoSystem\Runner\obj\Debug\MainWindow.baml
+D:\Projects\TodoSystem\Runner\obj\Debug\Runner.g.resources
+D:\Projects\TodoSystem\Runner\obj\Debug\Runner.Properties.Resources.resources
+D:\Projects\TodoSystem\Runner\obj\Debug\Runner.csproj.GenerateResource.Cache
+D:\Projects\TodoSystem\Runner\obj\Debug\Runner.exe
+D:\Projects\TodoSystem\Runner\obj\Debug\Runner.pdb
