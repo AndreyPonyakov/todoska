@@ -51,7 +51,7 @@ namespace Todo.Service.Model.Interface
         /// </summary>
         /// <param name="todo"></param>
         /// <returns>Updated todo. </returns>
-        ITodo Update(ITodo todo);
+        void Update(ITodo todo);
 
         /// <summary>
         /// Delete todo by its id

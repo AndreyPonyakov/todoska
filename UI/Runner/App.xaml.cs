@@ -1,17 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows;
+using Todo.Service.Model.Fake;
+using Todo.UI.Tools.View;
+using Todo.UI.ViewModel;
 
-namespace Runner
+namespace Todo.UI.Runner
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            try
+            {
+                var mainView = new MainWindow();
+                mainView.Show();
+                mainView.DataContext = new TodoControllerViewModel(
+                    new CommandFactory(), 
+                    FakeTodoService.Instance);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+        }
     }
 }
