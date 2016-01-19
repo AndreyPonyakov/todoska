@@ -24,19 +24,21 @@ namespace Todo.UI.ViewModel
         /// Behind field of Name.
         /// </summary>
         private string _name;
+
         /// <summary>
         /// Name of category.
         /// </summary>
         public string Name
         {
             get { return _name; }
-            set { SetField(ref _name, value);}
+            set { SetField(ref _name, value); }
         }
 
         /// <summary>
         /// Behind field of Color.
         /// </summary>
         private Color _color;
+
         /// <summary>
         /// Color of category.
         /// </summary>
@@ -50,6 +52,7 @@ namespace Todo.UI.ViewModel
         /// Behind field of Appended
         /// </summary>
         private bool _appended;
+
         /// <summary>
         /// True if category is committed.
         /// </summary>
@@ -63,6 +66,7 @@ namespace Todo.UI.ViewModel
         /// Behind field of Cancelec
         /// </summary>
         private bool _canceled;
+
         /// <summary>
         /// True if category is canceled.
         /// </summary>
@@ -78,6 +82,7 @@ namespace Todo.UI.ViewModel
         /// Behind field of Order
         /// </summary>
         private int _order;
+
         /// <summary>
         /// Priority of category.
         /// </summary>
@@ -92,7 +97,7 @@ namespace Todo.UI.ViewModel
         /// </summary>
         public void Create()
         {
-            Model =_service.CategoryController.Create(Name, Color, 0);
+            Model = _service.CategoryController.Create(Name, Color, 0);
             Appended = true;
         }
 
@@ -126,7 +131,7 @@ namespace Todo.UI.ViewModel
             CreateCommand = commandFactory.CreateCommand(Create);
             UndoCreateCommand = commandFactory.CreateCommand(UndoCreate);
             this.SetPropertyChanged(
-                nameof(Appended), 
+                new[] {nameof(Appended), nameof(Canceled)},
                 () => OnPropertyChanged(nameof(CreateVisibility)));
         }
     }
