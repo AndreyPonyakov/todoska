@@ -7,7 +7,7 @@ namespace Todo.Service.Model.Fake
     public class FakeTodoService : IFakeTodoService
     {
         private static readonly Lazy<FakeTodoService> InstaceLazy;
-        public static ITodoService GetInstance() => InstaceLazy.Value;
+        public static ITodoService Instance => InstaceLazy.Value;
 
         public ICategoryController CategoryController { get; }
         public ITodoController TodoController { get; }

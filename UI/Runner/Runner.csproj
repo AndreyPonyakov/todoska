@@ -95,6 +95,36 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Service\Model.Fake\Model.Fake.csproj">
+      <Project>{ba5f8a25-d1c9-4801-a408-0f6650affc27}</Project>
+      <Name>Model.Fake</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Service\Model.Interface\Model.Interface.csproj">
+      <Project>{a44b0d85-4c92-46c5-847b-4801a999e52b}</Project>
+      <Name>Model.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{3e869bc7-1618-4f6c-aafd-f31f9721d867}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tools.Model\Tools.Model.csproj">
+      <Project>{3a7f4d34-0ce3-4261-8516-55c8ff582c0e}</Project>
+      <Name>Tools.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tools.View\Tools.View.csproj">
+      <Project>{f10c24de-2d61-4bcd-902f-9f79cf3a6df8}</Project>
+      <Name>Tools.View</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ViewModel\ViewModel.csproj">
+      <Project>{8bd04877-a236-46cb-885f-c32c336a7af9}</Project>
+      <Name>ViewModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\View\View.csproj">
+      <Project>{5D7A57F1-3104-482E-A27C-3BB14DE5DAA9}</Project>
+      <Name>View</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

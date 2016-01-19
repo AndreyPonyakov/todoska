@@ -36,7 +36,7 @@ namespace Todo.Service.Model.Fake
 
         public ITodo Create(string title, string desc, DateTime deadline, int categoryId, int order)
         {
-            var todo = new FakeTodo(GeterateId())
+            var todo = new FakeTodo(_service, GeterateId())
             {
                 Title = title,
                 Desc = desc,
@@ -49,7 +49,7 @@ namespace Todo.Service.Model.Fake
 
         }
 
-        public ITodo Update(ITodo todo)
+        public void Update(ITodo todo)
         {
             _service.TodoList
                 .Where(t => t.Id == todo.Id)
@@ -59,12 +59,7 @@ namespace Todo.Service.Model.Fake
                     t.Title = todo.Title;
                     t.Desc = todo.Desc;
                     t.Order = todo.Order;
-
-                    t.SetCategory(todo.CategoryId);
-                    t.SetDeadline(todo.Deadline);
                 });
-            return todo;
-
         }
 
         public void Delete(int id)

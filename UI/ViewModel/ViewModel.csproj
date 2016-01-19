@@ -47,6 +47,10 @@
     <Compile Include="TodoViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Service\Model.Interface\Model.Interface.csproj">
+      <Project>{A44B0D85-4C92-46C5-847B-4801A999E52B}</Project>
+      <Name>Model.Interface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{3E869BC7-1618-4F6C-AAFD-F31F9721D867}</Project>
       <Name>Model</Name>

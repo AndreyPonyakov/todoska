@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="Todo.UI.View.Controls.TodoControllerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModel="clr-namespace:Todo.UI.ViewModel;assembly=Todo.UI.ViewModel"
+             xmlns:controls="clr-namespace:Todo.UI.View.Controls"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModel:TodoControllerViewModel}"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid Margin="0,0,-154,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding CreateCategoryCommand}">
+                <Image Source="http://icons.iconarchive.com/icons/hopstarter/button/128/Button-Add-icon.png" />
+                <Button.ToolTip>
+                    <ToolTip Content="Append category..."/>
+                </Button.ToolTip>
+            </Button>
+            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding UndoCreateCategoryCommand}">
+                <Image Source="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-9/128/Undo-icon.png" />
+                <Button.ToolTip>
+                    <ToolTip Content="Cancel appended category..."/>
+                </Button.ToolTip>
+            </Button>
+        </StackPanel>
+        <ListBox Grid.Row="1" ItemsSource="{Binding Categories}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <controls:CategoryView/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

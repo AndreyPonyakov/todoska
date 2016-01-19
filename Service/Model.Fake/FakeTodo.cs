@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using Todo.Service.Model.Interface;
 
 namespace Todo.Service.Model.Fake
 {
     public class FakeTodo : ITodo
     {
+        private readonly IFakeTodoService _service;
         public int Id { get; }
         public string Title { get; set; }
         public string Desc { get; set; }
@@ -27,8 +29,9 @@ namespace Todo.Service.Model.Fake
             Deadline = deadline;
         }
 
-        public FakeTodo(int id)
+        public FakeTodo(IFakeTodoService service, int id)
         {
+            _service = service;
             Id = id;
             Checked = false;
         }
