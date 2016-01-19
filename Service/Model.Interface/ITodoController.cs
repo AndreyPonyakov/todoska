@@ -36,28 +36,34 @@ namespace Todo.Service.Model.Interface
         IEnumerable<ITodo> SelectByCategory(int categoryId);
 
         /// <summary>
-        /// 
+        /// Create Todo
         /// </summary>
         /// <param name="title"></param>
         /// <param name="desc"></param>
         /// <param name="deadline"></param>
         /// <param name="categoryId"></param>
         /// <param name="order"></param>
-        /// <returns></returns>
+        /// <returns>Createded todo. </returns>
         ITodo Create(string title, string desc, DateTime deadline, int categoryId, int order);
 
         /// <summary>
-        /// 
+        /// Update todo 
         /// </summary>
         /// <param name="todo"></param>
-        /// <returns></returns>
+        /// <returns>Updated todo. </returns>
         ITodo Update(ITodo todo);
 
         /// <summary>
         /// Delete todo by its id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Primary key. </param>
         void Delete(int id);
+
+        /// <summary>
+        /// Change priority of order.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="order">Priority. </param>
         void ChangeOrder(int id, int order);
     }
 }

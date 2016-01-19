@@ -20,7 +20,7 @@ namespace Todo.UI.ViewModel
         public ICommand CreateCategoryCommand { get; set; }
 
         /// <summary>
-        /// Create insatance if <see cref="TodoControllerViewModel". />
+        /// Create insatance if <see cref="TodoControllerViewModel"/>.
         /// </summary>
         /// <param name="commandFactory">Factory for create ICommand instance. </param>
         public TodoControllerViewModel(ICommandFactory commandFactory)

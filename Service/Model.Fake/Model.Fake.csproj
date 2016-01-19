@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,7 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FakeCategory.cs" />
+    <Compile Include="FakeCategoryController.cs" />
+    <Compile Include="FakeTodo.cs" />
+    <Compile Include="FakeTodoController.cs" />
+    <Compile Include="FakeTodoService.cs" />
+    <Compile Include="IFakeTodoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Model.Interface\Model.Interface.csproj">
+      <Project>{A44B0D85-4C92-46C5-847B-4801A999E52B}</Project>
+      <Name>Model.Interface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
