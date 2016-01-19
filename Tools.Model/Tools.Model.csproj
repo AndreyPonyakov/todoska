@@ -7,8 +7,8 @@
     <ProjectGuid>{3A7F4D34-0CE3-4261-8516-55C8FF582C0E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tools.Model</RootNamespace>
-    <AssemblyName>Tools.Model</AssemblyName>
+    <RootNamespace>Todo.UI.Tools.Model</RootNamespace>
+    <AssemblyName>Todo.UI.Tools.Model</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseViewModel.cs" />
+    <Compile Include="ICommandFactory.cs" />
+    <Compile Include="NotifyPropertyChangedHelper.cs" />
+    <Compile Include="NotifySubscribe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
