@@ -3,25 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{3E869BC7-1618-4F6C-AAFD-F31F9721D867}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{E589DDBD-24B8-4231-82FC-BA80B30CB409}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "ViewModel\ViewModel.csproj", "{8BD04877-A236-46CB-885F-C32C336A7AF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "UI\Model\Model.csproj", "{3E869BC7-1618-4F6C-AAFD-F31F9721D867}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View", "View\View.csproj", "{5D7A57F1-3104-482E-A27C-3BB14DE5DAA9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "UI\ViewModel\ViewModel.csproj", "{8BD04877-A236-46CB-885F-C32C336A7AF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools.Model", "Tools.Model\Tools.Model.csproj", "{3A7F4D34-0CE3-4261-8516-55C8FF582C0E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View", "UI\View\View.csproj", "{5D7A57F1-3104-482E-A27C-3BB14DE5DAA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools.View", "Tools.View\Tools.View.csproj", "{F10C24DE-2D61-4BCD-902F-9F79CF3A6DF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools.Model", "UI\Tools.Model\Tools.Model.csproj", "{3A7F4D34-0CE3-4261-8516-55C8FF582C0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "Runner\Runner.csproj", "{E82C9D42-2F1A-4E41-89D7-766025AC7C59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools.View", "UI\Tools.View\Tools.View.csproj", "{F10C24DE-2D61-4BCD-902F-9F79CF3A6DF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Interface", "Service.Model\Model.Interface.csproj", "{A44B0D85-4C92-46C5-847B-4801A999E52B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "UI\Runner\Runner.csproj", "{E82C9D42-2F1A-4E41-89D7-766025AC7C59}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{9FF7132B-9572-42B6-87E3-3C163ED682E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Fake", "Model.Fake\Model.Fake.csproj", "{BA5F8A25-D1C9-4801-A408-0F6650AFFC27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Interface", "Service\Model.Interface\Model.Interface.csproj", "{A44B0D85-4C92-46C5-847B-4801A999E52B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Fake", "Service\Model.Fake\Model.Fake.csproj", "{BA5F8A25-D1C9-4801-A408-0F6650AFFC27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
