@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Todo.Service.Model.Interface;
 using Todo.UI.Tools.Model;
@@ -6,9 +7,9 @@ using Todo.UI.Tools.Model;
 namespace Todo.UI.ViewModel
 {
     /// <summary>
-    /// ViewModel class of Todo Controller.
+    /// ViewModel of main todo controller
     /// </summary>
-    public sealed class TodoControllerViewModel : BaseViewModel
+    public class CategoryControllerViewModel : BaseViewModel
     {
         /// <summary>
         /// Todo Service
@@ -20,12 +21,10 @@ namespace Todo.UI.ViewModel
         /// </summary>
         private readonly ICommandFactory _commandFactory;
 
-        private readonly CategoryControllerViewModel _categoryController;
-
         /// <summary>
         /// Category list.
         /// </summary>
-        public ObservableCollection<TodoViewModel> List { get; }
+        public ObservableCollection<CategoryViewModel> List { get; }
 
         /// <summary>
         /// Create category command.
@@ -37,50 +36,52 @@ namespace Todo.UI.ViewModel
         /// </summary>
         public void CreateCategory()
         {
-            var todo = new TodoViewModel(_commandFactory, _service, _categoryController);
-            List.Add(todo);
+            var category = new CategoryViewModel(_commandFactory, _service);
+            List.Add(category);
 
-            todo
+            category
                 .SetPropertyChanged(
-                    nameof(todo.Appended),
+                    nameof(category.Appended),
                     () =>
                     {
-                        if (todo.Appended)
+                        if (category.Appended)
                         {
-                            todo.Appended = false;
+                            category.Appended = false;
                         }
                     })
                 .SetPropertyChanged(
-                    nameof(todo.Canceled),
+                    nameof(category.Canceled),
                     () =>
                     {
-                        if (todo.Canceled)
+                        if (category.Canceled)
                         {
-                            todo.Canceled = false;
-                            List.Remove(todo);
+                            category.Canceled = false;
+                            List.Remove(category);
                         }
                     })
                 .SetPropertyChanged(
-                    nameof(todo.Deleted),
+                    nameof(category.Deleted),
                     () =>
                     {
-                        if (todo.Deleted)
+                        if (category.Deleted)
                         {
-                            todo.Deleted = false;
-                            List.Remove(todo);
+                            category.Deleted = false;
+                            List.Remove(category);
                         }
                     });
         }
-    
-        public TodoControllerViewModel(ICommandFactory commandFactory, ITodoService service, 
-            CategoryControllerViewModel categoryController)
+
+        /// <summary>
+        /// Create insatance if <see cref="CategoryControllerViewModel"/>.
+        /// </summary>
+        /// <param name="commandFactory">Factory for create ICommand instance. </param>
+        /// <param name="service">Todo service</param>
+        public CategoryControllerViewModel(ICommandFactory commandFactory, ITodoService service)
         {
             _service = service;
             _commandFactory = commandFactory;
-            List = new ObservableCollection<TodoViewModel>();
-
+            List = new ObservableCollection<CategoryViewModel>();
             CreateCategoryCommand = commandFactory.CreateCommand(CreateCategory);
-            _categoryController = categoryController;
         }
     }
 }

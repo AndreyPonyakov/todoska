@@ -18,7 +18,7 @@ namespace Todo.UI.Runner
             {
                 var mainView = new MainWindow();
                 mainView.Show();
-                mainView.DataContext = new TodoControllerViewModel(
+                mainView.DataContext = new WorkspaceViewModel(
                     new CommandFactory(), 
                     FakeTodoService.Instance);
             }

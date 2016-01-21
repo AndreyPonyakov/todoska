@@ -12,7 +12,7 @@ namespace Todo.UI.Tools.View.Converter
             if (value is System.Drawing.Color)
             {
                 var color = (System.Drawing.Color) value;
-                return System.Windows.Media.Color.FromScRgb(color.A, color.R, color.G, color.B);
+                return System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
             }
             return null;
         }

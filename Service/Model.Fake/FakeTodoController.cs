@@ -17,7 +17,7 @@ namespace Todo.Service.Model.Fake
         public ITodo SelectById(int id)
         {
             return _service.TodoList
-                .Single(t => t.Id == id);
+                .FirstOrDefault(t => t.Id == id);
         }
 
         public IEnumerable<ITodo> SelectByTitle(string title)
@@ -36,7 +36,7 @@ namespace Todo.Service.Model.Fake
 
         public ITodo Create(string title, string desc, DateTime deadline, int categoryId, int order)
         {
-            var todo = new FakeTodo(_service, GeterateId())
+            var todo = new FakeTodo(GeterateId())
             {
                 Title = title,
                 Desc = desc,

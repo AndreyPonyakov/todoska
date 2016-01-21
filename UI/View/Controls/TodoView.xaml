@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="Todo.UI.View.Controls.TodoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModel="clr-namespace:Todo.UI.ViewModel;assembly=Todo.UI.ViewModel"
+             xmlns:converter="clr-namespace:Todo.UI.Tools.View.Converter;assembly=Todo.UI.Tools.View"
+             d:DataContext="{d:DesignInstance viewModel:TodoViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="700">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converter:DrawingColorToMediaColorConverter x:Key="DrawingColorToMediaColorConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel.Background>
+                <SolidColorBrush Color="{Binding Category.Color, Converter={StaticResource DrawingColorToMediaColorConverter}}" />
+            </StackPanel.Background>
+            <CheckBox IsChecked="{Binding Checked}" Width="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox Width="100" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Background="Transparent"/>
+            <TextBox Width="150" Text="{Binding Desc, UpdateSourceTrigger=PropertyChanged}" Background="Transparent"/>
+            <ComboBox Width="150" ItemsSource="{Binding CategoryList}" SelectedItem="{Binding Category}" 
+                      DisplayMemberPath="Name" Background="Transparent"/>
+            <DatePicker SelectedDate="{Binding Deadline, Mode=TwoWay}" Background="Transparent"/>
+            <Button Height="30" Width="30" HorizontalAlignment="Left" 
+                Visibility="{Binding CanApply, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Command="{Binding ApplyCommand}">
+                <Image Source="http://icons.iconarchive.com/icons/hopstarter/sleek-xp-basic/128/Ok-icon.png" />
+                <Button.ToolTip>
+                    <ToolTip Content="Cancel changed todo..."/>
+                </Button.ToolTip>
+            </Button>
+            <Button Height="30" Width="30" HorizontalAlignment="Left" 
+                Visibility="{Binding CanUndo, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Command="{Binding UndoCommand}">
+                <Image Source="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-9/128/Undo-icon.png" />
+                <Button.ToolTip>
+                    <ToolTip Content="Cancel changed todo..."/>
+                </Button.ToolTip>
+            </Button>
+            <Button Height="30" Width="30" HorizontalAlignment="Left" 
+                Visibility="{Binding CanDelete, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Command="{Binding DeleteCommand}">
+                <Image Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Actions-edit-delete-icon.png" />
+                <Button.ToolTip>
+                    <ToolTip Content="Delete current todo..."/>
+                </Button.ToolTip>
+            </Button>
+        </StackPanel>
+            
+
+    </Grid>
+</UserControl>

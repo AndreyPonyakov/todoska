@@ -4,16 +4,49 @@ using Todo.Service.Model.Interface;
 
 namespace Todo.Service.Model.Fake
 {
+    /// <summary>
+    /// Fake implement of ITodo.
+    /// </summary>
     public class FakeTodo : ITodo
     {
-        private readonly IFakeTodoService _service;
+        /// <summary>
+        /// Primary key.
+        /// </summary>
         public int Id { get; }
+
+        /// <summary>
+        /// Title of todo.
+        /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Description.
+        /// </summary>
         public string Desc { get; set; }
+
+        /// <summary>
+        /// Deadline of todo.
+        /// </summary>
         public DateTime Deadline { get; private set; }
+
+        /// <summary>
+        /// Primary key of category.
+        /// </summary>
         public int CategoryId { get; private set; }
+
+        /// <summary>
+        /// Checked. 
+        /// </summary>
         public bool Checked { get; private set; }
+
+        /// <summary>
+        /// Order 
+        /// </summary>
         public int Order { get; set; }
+
+        /// <summary>
+        /// Set check.
+        /// </summary>
         public void Check()
         {
             Checked = true;
@@ -29,9 +62,8 @@ namespace Todo.Service.Model.Fake
             Deadline = deadline;
         }
 
-        public FakeTodo(IFakeTodoService service, int id)
+        public FakeTodo(int id)
         {
-            _service = service;
             Id = id;
             Checked = false;
         }
