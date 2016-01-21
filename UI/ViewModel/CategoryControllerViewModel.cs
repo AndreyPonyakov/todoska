@@ -34,7 +34,7 @@ namespace Todo.UI.ViewModel
         /// <summary>
         /// Undo create category command.
         /// </summary>
-        public void CreateCategory()
+        public CategoryViewModel CreateItem()
         {
             var category = new CategoryViewModel(_commandFactory, _service);
             List.Add(category);
@@ -69,6 +69,7 @@ namespace Todo.UI.ViewModel
                             List.Remove(category);
                         }
                     });
+            return category;
         }
 
         /// <summary>
@@ -81,7 +82,19 @@ namespace Todo.UI.ViewModel
             _service = service;
             _commandFactory = commandFactory;
             List = new ObservableCollection<CategoryViewModel>();
-            CreateCategoryCommand = commandFactory.CreateCommand(CreateCategory);
+            CreateCategoryCommand = commandFactory.CreateCommand(() => CreateItem());
+        }
+
+        /// <summary>
+        /// Update from serveice.
+        /// </summary>
+        /// <param name="model">Model. </param>
+        public void Update(ICategoryController model)
+        {
+            List.Clear();
+            model.SelectAll()
+                .ToList()
+                .ForEach(item => CreateItem().Update(item));
         }
     }
 }

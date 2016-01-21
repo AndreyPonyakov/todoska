@@ -35,6 +35,13 @@
 								TargetState="{Binding CategoryController}"/>
                 </i:Interaction.Behaviors>
             </RadioButton>
+            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding UpdateCommand}">
+                <Image Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Actions-view-refresh-icon.png" />
+                <Button.ToolTip>
+                    <ToolTip Content="Refresh list"/>
+                </Button.ToolTip>
+            </Button>
+            
         </StackPanel>
         <ContentPresenter Grid.Row="1" Content="{Binding Controller}">
             <ContentPresenter.Resources>

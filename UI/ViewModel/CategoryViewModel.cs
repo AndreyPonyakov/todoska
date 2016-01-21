@@ -11,14 +11,18 @@ namespace Todo.UI.ViewModel
     /// </summary>
     public sealed class CategoryViewModel : BaseViewModel
     {
+        /// <summary>
+        /// Todo service. 
+        /// </summary>
         private readonly ITodoService _service;
-
 
         /// <summary>
         /// ICategory of current category
         /// </summary>
         public ICategory Model { get; set; }
 
+        #region Notifying properties
+        
         private string _name;
         public string Name
         {
@@ -68,6 +72,7 @@ namespace Todo.UI.ViewModel
             get { return _deleted; }
             set { SetField(ref _deleted, value); }
         }
+        #endregion
 
         public bool InAction => Appended || Canceled || Deleted;
         public bool CanApply => !InAction && (Modified || Model == null);
@@ -87,6 +92,9 @@ namespace Todo.UI.ViewModel
             }
             else
             {
+                Model.Name = Name;
+                Model.Color = Color;
+                Model.Order = Order;
                 _service.CategoryController.Update(Model);
                 Modified = false;
             }
@@ -104,8 +112,7 @@ namespace Todo.UI.ViewModel
             }
             else
             {
-                _service.CategoryController.Update(Model);
-                Modified = false;
+                Update(Model);
             }
         }
 
@@ -164,6 +171,18 @@ namespace Todo.UI.ViewModel
                         OnPropertyChanged(nameof(CanApply));
                         OnPropertyChanged(nameof(CanUndo));
                     });
+        }
+
+        /// <summary>
+        /// Update from serveice.
+        /// </summary>
+        /// <param name="model">Model. </param>
+        public void Update(ICategory model)
+        {
+            Model = model;
+            Name = model.Name;
+            Color = model.Color;
+            Modified = false;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Todo.Service.Model.Interface;
 using Todo.UI.Tools.Model;
@@ -20,6 +21,9 @@ namespace Todo.UI.ViewModel
         /// </summary>
         private readonly ICommandFactory _commandFactory;
 
+        /// <summary>
+        /// ViewModel of category controller
+        /// </summary>
         private readonly CategoryControllerViewModel _categoryController;
 
         /// <summary>
@@ -35,7 +39,7 @@ namespace Todo.UI.ViewModel
         /// <summary>
         /// Undo create category command.
         /// </summary>
-        public void CreateCategory()
+        public TodoViewModel CreateItem()
         {
             var todo = new TodoViewModel(_commandFactory, _service, _categoryController);
             List.Add(todo);
@@ -43,22 +47,16 @@ namespace Todo.UI.ViewModel
             todo
                 .SetPropertyChanged(
                     nameof(todo.Appended),
-                    () =>
-                    {
-                        if (todo.Appended)
-                        {
-                            todo.Appended = false;
-                        }
-                    })
+                    () => todo.Appended = false)
                 .SetPropertyChanged(
                     nameof(todo.Canceled),
                     () =>
                     {
                         if (todo.Canceled)
                         {
-                            todo.Canceled = false;
                             List.Remove(todo);
                         }
+                        todo.Canceled = false;
                     })
                 .SetPropertyChanged(
                     nameof(todo.Deleted),
@@ -66,21 +64,42 @@ namespace Todo.UI.ViewModel
                     {
                         if (todo.Deleted)
                         {
-                            todo.Deleted = false;
                             List.Remove(todo);
                         }
+                        todo.Deleted = false;
                     });
+
+            return todo;
         }
-    
+
+        /// <summary>
+        /// Create <see cref="TodoControllerViewModel"/> instance.
+        /// </summary>
+        /// <param name="commandFactory">Factory for create ICommand. </param>
+        /// <param name="service">Todo service. </param>
+        /// <param name="categoryController">ViewModel of category controller. </param>
         public TodoControllerViewModel(ICommandFactory commandFactory, ITodoService service, 
             CategoryControllerViewModel categoryController)
         {
             _service = service;
             _commandFactory = commandFactory;
-            List = new ObservableCollection<TodoViewModel>();
-
-            CreateCategoryCommand = commandFactory.CreateCommand(CreateCategory);
             _categoryController = categoryController;
+
+            List = new ObservableCollection<TodoViewModel>();
+            CreateCategoryCommand = commandFactory.CreateCommand(() => CreateItem());
         }
+
+        /// <summary>
+        /// Update from serveice.
+        /// </summary>
+        /// <param name="model">Model. </param>
+        public void Update(ITodoController model)
+        {
+            List.Clear();
+            model.SelectAll()
+                .ToList()
+                .ForEach(item => CreateItem().Update(item));
+        }
+
     }
 }
