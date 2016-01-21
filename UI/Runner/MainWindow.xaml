@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Todo.UI.View.Controls;assembly=Todo.UI.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="390.895" Width="592.237">
+        Title="MainWindow" Height="400" Width="631.947">
     <Grid>
-        <controls:TodoControllerView/>
+        <controls:WorkspaceView />
     </Grid>
 </Window>
