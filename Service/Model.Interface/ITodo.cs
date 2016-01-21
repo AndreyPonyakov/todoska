@@ -15,12 +15,12 @@ namespace Todo.Service.Model.Interface
         /// <summary>
         /// Short title text.
         /// </summary>
-        string Title { get; }
+        string Title { get; set; }
 
         /// <summary>
         /// Long text body.
         /// </summary>
-        string Desc { get; }
+        string Desc { get; set; }
 
         /// <summary>
         /// Deadline date.
@@ -40,7 +40,7 @@ namespace Todo.Service.Model.Interface
         /// <summary>
         /// Priority.
         /// </summary>
-        int Order { get; }
+        int Order { get; set; }
 
         /// <summary>
         /// Make checked.

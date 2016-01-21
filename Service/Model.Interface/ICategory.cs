@@ -15,16 +15,16 @@ namespace Todo.Service.Model.Interface
         /// <summary>
         /// Category name.
         /// </summary>
-        string Name { get; }
+        string Name { get; set; }
 
         /// <summary>
         /// Preferable color of category.
         /// </summary>
-        Color Color { get; }
+        Color Color { get; set; }
 
         /// <summary>
         /// Priority of category.
         /// </summary>
-        int Order { get; }
+        int Order { get; set; }
     }
 }
