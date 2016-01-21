@@ -40,6 +40,8 @@ namespace Todo.UI.ViewModel
         public CategoryViewModel CreateItem()
         {
             var category = new CategoryViewModel(_commandFactory, _service);
+            category.Order = (List.Any() ? List.Max(c => c.Order) : 0)+ 1;
+
             List.Add(category);
 
             category
@@ -73,7 +75,13 @@ namespace Todo.UI.ViewModel
                         }
                     });
 
-            category.MoveToEvent += (sender, args) => List.MoveTo(args.DataTransition);
+            category.MoveToEvent += (sender, args) =>
+            {
+                List.MoveTo(args.DataTransition);
+                List
+                    .Select((v, i) => new {Index = i, Value = v})
+                    .ToList().ForEach(rec => rec.Value.Order = rec.Index + 1);
+            };
             
             return category;
         }

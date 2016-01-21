@@ -182,7 +182,7 @@ namespace Todo.UI.ViewModel
 
             this
                 .SetPropertyChanged(
-                    new[] {nameof(Name), nameof(Color)},
+                    new[] {nameof(Name), nameof(Color), nameof(Order)},
                     () => Modified = true)
                 .SetPropertyChanged(
                     new[] {nameof(Appended), nameof(Canceled), nameof(Deleted)},

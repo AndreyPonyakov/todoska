@@ -43,6 +43,7 @@ namespace Todo.UI.ViewModel
         public TodoViewModel CreateItem()
         {
             var todo = new TodoViewModel(_commandFactory, _service, _categoryController);
+            todo.Order = (List.Any() ? List.Max(c => c.Order) : 0) + 1;
             List.Add(todo);
 
             todo
@@ -70,7 +71,13 @@ namespace Todo.UI.ViewModel
                         todo.Deleted = false;
                     });
 
-            todo.MoveToEvent += (sender, args) => List.MoveTo(args.DataTransition);
+            todo.MoveToEvent += (sender, args) =>
+            {
+                List.MoveTo(args.DataTransition);
+                List
+                    .Select((v, i) => new { Index = i, Value = v })
+                    .ToList().ForEach(rec => rec.Value.Order = rec.Index + 1);
+            };
             return todo;
         }
 

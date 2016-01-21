@@ -258,7 +258,9 @@ namespace Todo.UI.ViewModel
                 parameter => MoveTo(((DataTransition)parameter).Cast<TodoViewModel, TodoViewModel>()));
 
             this
-                .SetPropertyChanged(new[] {nameof(Title), nameof(Desc)}, () => TextModified = true)
+                .SetPropertyChanged(
+                    new[] {nameof(Title), nameof(Desc), nameof(Order)},
+                    () => TextModified = true)
                 .SetPropertyChanged(nameof(Category), () => CategoryModified = true)
                 .SetPropertyChanged(nameof(Deadline), () => DeadlineModified = true)
                 .SetPropertyChanged(nameof(Checked), () => CheckedModified = true)
