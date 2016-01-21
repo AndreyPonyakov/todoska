@@ -45,7 +45,7 @@ namespace Todo.Service.Model.Interface
         /// <summary>
         /// Make checked.
         /// </summary>
-        void Check();
+        void Check(bool isChecked);
 
         /// <summary>
         /// Change category.

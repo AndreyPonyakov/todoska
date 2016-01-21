@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Input;
 using Todo.Service.Model.Interface;
 using Todo.UI.Tools.Model;
+using Todo.UI.ViewModel.Event;
 
 namespace Todo.UI.ViewModel
 {
@@ -128,7 +129,7 @@ namespace Todo.UI.ViewModel
         public ObservableCollection<CategoryViewModel> CategoryList => _categoryController.List;
 
         /// <summary>
-        /// Apply category.
+        /// Apply action.
         /// </summary>
         public void Apply()
         {
@@ -163,7 +164,7 @@ namespace Todo.UI.ViewModel
                 }
                 if (CheckedModified)
                 {
-                    Model.Check();
+                    Model.Check(Checked);
                     CheckedModified = false;
                 }
                 if (CategoryModified && Category?.Model != null)
@@ -175,7 +176,7 @@ namespace Todo.UI.ViewModel
         }
 
         /// <summary>
-        /// Create category command.
+        /// Undo action.
         /// </summary>
         public void Undo()
         {
@@ -190,7 +191,7 @@ namespace Todo.UI.ViewModel
         }
 
         /// <summary>
-        /// Create category command.
+        /// Delete action.
         /// </summary>
         public void Delete()
         {
@@ -202,19 +203,42 @@ namespace Todo.UI.ViewModel
         }
 
         /// <summary>
-        /// Apply category command
+        /// MoveTo action.
+        /// </summary>
+        public void MoveTo(DataTransition<TodoViewModel, TodoViewModel> dataTransition)
+        {
+            if (dataTransition.Source == dataTransition.Destination)
+            {
+                return;
+            }
+
+            var args = new MoveToEventHandlerArgs<TodoViewModel, TodoViewModel>(dataTransition);
+            MoveToEvent?.Invoke(this, args);
+        }
+
+
+        /// <summary>
+        /// Apply command.
         /// </summary>
         public ICommand ApplyCommand { get; }
 
         /// <summary>
-        /// Undo create category command.
+        /// Undo command.
         /// </summary>
-        public ICommand UndoCommand { get; set; }
+        public ICommand UndoCommand { get; }
 
         /// <summary>
-        /// Delete create category command.
+        /// Delete command.
         /// </summary>
-        public ICommand DeleteCommand { get; set; }
+        public ICommand DeleteCommand { get; }
+
+        /// <summary>
+        /// MoveTo command.
+        /// </summary>
+        public ICommand MoveToCommand { get; }
+
+
+        public event MoveToEventHandler<TodoViewModel, TodoViewModel> MoveToEvent;
 
         /// <summary>
         /// Create <see cref="TodoControllerViewModel"/> instance.
@@ -230,6 +254,9 @@ namespace Todo.UI.ViewModel
             ApplyCommand = commandFactory.CreateCommand(Apply, () => CanApply);
             UndoCommand = commandFactory.CreateCommand(Undo, () => CanUndo);
             DeleteCommand = commandFactory.CreateCommand(Delete, () => CanDelete);
+            MoveToCommand = commandFactory.CreateCommand(
+                parameter => MoveTo(((DataTransition)parameter).Cast<TodoViewModel, TodoViewModel>()));
+
             this
                 .SetPropertyChanged(new[] {nameof(Title), nameof(Desc)}, () => TextModified = true)
                 .SetPropertyChanged(nameof(Category), () => CategoryModified = true)
@@ -279,6 +306,5 @@ namespace Todo.UI.ViewModel
             CheckedModified = false;
             CategoryModified = false;
         }
-
     }
 }

@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Todo.Service.Model.Interface;
 using Todo.UI.Tools.Model;
+using Todo.UI.ViewModel.Event;
 
 namespace Todo.UI.ViewModel
 {
@@ -80,7 +81,7 @@ namespace Todo.UI.ViewModel
         public bool CanDelete => !InAction && Model != null;
 
         /// <summary>
-        /// Finish of creating category.
+        /// Apply action.
         /// </summary>
         public void Apply()
         {
@@ -101,7 +102,7 @@ namespace Todo.UI.ViewModel
         }
 
         /// <summary>
-        /// Create category command.
+        /// Undo action.
         /// </summary>
         public void Undo()
         {
@@ -117,7 +118,7 @@ namespace Todo.UI.ViewModel
         }
 
         /// <summary>
-        /// Create category command.
+        /// Delete action.
         /// </summary>
         public void Delete()
         {
@@ -129,19 +130,41 @@ namespace Todo.UI.ViewModel
         }
 
         /// <summary>
+        /// MoveTo action.
+        /// </summary>
+        public void MoveTo(DataTransition<CategoryViewModel, CategoryViewModel> dataTransition)
+        {
+            if (dataTransition.Source == dataTransition.Destination)
+            {
+                return;
+            }
+
+            var args = new MoveToEventHandlerArgs<CategoryViewModel, CategoryViewModel>(dataTransition);
+            MoveToEvent?.Invoke(this, args);
+        }
+
+        /// <summary>
         /// Create category command
         /// </summary>
         public ICommand ApplyCommand { get; }
 
         /// <summary>
-        /// Undo create category command.
+        /// Undo command.
         /// </summary>
-        public ICommand UndoCommand { get; set; }
-        /// <summary>
-        /// Undo create category command.
-        /// </summary>
-        public ICommand DeleteCommand { get; set; }
+        public ICommand UndoCommand { get;  }
 
+        /// <summary>
+        /// Delete  command.
+        /// </summary>
+        public ICommand DeleteCommand { get; }
+
+        /// <summary>
+        /// MoveTo command
+        /// </summary>
+        public ICommand MoveToCommand { get; }
+
+
+        public event MoveToEventHandler<CategoryViewModel, CategoryViewModel> MoveToEvent;
 
         /// <summary>
         /// Constructor of CategoryViewModel
@@ -154,6 +177,9 @@ namespace Todo.UI.ViewModel
             ApplyCommand = commandFactory.CreateCommand(Apply, () => CanApply);
             UndoCommand = commandFactory.CreateCommand(Undo, () => CanUndo);
             DeleteCommand = commandFactory.CreateCommand(Delete, () => CanDelete);
+            MoveToCommand = commandFactory.CreateCommand(
+                parameter => MoveTo(((DataTransition) parameter).Cast<CategoryViewModel, CategoryViewModel>()));
+
             this
                 .SetPropertyChanged(
                     new[] {nameof(Name), nameof(Color)},

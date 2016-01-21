@@ -5,10 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModel="clr-namespace:Todo.UI.ViewModel;assembly=Todo.UI.ViewModel"
              xmlns:controls="clr-namespace:Todo.UI.View.Controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behavior="clr-namespace:Todo.UI.Tools.View.Behavior;assembly=Todo.UI.Tools.View"
              d:DataContext="{d:DesignInstance viewModel:TodoControllerViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Margin="0,0,-154,0">
+    <Grid Margin="0,0,-388,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
@@ -26,6 +28,13 @@
                 <DataTemplate>
                     <Grid Margin="0" AllowDrop="True">
                         <controls:TodoView/>
+                        <i:Interaction.Behaviors>
+                            <behavior:DragBehavior 
+                                DataFormat="viewModel:TodoViewModel"/>
+                            <behavior:DropBehavior
+                                DataFormat="viewModel:TodoViewModel"
+                                Command="{Binding MoveToCommand}"/>
+                        </i:Interaction.Behaviors>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

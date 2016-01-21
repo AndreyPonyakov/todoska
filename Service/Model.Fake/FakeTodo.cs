@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Todo.Service.Model.Interface;
 
 namespace Todo.Service.Model.Fake
@@ -47,9 +46,9 @@ namespace Todo.Service.Model.Fake
         /// <summary>
         /// Set check.
         /// </summary>
-        public void Check()
+        public void Check(bool isChecked)
         {
-            Checked = true;
+            Checked = isChecked;
         }
 
         public void SetCategory(int categoryId)

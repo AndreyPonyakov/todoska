@@ -34,7 +34,6 @@ namespace Todo.UI.Tools.View.Behavior
                 e.Data.GetData(DataFormat),
                 AssociatedObject.DataContext);
 
-
             Command?.Execute(param);
         }
 

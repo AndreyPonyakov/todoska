@@ -21,7 +21,7 @@ namespace Todo.UI.Tools.View.Behavior
         private void AssociatedObjectOnMouseDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             var dataObject = new DataObject(DataFormat, AssociatedObject.DataContext);
-            DragDrop.DoDragDrop(AssociatedObject, dataObject, DragDropEffects.Copy);
+            DragDrop.DoDragDrop(AssociatedObject, dataObject, DragDropEffects.Move);
         }
 
         public Type DataFormat

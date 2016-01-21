@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Input;
 using Todo.Service.Model.Interface;
 using Todo.UI.Tools.Model;
+using Todo.UI.ViewModel.Event;
 
 namespace Todo.UI.ViewModel
 {
@@ -69,6 +70,7 @@ namespace Todo.UI.ViewModel
                         todo.Deleted = false;
                     });
 
+            todo.MoveToEvent += (sender, args) => List.MoveTo(args.DataTransition);
             return todo;
         }
 
