@@ -3,6 +3,9 @@ using System.Windows.Data;
 
 namespace Todo.UI.Tools.View.Converter
 {
+    /// <summary>
+    /// Converter for condiont of state paternt.
+    /// </summary>
     public class StatePatternToBooleanConverter : IMultiValueConverter
     {
         public object Convert(object[] value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

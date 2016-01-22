@@ -28,7 +28,7 @@
                 Command="{Binding ApplyCommand}">
                 <Image Source="http://icons.iconarchive.com/icons/hopstarter/sleek-xp-basic/128/Ok-icon.png" />
                 <Button.ToolTip>
-                    <ToolTip Content="Cancel changed todo..."/>
+                    <ToolTip Content="Apply changed todo..."/>
                 </Button.ToolTip>
             </Button>
             <Button Height="30" Width="30" HorizontalAlignment="Left" 
@@ -47,6 +47,10 @@
                     <ToolTip Content="Delete current todo..."/>
                 </Button.ToolTip>
             </Button>
+            <Grid MinWidth="200" Width="200">
+                <Rectangle Fill="Transparent"/>
+            </Grid>
+
         </StackPanel>
             
 

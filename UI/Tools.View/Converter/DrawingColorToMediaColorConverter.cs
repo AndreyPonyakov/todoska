@@ -4,6 +4,9 @@ using System.Windows.Data;
 
 namespace Todo.UI.Tools.View.Converter
 {
+    /// <summary>
+    /// Converter from System.Drawing.Color to System.Windows.Media.Color.
+    /// </summary>
     public class DrawingColorToMediaColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

@@ -52,6 +52,9 @@
                 <ToolTip Content="Delete current category..."/>
             </Button.ToolTip>
         </Button>
+        <Grid MinWidth="200" Width="200">
+            <Rectangle Fill="Transparent"/>
+        </Grid>
     </StackPanel>
 
 </UserControl>

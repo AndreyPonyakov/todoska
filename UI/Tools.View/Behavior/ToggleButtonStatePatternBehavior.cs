@@ -6,9 +6,15 @@ using Todo.UI.Tools.View.Converter;
 
 namespace Todo.UI.Tools.View.Behavior
 {
+    /// <summary>
+    /// Behavior for implement of view change between state.
+    /// </summary>
     public class ToggleButtonStatePatternBehavior : Behavior<ToggleButton>
     {
 
+        /// <summary>
+        /// Attaching
+        /// </summary>
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -22,6 +28,11 @@ namespace Todo.UI.Tools.View.Behavior
             AssociatedObject.SetBinding(ToggleButton.IsCheckedProperty, binding);
         }
 
+        /// <summary>
+        /// Attached event handler.
+        /// </summary>
+        /// <param name="sender">Sender. </param>
+        /// <param name="e">Event argument. </param>
         private void AssociatedObjectOnChecked(object sender, RoutedEventArgs e)
         {
             if (AssociatedObject.IsChecked == true)
@@ -35,6 +46,9 @@ namespace Todo.UI.Tools.View.Behavior
 
         }
 
+        /// <summary>
+        /// Current state of VM.
+        /// </summary>
         public object State
         {
             get { return GetValue(StateProperty); }
@@ -44,6 +58,9 @@ namespace Todo.UI.Tools.View.Behavior
         public static readonly DependencyProperty StateProperty = DependencyProperty.Register(
           nameof(State), typeof(object), typeof(ToggleButtonStatePatternBehavior), new PropertyMetadata(null));
 
+        /// <summary>
+        /// Target state of VM when V must show.
+        /// </summary>
         public object TargetState
         {
             get { return GetValue(TargetStateProperty); }

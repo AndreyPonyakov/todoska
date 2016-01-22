@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModel="clr-namespace:Todo.UI.ViewModel;assembly=Todo.UI.ViewModel"
              xmlns:controls="clr-namespace:Todo.UI.View.Controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behavior="clr-namespace:Todo.UI.Tools.View.Behavior;assembly=Todo.UI.Tools.View"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModel:CategoryControllerViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -26,10 +28,16 @@
                 <DataTemplate>
                     <Grid Margin="0" AllowDrop="True">
                         <controls:CategoryView/>
+                        <i:Interaction.Behaviors>
+                            <behavior:DragBehavior 
+                                DataFormat="viewModel:CategoryViewModel"/>
+                            <behavior:DropBehavior
+                                DataFormat="viewModel:CategoryViewModel"
+                                Command="{Binding MoveToCommand}"/>
+                        </i:Interaction.Behaviors>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-            
         </ListBox>
     </Grid>
 </UserControl>

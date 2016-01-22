@@ -1,8 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Todo.Service.Model.Interface;
 using Todo.UI.Tools.Model;
+using Todo.UI.ViewModel.Event;
 
 namespace Todo.UI.ViewModel
 {
@@ -34,9 +37,11 @@ namespace Todo.UI.ViewModel
         /// <summary>
         /// Undo create category command.
         /// </summary>
-        public void CreateCategory()
+        public CategoryViewModel CreateItem()
         {
             var category = new CategoryViewModel(_commandFactory, _service);
+            category.Order = (List.Any() ? List.Max(c => c.Order) : 0)+ 1;
+
             List.Add(category);
 
             category
@@ -69,6 +74,16 @@ namespace Todo.UI.ViewModel
                             List.Remove(category);
                         }
                     });
+
+            category.MoveToEvent += (sender, args) =>
+            {
+                List.MoveTo(args.DataTransition);
+                List
+                    .Select((v, i) => new {Index = i, Value = v})
+                    .ToList().ForEach(rec => rec.Value.Order = rec.Index + 1);
+            };
+            
+            return category;
         }
 
         /// <summary>
@@ -81,7 +96,19 @@ namespace Todo.UI.ViewModel
             _service = service;
             _commandFactory = commandFactory;
             List = new ObservableCollection<CategoryViewModel>();
-            CreateCategoryCommand = commandFactory.CreateCommand(CreateCategory);
+            CreateCategoryCommand = commandFactory.CreateCommand(() => CreateItem());
+        }
+
+        /// <summary>
+        /// Update from serveice.
+        /// </summary>
+        /// <param name="model">Model. </param>
+        public void Update(ICategoryController model)
+        {
+            List.Clear();
+            model.SelectAll()
+                .ToList()
+                .ForEach(item => CreateItem().Update(item));
         }
     }
 }
