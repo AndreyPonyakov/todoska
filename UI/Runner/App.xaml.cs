@@ -12,6 +12,10 @@ namespace Todo.UI.Runner
     /// </summary>
     public partial class App
     {
+        /// <summary>
+        /// Startup implement.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
             try

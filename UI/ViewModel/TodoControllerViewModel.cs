@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Input;
 using Todo.Service.Model.Interface;
 using Todo.UI.Tools.Model;
+using Todo.UI.ViewModel.Base;
 using Todo.UI.ViewModel.Event;
 
 namespace Todo.UI.ViewModel
@@ -10,7 +11,7 @@ namespace Todo.UI.ViewModel
     /// <summary>
     /// ViewModel class of Todo Controller.
     /// </summary>
-    public sealed class TodoControllerViewModel : BaseViewModel
+    public sealed class TodoControllerViewModel : BaseOrderedControllerViewModel
     {
         /// <summary>
         /// Todo Service
@@ -102,12 +103,12 @@ namespace Todo.UI.ViewModel
         /// Update from serveice.
         /// </summary>
         /// <param name="model">Model. </param>
-        public void Update(ITodoController model)
+        public void Refresh(ITodoController model)
         {
             List.Clear();
             model.SelectAll()
                 .ToList()
-                .ForEach(item => CreateItem().Update(item));
+                .ForEach(item => CreateItem().Refresh(item));
         }
 
     }

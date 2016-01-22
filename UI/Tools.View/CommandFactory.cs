@@ -7,7 +7,7 @@ namespace Todo.UI.Tools.View
     /// <summary>
     /// Relay command factory
     /// </summary>
-    public class CommandFactory : ICommandFactory
+    public sealed class CommandFactory : ICommandFactory
     {
         /// <summary>
         /// Create command.

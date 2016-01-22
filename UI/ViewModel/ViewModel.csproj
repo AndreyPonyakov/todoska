@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\BaseOrderedControllerViewModel.cs" />
+    <Compile Include="Base\BaseOrderedItemViewModel.cs" />
     <Compile Include="CategoryViewModel.cs" />
     <Compile Include="Event\MoveToEvent.cs" />
     <Compile Include="Event\MoveToEventHelper.cs" />

@@ -6,7 +6,7 @@ namespace Todo.Service.Model.Fake
     /// <summary>
     /// Fake implement of ITodo.
     /// </summary>
-    public class FakeTodo : ITodo
+    public sealed class FakeTodo : ITodo
     {
         /// <summary>
         /// Primary key.
@@ -51,16 +51,28 @@ namespace Todo.Service.Model.Fake
             Checked = isChecked;
         }
 
+        /// <summary>
+        /// Change of category.
+        /// </summary>
+        /// <param name="categoryId">Primary key of category. </param>
         public void SetCategory(int categoryId)
         {
             CategoryId = categoryId;
         }
 
+        /// <summary>
+        /// Change of deadline.
+        /// </summary>
+        /// <param name="deadline">New deadline. </param>
         public void SetDeadline(DateTime deadline)
         {
             Deadline = deadline;
         }
 
+        /// <summary>
+        /// Create <see cref="FakeTodo"/> instance. 
+        /// </summary>
+        /// <param name="id"></param>
         public FakeTodo(int id)
         {
             Id = id;

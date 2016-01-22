@@ -5,10 +5,13 @@ using Todo.UI.Tools.Model;
 
 namespace Todo.UI.ViewModel
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class WorkspaceViewModel : BaseViewModel
     {
         private INotifyPropertyChanged _controller;
-        private ITodoService _service;
+        private readonly ITodoService _service;
 
         public INotifyPropertyChanged Controller
         {
@@ -22,16 +25,17 @@ namespace Todo.UI.ViewModel
         /// <summary>
         /// Update from serveice.
         /// </summary>
-        public void Update()
+        public void Refresh()
         {
-            CategoryController.Update(_service.CategoryController);
-            TodoController.Update(_service.TodoController);
+            CategoryController.Refresh(_service.CategoryController);
+            TodoController.Refresh(_service.TodoController);
         }
 
         /// <summary>
         /// Update command.
         /// </summary>
-        public ICommand UpdateCommand { get; }
+        public ICommand RefreshCommand { get; }
+
 
         /// <summary>
         /// Create instance of <see cref="WorkspaceViewModel"/>.
@@ -41,7 +45,7 @@ namespace Todo.UI.ViewModel
         public WorkspaceViewModel(ICommandFactory commandFactory, ITodoService service)
         {
             _service = service;
-            UpdateCommand = commandFactory.CreateCommand(Update);
+            RefreshCommand = commandFactory.CreateCommand(Refresh);
             CategoryController = new CategoryControllerViewModel(commandFactory, service);
             TodoController = new TodoControllerViewModel(commandFactory, service, CategoryController);
             Controller = TodoController;

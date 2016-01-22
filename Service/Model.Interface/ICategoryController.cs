@@ -49,5 +49,11 @@ namespace Todo.Service.Model.Interface
         /// <param name="id">Primary key of category. </param>
         void Delete(int id);
 
+        /// <summary>
+        /// Change priority of order.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="order">Priority. </param>
+        void ChangeOrder(int id, int order);
     }
 }

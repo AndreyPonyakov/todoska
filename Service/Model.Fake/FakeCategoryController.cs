@@ -8,7 +8,7 @@ namespace Todo.Service.Model.Fake
     /// <summary>
     /// Fake implement of ICategoryController.
     /// </summary>
-    public class FakeCategoryController : ICategoryController
+    public sealed class FakeCategoryController : ICategoryController
     {
         /// <summary>
         /// Service instance.
@@ -59,7 +59,6 @@ namespace Todo.Service.Model.Fake
             var category = new FakeCategory(GeterateId())
             {
                 Name = name,
-                Order = order,
                 Color = color
             };
             _service.CategoryList.Add(category);
@@ -111,6 +110,19 @@ namespace Todo.Service.Model.Fake
             {
                 _service.CategoryList.Remove(category);
             }
+        }
+
+        /// <summary>
+        /// Cahnge priority.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="order">Priority. </param>        
+        public void ChangeOrder(int id, int order)
+        {
+            _service.CategoryList
+                .Where(t => t.Id == id)
+                .ToList()
+                .ForEach(t => t.Order = order);
         }
 
         /// <summary>

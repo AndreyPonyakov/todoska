@@ -25,6 +25,6 @@ namespace Todo.Service.Model.Interface
         /// <summary>
         /// Priority of category.
         /// </summary>
-        int Order { get; set; }
+        int Order { get; }
     }
 }

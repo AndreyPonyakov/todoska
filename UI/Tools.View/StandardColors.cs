@@ -8,7 +8,7 @@ namespace Todo.UI.Tools.View
     /// <summary>
     /// Standard colors.
     /// </summary>
-    public class StandardColors
+    public sealed class StandardColors
     {
         /// <summary>
         /// Color list.

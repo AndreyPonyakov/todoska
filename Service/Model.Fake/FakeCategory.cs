@@ -3,7 +3,10 @@ using Todo.Service.Model.Interface;
 
 namespace Todo.Service.Model.Fake
 {
-    public class FakeCategory : ICategory
+    /// <summary>
+    /// Fake implementation of ICategory
+    /// </summary>
+    public sealed class FakeCategory : ICategory
     {
         /// <summary>
         /// Primary key.

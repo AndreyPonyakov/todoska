@@ -40,7 +40,7 @@ namespace Todo.Service.Model.Interface
         /// <summary>
         /// Priority.
         /// </summary>
-        int Order { get; set; }
+        int Order { get; }
 
         /// <summary>
         /// Make checked.

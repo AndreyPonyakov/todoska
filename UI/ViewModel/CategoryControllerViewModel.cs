@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Todo.Service.Model.Interface;
 using Todo.UI.Tools.Model;
+using Todo.UI.ViewModel.Base;
 using Todo.UI.ViewModel.Event;
 
 namespace Todo.UI.ViewModel
@@ -12,7 +11,7 @@ namespace Todo.UI.ViewModel
     /// <summary>
     /// ViewModel of main todo controller
     /// </summary>
-    public class CategoryControllerViewModel : BaseViewModel
+    public sealed class CategoryControllerViewModel : BaseOrderedControllerViewModel
     {
         /// <summary>
         /// Todo Service
@@ -103,12 +102,12 @@ namespace Todo.UI.ViewModel
         /// Update from serveice.
         /// </summary>
         /// <param name="model">Model. </param>
-        public void Update(ICategoryController model)
+        public void Refresh(ICategoryController model)
         {
             List.Clear();
             model.SelectAll()
                 .ToList()
-                .ForEach(item => CreateItem().Update(item));
+                .ForEach(item => CreateItem().Refresh(item));
         }
     }
 }

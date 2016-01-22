@@ -7,8 +7,17 @@ namespace Todo.UI.Tools.View.Converter
     /// <summary>
     /// Converter from System.Drawing.Color to System.Windows.Media.Color.
     /// </summary>
-    public class DrawingColorToMediaColorConverter : IValueConverter
+    public sealed class DrawingColorToMediaColorConverter : IValueConverter
     {
+
+        /// <summary>
+        /// Right converter.
+        /// </summary>
+        /// <param name="value">Unconverted value. </param>
+        /// <param name="targetType">Unconverted value type. </param>
+        /// <param name="parameter">Appended parameters. </param>
+        /// <param name="culture">Culture information. </param>
+        /// <returns>Converted value. </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
 
@@ -20,6 +29,14 @@ namespace Todo.UI.Tools.View.Converter
             return null;
         }
 
+        /// <summary>
+        /// Reverse converter.
+        /// </summary>
+        /// <param name="value">Unconverted value. </param>
+        /// <param name="targetType">Unconverted value type. </param>
+        /// <param name="parameter">Appended parameters. </param>
+        /// <param name="culture">Culture information. </param>
+        /// <returns>Converted value. </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is System.Windows.Media.Color)

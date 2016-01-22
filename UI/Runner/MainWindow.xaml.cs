@@ -5,6 +5,9 @@
     /// </summary>
     public partial class MainWindow
     {
+        /// <summary>
+        /// Create <see cref="MainWindow"/> instance.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();

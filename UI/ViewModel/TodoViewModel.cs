@@ -4,59 +4,71 @@ using System.Linq;
 using System.Windows.Input;
 using Todo.Service.Model.Interface;
 using Todo.UI.Tools.Model;
+using Todo.UI.ViewModel.Base;
 using Todo.UI.ViewModel.Event;
 
 namespace Todo.UI.ViewModel
 {
     /// <summary>
-    /// ViewModel of Todo class
+    /// ViewModel of Todo class.
     /// </summary>
-    public sealed class TodoViewModel : BaseViewModel
+    public sealed class TodoViewModel :  BaseOrderedItemViewModel<ITodoService, TodoViewModel>
     {
         /// <summary>
         /// ICategory of current category
         /// </summary>
         public ITodo Model { get; set; }
 
-        private readonly ITodoService _service;
+        /// <summary>
+        /// <see cref="CategoryControllerViewModel"/> instance.
+        /// </summary>
         private readonly CategoryControllerViewModel _categoryController;
 
         #region Notifying properties
-        private string _title;
+        
+        /// <summary>
+        /// Title of current todo.
+        /// </summary>
         public string Title
         {
             get { return _title; }
             set { SetField(ref _title, value); }
         }
-
-        private string _desc;
+        private string _title;
+        
+        /// <summary>
+        /// Description of current todo.
+        /// </summary>
         public string Desc
         {
             get { return _desc; }
             set { SetField(ref _desc, value); }
         }
+        private string _desc;
 
-        private DateTime _deadline = DateTime.Now;
+        /// <summary>
+        /// Deadline of current todo.
+        /// </summary>
         public DateTime Deadline
         {
             get { return _deadline; }
             set { SetField(ref _deadline, value); }
         }
+        private DateTime _deadline = DateTime.Now;
 
-        private bool _checked;
+        /// <summary>
+        /// Check state of current todo.
+        /// </summary>
         public bool Checked
         {
             get { return _checked; }
             set { SetField(ref _checked, value); }
         }
+        private bool _checked;
 
-        private int _order;
-        public int Order
-        {
-            get { return _order; }
-            set { SetField(ref _order, value); }
-        }
-
+        /// <summary>
+        /// Category (ViewModel) of current todo.
+        /// </summary>
         private CategoryViewModel _category;
         public CategoryViewModel Category
         {
@@ -64,68 +76,115 @@ namespace Todo.UI.ViewModel
             set { SetField(ref _category, value); }
         }
 
-        private bool _textModified;
+        /// <summary>
+        /// Change notification flag of title or description.
+        /// </summary>
         public bool TextModified
         {
             get { return _textModified; }
             set { SetField(ref _textModified, value); }
         }
+        private bool _textModified;
 
-        private bool _deadlineModified;
+        /// <summary>
+        /// Change notification flag of deadline.
+        /// </summary>
         public bool DeadlineModified
         {
             get { return _deadlineModified; }
             set { SetField(ref _deadlineModified, value); }
         }
+        private bool _deadlineModified;
 
-        private bool _checkedModified;
+        /// <summary>
+        /// Change notification flag of checked.
+        /// </summary>
         public bool CheckedModified
         {
             get { return _checkedModified; }
             set { SetField(ref _checkedModified, value); }
         }
+        private bool _checkedModified;
 
-        private bool _categoryModified;
+        /// <summary>
+        /// Change notification flag of category.
+        /// </summary>
         public bool CategoryModified
         {
             get { return _categoryModified; }
             set { SetField(ref _categoryModified, value); }
         }
+        private bool _categoryModified;
 
-        private bool _modified;
+        /// <summary>
+        /// Change notification flag of any property.
+        /// </summary>
         public bool Modified
         {
             get { return _modified; }
             set { SetField(ref _modified, value); }
         }
+        private bool _modified;
 
-        private bool _appended;
+        /// <summary>
+        /// Append notification.
+        /// </summary>
+        /// TODO: implement event.
         public bool Appended
         {
             get { return _appended; }
             set { SetField(ref _appended, value); }
         }
+        private bool _appended;
 
-        private bool _canceled;
+        /// <summary>
+        /// Cancel notification.
+        /// </summary>
+        /// TODO: implement event.
         public bool Canceled
         {
             get { return _canceled; }
             set { SetField(ref _canceled, value); }
         }
+        private bool _canceled;
 
-        private bool _deleted;
+        /// <summary>
+        /// Delete notification.
+        /// </summary>
+        /// TODO: implement event.
         public bool Deleted
         {
             get { return _deleted; }
             set { SetField(ref _deleted, value); }
         }
+        private bool _deleted;
         #endregion
 
+        #region Auto-notifying properties
+        /// <summary>
+        /// Notify any action.
+        /// </summary>
         public bool InAction => Appended || Canceled || Deleted;
-        public bool CanApply => !InAction && (Modified || Model == null);
-        public bool CanUndo => !InAction && (Modified || Model == null);
-        public bool CanDelete => !InAction && Model != null;
 
+        /// <summary>
+        /// Ability of command execute (apply).
+        /// </summary>
+        public bool CanApply => !InAction && (Modified || Model == null);
+
+        /// <summary>
+        /// Ability of command execute (undo).
+        /// </summary>
+        public bool CanUndo => !InAction && (Modified || Model == null);
+
+        /// <summary>
+        /// Ability of command execute (delete).
+        /// </summary>
+        public bool CanDelete => !InAction && Model != null;
+        #endregion
+
+        /// <summary>
+        /// Category list for category selection.
+        /// </summary>
         public ObservableCollection<CategoryViewModel> CategoryList => _categoryController.List;
 
         /// <summary>
@@ -135,43 +194,11 @@ namespace Todo.UI.ViewModel
         {
             if (Model == null)
             {
-                if (Category?.Model != null)
-                {
-                    var categoryId = Category.Model.Id;
-                    Model = _service.TodoController.Create(Title, Desc, Deadline, categoryId, Order);
-                    Appended = true;
-
-                    TextModified = false;
-                    DeadlineModified = false;
-                    CheckedModified = false;
-                    CategoryModified = false;
-                }
+                Create();
             }
             else
             {
-                if (TextModified)
-                {
-                    Model.Title = Title;
-                    Model.Desc = Desc;
-                    Model.Order = Order;
-                    _service.TodoController.Update(Model);
-                    TextModified = false;
-                }
-                if (DeadlineModified)
-                {
-                    Model.SetDeadline(Deadline);
-                    DeadlineModified = false;
-                }
-                if (CheckedModified)
-                {
-                    Model.Check(Checked);
-                    CheckedModified = false;
-                }
-                if (CategoryModified && Category?.Model != null)
-                {
-                    Model.SetCategory(Category.Model.Id);
-                    CategoryModified = false;
-                }
+                Update(Model);
             }
         }
 
@@ -186,7 +213,7 @@ namespace Todo.UI.ViewModel
             }
             else 
             {
-                Update(Model);
+                Refresh(Model);
             }
         }
 
@@ -195,27 +222,91 @@ namespace Todo.UI.ViewModel
         /// </summary>
         public void Delete()
         {
-            _service.CategoryController.Delete(Model.Id);
-            if (_service.CategoryController.SelectById(Model.Id) == null)
+            Service.CategoryController.Delete(Model.Id);
+            if (Service.CategoryController.SelectById(Model.Id) == null)
             {
                 Deleted = true;
             }
         }
 
         /// <summary>
-        /// MoveTo action.
+        /// Refresh from service.
         /// </summary>
-        public void MoveTo(DataTransition<TodoViewModel, TodoViewModel> dataTransition)
+        /// <param name="model">Model. </param>
+        public void Refresh(ITodo model)
         {
-            if (dataTransition.Source == dataTransition.Destination)
-            {
-                return;
-            }
+            Model = model;
+            Title = Model.Title;
+            Desc = Model.Desc;
+            Order = Model.Order;
+            Category = CategoryList.FirstOrDefault(c => c.Model.Id == model.CategoryId);
+            Deadline = Model.Deadline;
+            Checked = Model.Checked;
 
-            var args = new MoveToEventHandlerArgs<TodoViewModel, TodoViewModel>(dataTransition);
-            MoveToEvent?.Invoke(this, args);
+            ClearMofidied();
         }
 
+        /// <summary>
+        /// Update at service.
+        /// </summary>
+        /// <param name="model">Model. </param>
+        public void Update(ITodo model)
+        {
+            if (TextModified)
+            {
+                Model.Title = Title;
+                Model.Desc = Desc;
+                Service.TodoController.Update(Model);
+                TextModified = false;
+            }
+            if (DeadlineModified)
+            {
+                Model.SetDeadline(Deadline);
+                DeadlineModified = false;
+            }
+            if (CheckedModified)
+            {
+                Model.Check(Checked);
+                CheckedModified = false;
+            }
+            if (CategoryModified && Category?.Model != null)
+            {
+                Model.SetCategory(Category.Model.Id);
+                CategoryModified = false;
+            }
+            if (OrderModified)
+            {
+                Service.TodoController.ChangeOrder(Model.Id, Order);
+                OrderModified = false;
+            }
+        }
+
+        /// <summary>
+        /// Create at service.
+        /// </summary>
+        public void Create()
+        {
+            if (Category?.Model != null)
+            {
+                var categoryId = Category.Model.Id;
+                Model = Service.TodoController.Create(Title, Desc, Deadline, categoryId, Order);
+                ClearMofidied();
+                Appended = true;
+            }
+        }
+
+
+        /// <summary>
+        /// Set false for all modified properties. 
+        /// </summary>
+        public void ClearMofidied()
+        {
+            TextModified = false;
+            DeadlineModified = false;
+            CheckedModified = false;
+            CategoryModified = false;
+            OrderModified = false;
+        }
 
         /// <summary>
         /// Apply command.
@@ -233,46 +324,36 @@ namespace Todo.UI.ViewModel
         public ICommand DeleteCommand { get; }
 
         /// <summary>
-        /// MoveTo command.
-        /// </summary>
-        public ICommand MoveToCommand { get; }
-
-
-        public event MoveToEventHandler<TodoViewModel, TodoViewModel> MoveToEvent;
-
-        /// <summary>
         /// Create <see cref="TodoControllerViewModel"/> instance.
         /// </summary>
         /// <param name="commandFactory">Factory for <see cref="ICommand"/> instance. </param>
         /// <param name="service">Todo service. </param>
         /// <param name="categoryController">Category controller. </param>
         public TodoViewModel(ICommandFactory commandFactory, ITodoService service,
-            CategoryControllerViewModel categoryController)
+            CategoryControllerViewModel categoryController) : base(service, commandFactory)
         {
-            _service = service;
             _categoryController = categoryController;
-            ApplyCommand = commandFactory.CreateCommand(Apply, () => CanApply);
-            UndoCommand = commandFactory.CreateCommand(Undo, () => CanUndo);
-            DeleteCommand = commandFactory.CreateCommand(Delete, () => CanDelete);
-            MoveToCommand = commandFactory.CreateCommand(
-                parameter => MoveTo(((DataTransition)parameter).Cast<TodoViewModel, TodoViewModel>()));
+            ApplyCommand = CommandFactory.CreateCommand(Apply, () => CanApply);
+            UndoCommand = CommandFactory.CreateCommand(Undo, () => CanUndo);
+            DeleteCommand = CommandFactory.CreateCommand(Delete, () => CanDelete);
 
             this
                 .SetPropertyChanged(
-                    new[] {nameof(Title), nameof(Desc), nameof(Order)},
+                    new[] {nameof(Title), nameof(Desc)},
                     () => TextModified = true)
                 .SetPropertyChanged(nameof(Category), () => CategoryModified = true)
                 .SetPropertyChanged(nameof(Deadline), () => DeadlineModified = true)
                 .SetPropertyChanged(nameof(Checked), () => CheckedModified = true)
+                .SetPropertyChanged(nameof(Order), () => OrderModified = true)
                 .SetPropertyChanged(
                     new[]
                     {
-                        nameof(TextModified), nameof(CategoryModified),
+                        nameof(TextModified), nameof(CategoryModified), nameof(OrderModified),
                         nameof(DeadlineModified), nameof(CheckedModified)
                     },
                     () =>
                     {
-                        Modified = TextModified || CategoryModified
+                        Modified = TextModified || CategoryModified || OrderModified
                                    || DeadlineModified || CheckedModified;
                     })
                 .SetPropertyChanged(
@@ -290,23 +371,5 @@ namespace Todo.UI.ViewModel
                     });
         }
 
-        /// <summary>
-        /// Update from serveice.
-        /// </summary>
-        /// <param name="model">Model. </param>
-        public void Update(ITodo model)
-        {
-            Model = model;
-            Title = Model.Title;
-            Desc = Model.Desc;
-            Category = CategoryList.FirstOrDefault(c => c.Model.Id == model.CategoryId);
-            Deadline = Model.Deadline;
-            Checked = Model.Checked;
-
-            TextModified = false;
-            DeadlineModified = false;
-            CheckedModified = false;
-            CategoryModified = false;
-        }
     }
 }
