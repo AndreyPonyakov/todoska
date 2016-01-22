@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Todo.UI.Tools.Model;
+using TodoSystem.UI.Tools.Model;
 
-namespace Todo.UI.ViewModel.Event
+namespace TodoSystem.UI.ViewModel.Event
 {
     /// <summary>
     /// Extention methos for MoveTo event.

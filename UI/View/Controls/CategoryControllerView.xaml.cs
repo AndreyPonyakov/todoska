@@ -1,4 +1,4 @@
-﻿namespace Todo.UI.View.Controls
+﻿namespace TodoSystem.UI.View.Controls
 {
     /// <summary>
     /// Interaction logic for CategoryControllerView.xaml

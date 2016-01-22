@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Todo.Service.Model.Interface;
+using TodoSystem.Service.Model.Interface;
 
-namespace Todo.Service.Model.Fake
+namespace TodoSystem.Service.Model.Fake
 {
     /// <summary>
     /// Extend of <see cref="ITodoService"/> with data storage of fake data.
@@ -9,13 +9,14 @@ namespace Todo.Service.Model.Fake
     public interface IFakeTodoService : ITodoService
     {
         /// <summary>
-        /// List of <see cref="ICategory"/> face objects.
+        /// List of <see cref="Category"/> face objects.
         /// </summary>
-        IList<FakeCategory> CategoryList { get; }
+        IList<Category> CategoryList { get; }
 
         /// <summary>
         /// List of <see cref="ITodo"/> fake objects.
         /// </summary>
-        IList<FakeTodo> TodoList { get; }
+        IList<Todo> TodoList { get; }
+
     }
 }

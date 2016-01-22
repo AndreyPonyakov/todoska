@@ -1,6 +1,6 @@
-﻿using Todo.UI.Tools.Model;
+﻿using TodoSystem.UI.Tools.Model;
 
-namespace Todo.UI.ViewModel.Base
+namespace TodoSystem.UI.ViewModel.Base
 {
     /// <summary>
     /// Implement common functionality of controller ViewModel.

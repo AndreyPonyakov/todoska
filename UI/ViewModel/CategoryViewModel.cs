@@ -1,11 +1,10 @@
 ﻿using System.Drawing;
 using System.Windows.Input;
-using Todo.Service.Model.Interface;
-using Todo.UI.Tools.Model;
-using Todo.UI.ViewModel.Base;
-using Todo.UI.ViewModel.Event;
+using TodoSystem.Service.Model.Interface;
+using TodoSystem.UI.Tools.Model;
+using TodoSystem.UI.ViewModel.Base;
 
-namespace Todo.UI.ViewModel
+namespace TodoSystem.UI.ViewModel
 {
     /// <summary>
     /// ViewModel of category.
@@ -16,7 +15,7 @@ namespace Todo.UI.ViewModel
         /// <summary>
         /// ICategory of current category
         /// </summary>
-        public ICategory Model { get; set; }
+        public Category Model { get; set; }
 
         #region Notifying properties
         
@@ -195,13 +194,21 @@ namespace Todo.UI.ViewModel
         /// Update from serveice.
         /// </summary>
         /// <param name="model">Model. </param>
-        public void Refresh(ICategory model)
+        public void Refresh(Category model)
         {
-            Model = model;
-            Name = model.Name;
-            Color = model.Color;
-            Order = model.Order;
-            ClearMofidied();
+            if (model != null)
+            {
+                Model = Service.CategoryController.SelectById(model.Id);
+                Name = Model.Name;
+                Color = Model.Color;
+                Order = Model.Order;
+                Service.CategoryController.Update(Model);
+                ClearMofidied();
+            }
+            else
+            {
+                Model = null;
+            }
         }
 
         /// <summary>

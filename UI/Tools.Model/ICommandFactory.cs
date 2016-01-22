@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Todo.UI.Tools.Model
+namespace TodoSystem.UI.Tools.Model
 {
     /// <summary>
     /// Interface for cretate Command class in ViewModel layer.

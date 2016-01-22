@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Todo.UI.Tools.Model
+namespace TodoSystem.UI.Tools.Model
 {
     /// <summary>
     /// Base class for any viewmodel.  

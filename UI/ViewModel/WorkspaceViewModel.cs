@@ -1,25 +1,38 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
-using Todo.Service.Model.Interface;
-using Todo.UI.Tools.Model;
+using TodoSystem.Service.Model.Interface;
+using TodoSystem.UI.Tools.Model;
 
-namespace Todo.UI.ViewModel
+namespace TodoSystem.UI.ViewModel
 {
     /// <summary>
-    /// 
+    /// Root ViewModel.
     /// </summary>
     public sealed class WorkspaceViewModel : BaseViewModel
     {
-        private INotifyPropertyChanged _controller;
+        /// <summary>
+        /// Todo service.
+        /// </summary>
         private readonly ITodoService _service;
 
+        /// <summary>
+        /// Current controller.
+        /// </summary>
         public INotifyPropertyChanged Controller
         {
             get { return _controller; }
             set { SetField(ref _controller, value); }
         }
+        private INotifyPropertyChanged _controller;
 
+        /// <summary>
+        /// Category controller.
+        /// </summary>
         public CategoryControllerViewModel CategoryController { get; }
+
+        /// <summary>
+        /// Todo controller.
+        /// </summary>
         public TodoControllerViewModel TodoController { get; }
 
         /// <summary>

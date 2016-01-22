@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace Todo.UI.Tools.Model
+namespace TodoSystem.UI.Tools.Model
 {
     /// <summary>
     /// Class for create dependency.

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
-using Todo.UI.Tools.Model;
+using TodoSystem.UI.Tools.Model;
 
-namespace Todo.UI.Tools.View
+namespace TodoSystem.UI.Tools.View
 {
     /// <summary>
     /// Relay command factory

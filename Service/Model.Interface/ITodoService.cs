@@ -1,4 +1,4 @@
-﻿namespace Todo.Service.Model.Interface
+﻿namespace TodoSystem.Service.Model.Interface
 {
     /// <summary>
     /// Service with controllers.
@@ -14,5 +14,7 @@
         /// Todo controller.
         /// </summary>
         ITodoController TodoController { get; }
+
+        ITodo SelectTodo(Todo todo);
     }
 }

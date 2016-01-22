@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Todo.UI.Tools.View.Converter
+namespace TodoSystem.UI.Tools.View.Converter
 {
     /// <summary>
     /// Converter from System.Drawing.Color to System.Windows.Media.Color.

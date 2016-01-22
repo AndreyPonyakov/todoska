@@ -1,54 +1,27 @@
 ﻿using System;
-using Todo.Service.Model.Interface;
+using System.Linq;
+using TodoSystem.Service.Model.Interface;
 
-namespace Todo.Service.Model.Fake
+namespace TodoSystem.Service.Model.Fake
 {
     /// <summary>
     /// Fake implement of ITodo.
     /// </summary>
     public sealed class FakeTodo : ITodo
     {
-        /// <summary>
-        /// Primary key.
-        /// </summary>
-        public int Id { get; }
-
-        /// <summary>
-        /// Title of todo.
-        /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Description.
-        /// </summary>
-        public string Desc { get; set; }
-
-        /// <summary>
-        /// Deadline of todo.
-        /// </summary>
-        public DateTime Deadline { get; private set; }
-
-        /// <summary>
-        /// Primary key of category.
-        /// </summary>
-        public int CategoryId { get; private set; }
-
-        /// <summary>
-        /// Checked. 
-        /// </summary>
-        public bool Checked { get; private set; }
-
-        /// <summary>
-        /// Order 
-        /// </summary>
-        public int Order { get; set; }
+        
+        private readonly int _id;
+        private readonly FakeTodoService _service;
 
         /// <summary>
         /// Set check.
         /// </summary>
         public void Check(bool isChecked)
         {
-            Checked = isChecked;
+            _service.TodoList
+                .Where(t => t.Id == _id)
+                .ToList()
+                .ForEach(t => t.Checked = isChecked);
         }
 
         /// <summary>
@@ -57,7 +30,10 @@ namespace Todo.Service.Model.Fake
         /// <param name="categoryId">Primary key of category. </param>
         public void SetCategory(int categoryId)
         {
-            CategoryId = categoryId;
+            _service.TodoList
+                .Where(t => t.Id == _id)
+                .ToList()
+                .ForEach(t => t.CategoryId = categoryId);
         }
 
         /// <summary>
@@ -66,17 +42,21 @@ namespace Todo.Service.Model.Fake
         /// <param name="deadline">New deadline. </param>
         public void SetDeadline(DateTime deadline)
         {
-            Deadline = deadline;
+            _service.TodoList
+                .Where(t => t.Id == _id)
+                .ToList()
+                .ForEach(t => t.Deadline = deadline);
         }
 
         /// <summary>
         /// Create <see cref="FakeTodo"/> instance. 
         /// </summary>
-        /// <param name="id"></param>
-        public FakeTodo(int id)
+        /// <param name="service">Fake Todo service.</param>
+        /// <param name="todo">Todo instance. </param>
+        public FakeTodo(FakeTodoService service, Todo todo)
         {
-            Id = id;
-            Checked = false;
+            _service = service;
+            _id = todo.Id;
         }
     }
 }

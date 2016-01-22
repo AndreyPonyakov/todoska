@@ -1,4 +1,4 @@
-﻿namespace Todo.UI.Tools.Model
+﻿namespace TodoSystem.UI.Tools.Model
 {
     /// <summary>
     /// Data transition struct for drag'n'drop operation.

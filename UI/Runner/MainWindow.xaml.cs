@@ -1,4 +1,4 @@
-﻿namespace Todo.UI.Runner
+﻿namespace TodoSystem.UI.Runner
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

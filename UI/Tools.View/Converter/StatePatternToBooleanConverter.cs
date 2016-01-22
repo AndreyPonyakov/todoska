@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 
-namespace Todo.UI.Tools.View.Converter
+namespace TodoSystem.UI.Tools.View.Converter
 {
     /// <summary>
     /// Converter for condiont of state paternt.

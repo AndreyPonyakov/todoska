@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Input;
 
-namespace Todo.UI.Tools.View
+namespace TodoSystem.UI.Tools.View
 {
     /// <summary>
     /// Relay command class. 

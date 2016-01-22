@@ -2,9 +2,9 @@
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Interactivity;
-using Todo.UI.Tools.View.Converter;
+using TodoSystem.UI.Tools.View.Converter;
 
-namespace Todo.UI.Tools.View.Behavior
+namespace TodoSystem.UI.Tools.View.Behavior
 {
     /// <summary>
     /// Behavior for implement of view change between state.

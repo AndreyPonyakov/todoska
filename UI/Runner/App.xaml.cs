@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
-using Todo.Service.Model.Fake;
-using Todo.UI.Tools.View;
-using Todo.UI.ViewModel;
+using TodoSystem.Service.Model.Fake;
+using TodoSystem.UI.Tools.View;
+using TodoSystem.UI.ViewModel;
 
-namespace Todo.UI.Runner
+namespace TodoSystem.UI.Runner
 {
     /// <summary>
     /// Interaction logic for App.xaml

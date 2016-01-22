@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Todo.Service.Model.Interface;
+using TodoSystem.Service.Model.Interface;
 
-namespace Todo.Service.Model.Fake
+namespace TodoSystem.Service.Model.Fake
 {
     /// <summary>
     /// Fake implementation of ITodoController.
@@ -18,10 +18,12 @@ namespace Todo.Service.Model.Fake
         /// <summary>
         /// Fetch all todo.
         /// </summary>
-        /// <returns></returns>
-        public IEnumerable<ITodo> SelectAll()
+        /// <returns>Sorted list.</returns>
+        public IEnumerable<Todo> SelectAll()
         {
-            return _service.TodoList;
+            return _service.TodoList
+                .OrderBy(t => t.Order)
+                .Select(t => t.Clone());
         }
 
         /// <summary>
@@ -29,9 +31,10 @@ namespace Todo.Service.Model.Fake
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ITodo SelectById(int id)
+        public Todo SelectById(int id)
         {
             return _service.TodoList
+                .Select(t => t.Clone())
                 .FirstOrDefault(t => t.Id == id);
         }
 
@@ -40,10 +43,11 @@ namespace Todo.Service.Model.Fake
         /// </summary>
         /// <param name="title">Target key. </param>
         /// <returns></returns>
-        public IEnumerable<ITodo> SelectByTitle(string title)
+        public IEnumerable<Todo> SelectByTitle(string title)
         {
             return _service.TodoList
                 .Where(t => t.Title == title)
+                .Select(t => t.Clone())
                 .ToList();
         }
 
@@ -52,10 +56,11 @@ namespace Todo.Service.Model.Fake
         /// </summary>
         /// <param name="categoryId">Primary key of category. </param>
         /// <returns></returns>
-        public IEnumerable<ITodo> SelectByCategory(int categoryId)
+        public IEnumerable<Todo> SelectByCategory(int categoryId)
         {
             return _service.TodoList
                 .Where(t => t.CategoryId == categoryId)
+                .Select(t => t.Clone())
                 .ToList();
         }
 
@@ -68,16 +73,17 @@ namespace Todo.Service.Model.Fake
         /// <param name="categoryId">Primary key of category. </param>
         /// <param name="order">Priority. </param>
         /// <returns></returns>
-        public ITodo Create(string title, string desc, DateTime deadline, int categoryId, int order)
+        public Todo Create(string title, string desc, DateTime deadline, int categoryId, int order)
         {
-            var todo = new FakeTodo(GeterateId())
+            var todo = new Todo()
             {
+                Id = GeterateId(),
                 Title = title,
                 Desc = desc,
-                Order = order
+                Order = order,
+                CategoryId = categoryId,
+                Deadline = deadline
             };
-            todo.SetCategory(categoryId);
-            todo.SetDeadline(deadline);
             _service.TodoList.Add(todo);
             return todo;
 
@@ -87,7 +93,7 @@ namespace Todo.Service.Model.Fake
         /// 
         /// </summary>
         /// <param name="todo">New todo </param>
-        public void Update(ITodo todo)
+        public void Update(Todo todo)
         {
             _service.TodoList
                 .Where(t => t.Id == todo.Id)

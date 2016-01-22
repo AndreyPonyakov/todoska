@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Security.Permissions;
-using Todo.UI.Tools.Model;
+using TodoSystem.UI.Tools.Model;
 
-namespace Todo.UI.ViewModel.Event
+namespace TodoSystem.UI.ViewModel.Event
 {
     /// <summary>
     /// MoveTo event handler.

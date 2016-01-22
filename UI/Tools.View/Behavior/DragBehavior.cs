@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
-namespace Todo.UI.Tools.View.Behavior
+namespace TodoSystem.UI.Tools.View.Behavior
 {
     /// <summary>
     /// Behavior of drag effect initialization.

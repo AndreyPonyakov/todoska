@@ -1,12 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Todo.Service.Model.Interface;
-using Todo.UI.Tools.Model;
-using Todo.UI.ViewModel.Base;
-using Todo.UI.ViewModel.Event;
+using TodoSystem.Service.Model.Interface;
+using TodoSystem.UI.Tools.Model;
+using TodoSystem.UI.ViewModel.Base;
+using TodoSystem.UI.ViewModel.Event;
 
-namespace Todo.UI.ViewModel
+namespace TodoSystem.UI.ViewModel
 {
     /// <summary>
     /// ViewModel of main todo controller
@@ -77,9 +77,11 @@ namespace Todo.UI.ViewModel
             category.MoveToEvent += (sender, args) =>
             {
                 List.MoveTo(args.DataTransition);
-                List
-                    .Select((v, i) => new {Index = i, Value = v})
-                    .ToList().ForEach(rec => rec.Value.Order = rec.Index + 1);
+                for (var i = 0; i < List.Count; i++)
+                {
+                    List[i].Order = i + 1;
+                }
+                List[0].Order = List[0].Order;
             };
             
             return category;
@@ -105,9 +107,10 @@ namespace Todo.UI.ViewModel
         public void Refresh(ICategoryController model)
         {
             List.Clear();
-            model.SelectAll()
-                .ToList()
-                .ForEach(item => CreateItem().Refresh(item));
+            foreach (var item in model.SelectAll())
+            {
+                CreateItem().Refresh(item);
+            }
         }
     }
 }

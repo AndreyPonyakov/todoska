@@ -2,12 +2,11 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Todo.Service.Model.Interface;
-using Todo.UI.Tools.Model;
-using Todo.UI.ViewModel.Base;
-using Todo.UI.ViewModel.Event;
+using TodoSystem.Service.Model.Interface;
+using TodoSystem.UI.Tools.Model;
+using TodoSystem.UI.ViewModel.Base;
 
-namespace Todo.UI.ViewModel
+namespace TodoSystem.UI.ViewModel
 {
     /// <summary>
     /// ViewModel of Todo class.
@@ -17,7 +16,27 @@ namespace Todo.UI.ViewModel
         /// <summary>
         /// ICategory of current category
         /// </summary>
-        public ITodo Model { get; set; }
+        public TodoSystem.Service.Model.Interface.Todo Model { get; private set; }
+
+        /// <summary>
+        /// Instance of ITodo.
+        /// </summary>
+        private ITodo _modelInstance;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ITodo ModelInstance
+        {
+            get
+            {
+                if (_modelInstance == null && Model != null)
+                {
+                    _modelInstance = Service.SelectTodo(Model);
+                }
+                return _modelInstance;
+            }
+        }
 
         /// <summary>
         /// <see cref="CategoryControllerViewModel"/> instance.
@@ -233,7 +252,7 @@ namespace Todo.UI.ViewModel
         /// Refresh from service.
         /// </summary>
         /// <param name="model">Model. </param>
-        public void Refresh(ITodo model)
+        public void Refresh(TodoSystem.Service.Model.Interface.Todo model)
         {
             Model = model;
             Title = Model.Title;
@@ -242,6 +261,7 @@ namespace Todo.UI.ViewModel
             Category = CategoryList.FirstOrDefault(c => c.Model.Id == model.CategoryId);
             Deadline = Model.Deadline;
             Checked = Model.Checked;
+            Service.TodoController.Update(Model);
 
             ClearMofidied();
         }
@@ -250,7 +270,7 @@ namespace Todo.UI.ViewModel
         /// Update at service.
         /// </summary>
         /// <param name="model">Model. </param>
-        public void Update(ITodo model)
+        public void Update(TodoSystem.Service.Model.Interface.Todo model)
         {
             if (TextModified)
             {
@@ -261,17 +281,17 @@ namespace Todo.UI.ViewModel
             }
             if (DeadlineModified)
             {
-                Model.SetDeadline(Deadline);
+                ModelInstance.SetDeadline(Deadline);
                 DeadlineModified = false;
             }
             if (CheckedModified)
             {
-                Model.Check(Checked);
+                ModelInstance.Check(Checked);
                 CheckedModified = false;
             }
             if (CategoryModified && Category?.Model != null)
             {
-                Model.SetCategory(Category.Model.Id);
+                ModelInstance.SetCategory(Category.Model.Id);
                 CategoryModified = false;
             }
             if (OrderModified)

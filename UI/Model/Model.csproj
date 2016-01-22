@@ -7,8 +7,8 @@
     <ProjectGuid>{3E869BC7-1618-4F6C-AAFD-F31F9721D867}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Todo.UI.Model</RootNamespace>
-    <AssemblyName>Todo.UI.Model</AssemblyName>
+    <RootNamespace>TodoSystem.UI.Model</RootNamespace>
+    <AssemblyName>TodoSystem.UI.Model</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -2,9 +2,9 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using Todo.UI.Tools.Model;
+using TodoSystem.UI.Tools.Model;
 
-namespace Todo.UI.Tools.View.Behavior
+namespace TodoSystem.UI.Tools.View.Behavior
 {
     /// <summary>
     /// Behavior of drop effect initialization.

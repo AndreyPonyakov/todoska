@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Todo.Service.Model.Interface;
+using TodoSystem.Service.Model.Interface;
 
-namespace Todo.Service.Model.Fake
+namespace TodoSystem.Service.Model.Fake
 {
     /// <summary>
     /// Fake implementation of <see cref="ITodoService"/>.
@@ -31,14 +31,19 @@ namespace Todo.Service.Model.Fake
         public ITodoController TodoController { get; }
 
         /// <summary>
-        /// List of <see cref="ICategory"/> face objects.
+        /// List of <see cref="Category"/> face objects.
         /// </summary>
-        public IList<FakeCategory> CategoryList { get; } = new List<FakeCategory>();
+        public IList<Category> CategoryList { get; } = new List<Category>();
 
         /// <summary>
         /// List of <see cref="ITodo"/> fake objects.
         /// </summary>
-        public IList<FakeTodo> TodoList { get; } = new List<FakeTodo>();
+        public IList<Todo> TodoList { get; } = new List<Todo>();
+
+        public ITodo SelectTodo(Todo todo)
+        {
+            return new FakeTodo(this, todo);
+        }
 
         /// <summary>
         /// Static constructor of <see cref="FakeTodoService"/>.

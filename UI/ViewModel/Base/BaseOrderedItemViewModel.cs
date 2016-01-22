@@ -1,9 +1,9 @@
 ﻿using System.Windows.Input;
-using Todo.Service.Model.Interface;
-using Todo.UI.Tools.Model;
-using Todo.UI.ViewModel.Event;
+using TodoSystem.Service.Model.Interface;
+using TodoSystem.UI.Tools.Model;
+using TodoSystem.UI.ViewModel.Event;
 
-namespace Todo.UI.ViewModel.Base
+namespace TodoSystem.UI.ViewModel.Base
 {
     /// <summary>
     /// Implement common functionality of item ViewModel.
