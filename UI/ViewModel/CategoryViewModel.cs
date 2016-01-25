@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Input;
-using TodoSystem.Service.Model.Interface;
+using TodoSystem.UI.Model;
+using TodoSystem.UI.Model.CategoryControllerServiceReference;
 using TodoSystem.UI.Tools.Model;
 using TodoSystem.UI.ViewModel.Base;
 
@@ -91,6 +92,8 @@ namespace TodoSystem.UI.ViewModel
             set { SetField(ref _deleted, value); }
         }
         private bool _deleted;
+        
+
         #endregion
 
         #region Auto-notifying properties
@@ -123,7 +126,7 @@ namespace TodoSystem.UI.ViewModel
         {
             if (Model == null)
             {
-                Model = Service.CategoryController.Create(Name, Color, 0);
+                Model = Service.CategoryController.Create(Name, Color, Order);
                 Appended = true;
                 DataModified = false;
                 OrderModified = false;
@@ -140,6 +143,7 @@ namespace TodoSystem.UI.ViewModel
                 if (OrderModified)
                 {
                     Service.CategoryController.ChangeOrder(Model.Id, Order);
+                    Model.Order = Order;
                     OrderModified = false;
                 }
             }

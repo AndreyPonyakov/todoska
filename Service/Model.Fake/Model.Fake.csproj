@@ -42,10 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FakeCategoryController.cs" />
-    <Compile Include="FakeTodo.cs" />
+    <Compile Include="FakeStorageService.cs" />
     <Compile Include="FakeTodoController.cs" />
-    <Compile Include="FakeTodoService.cs" />
-    <Compile Include="IFakeTodoService.cs" />
+    <Compile Include="IStorageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FakeModelHelper.cs" />
   </ItemGroup>

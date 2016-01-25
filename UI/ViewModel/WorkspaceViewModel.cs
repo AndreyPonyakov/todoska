@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
-using TodoSystem.Service.Model.Interface;
+using TodoSystem.UI.Model;
 using TodoSystem.UI.Tools.Model;
 
 namespace TodoSystem.UI.ViewModel
@@ -59,8 +59,13 @@ namespace TodoSystem.UI.ViewModel
         {
             _service = service;
             RefreshCommand = commandFactory.CreateCommand(Refresh);
+
             CategoryController = new CategoryControllerViewModel(commandFactory, service);
-            TodoController = new TodoControllerViewModel(commandFactory, service, CategoryController);
+            CategoryController.Refresh(service.CategoryController);
+
+            TodoController = new TodoControllerViewModel(commandFactory, service, this);
+            TodoController.Refresh(service.TodoController);
+
             Controller = TodoController;
         }
     }

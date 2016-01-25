@@ -8,12 +8,12 @@ namespace TodoSystem.Service.Model.Fake
     /// <summary>
     /// Fake implement of ICategoryController.
     /// </summary>
-    public sealed class FakeCategoryController : ICategoryController
+    public class FakeCategoryController : ICategoryController
     {
         /// <summary>
         /// Service instance.
         /// </summary>
-        private readonly IFakeTodoService _service;
+        private readonly IStorageService _service;
 
         /// <summary>
         /// Get full list if category.
@@ -64,7 +64,8 @@ namespace TodoSystem.Service.Model.Fake
             {
                 Id = GeterateId(),
                 Name = name,
-                Color = color
+                Color = color,
+                Order = order
             };
             _service.CategoryList.Add(category);
             return category;
@@ -106,7 +107,6 @@ namespace TodoSystem.Service.Model.Fake
         public void ChangeOrder(int id, int order)
         {
             _service.CategoryList
-                .Select(c => c.Clone())
                 .Where(t => t.Id == id)
                 .ToList()
                 .ForEach(t => t.Order = order);
@@ -136,9 +136,9 @@ namespace TodoSystem.Service.Model.Fake
         /// Create new instance of <see cref="FakeCategoryController"/>.
         /// </summary>
         /// <param name="service">Service instance. </param>
-        public FakeCategoryController(IFakeTodoService service)
+        public FakeCategoryController()
         {
-            _service = service;
+            _service = FakeStorageService.Instance;
         }
 
     }

@@ -8,12 +8,12 @@ namespace TodoSystem.Service.Model.Fake
     /// <summary>
     /// Fake implementation of ITodoController.
     /// </summary>
-    public sealed class FakeTodoController : ITodoController
+    public class FakeTodoController : ITodoController
     {
         /// <summary>
         /// Todo service.
         /// </summary>
-        private readonly IFakeTodoService _service;
+        private readonly IStorageService _service;
 
         /// <summary>
         /// Fetch all todo.
@@ -22,7 +22,6 @@ namespace TodoSystem.Service.Model.Fake
         public IEnumerable<Todo> SelectAll()
         {
             return _service.TodoList
-                .OrderBy(t => t.Order)
                 .Select(t => t.Clone());
         }
 
@@ -134,12 +133,50 @@ namespace TodoSystem.Service.Model.Fake
         }
 
         /// <summary>
+        /// Set check.
+        /// <param name="id">Primary key. </param>
+        /// <param name="isChecked">Cheecked state. </param>
+        /// </summary>
+        public void Check(int id, bool isChecked)
+        {
+            _service.TodoList
+                .Where(t => t.Id == id)
+                .ToList()
+                .ForEach(t => t.Checked = isChecked);
+        }
+
+        /// <summary>
+        /// Change of category.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="categoryId">Primary key of category. </param>
+        public void SetCategory(int id, int categoryId)
+        {
+            _service.TodoList
+                .Where(t => t.Id == id)
+                .ToList()
+                .ForEach(t => t.CategoryId = categoryId);
+        }
+
+        /// <summary>
+        /// Change of deadline.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="deadline">New deadline. </param>
+        public void SetDeadline(int id, DateTime deadline)
+        {
+            _service.TodoList
+                .Where(t => t.Id == id)
+                .ToList()
+                .ForEach(t => t.Deadline = deadline);
+        }
+
+        /// <summary>
         /// Create <see cref="FakeTodoController"/> instance. 
         /// </summary>
-        /// <param name="service">Service of data storage. </param>
-        public FakeTodoController(IFakeTodoService service)
+        public FakeTodoController()
         {
-            _service = service;
+            _service = FakeStorageService.Instance;
         }
 
         /// <summary>

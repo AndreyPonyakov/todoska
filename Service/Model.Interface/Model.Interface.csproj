@@ -58,9 +58,7 @@
   <ItemGroup>
     <Compile Include="Category.cs" />
     <Compile Include="ICategoryController.cs" />
-    <Compile Include="ITodo.cs" />
     <Compile Include="ITodoController.cs" />
-    <Compile Include="ITodoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

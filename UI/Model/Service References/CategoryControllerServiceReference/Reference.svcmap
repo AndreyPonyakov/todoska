@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="e227dcf7-d5b8-4252-8fcb-af084cb9d6af" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/Design_Time_Addresses/Host/CategoryController" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CategoryController.disco" MetadataType="Disco" ID="e8259325-a1c6-4ee7-984a-330c7ef13bf3" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/CategoryController?disco" />
+    <MetadataFile FileName="CategoryController.xsd" MetadataType="Schema" ID="6c8b2485-dda9-4c58-bcd0-104e9e16feb7" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/CategoryController?xsd=xsd3" />
+    <MetadataFile FileName="CategoryController.wsdl" MetadataType="Wsdl" ID="790f7653-bd0b-49d4-8526-c7af3a11e339" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/CategoryController?wsdl" />
+    <MetadataFile FileName="CategoryController1.xsd" MetadataType="Schema" ID="c4af5a15-6492-403b-be98-cd73caf4ddb2" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/CategoryController?xsd=xsd1" />
+    <MetadataFile FileName="CategoryController2.xsd" MetadataType="Schema" ID="82bc6b15-c3d4-4202-a8e9-b504a1e93401" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/CategoryController?xsd=xsd2" />
+    <MetadataFile FileName="CategoryController3.xsd" MetadataType="Schema" ID="0f172a25-e8bc-4b42-a1a4-07f2f70303ef" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/CategoryController?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

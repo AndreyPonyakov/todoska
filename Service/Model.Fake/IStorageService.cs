@@ -4,9 +4,9 @@ using TodoSystem.Service.Model.Interface;
 namespace TodoSystem.Service.Model.Fake
 {
     /// <summary>
-    /// Extend of <see cref="ITodoService"/> with data storage of fake data.
+    /// Storage interface for fake model.
     /// </summary>
-    public interface IFakeTodoService : ITodoService
+    public interface IStorageService
     {
         /// <summary>
         /// List of <see cref="Category"/> face objects.
@@ -14,9 +14,10 @@ namespace TodoSystem.Service.Model.Fake
         IList<Category> CategoryList { get; }
 
         /// <summary>
-        /// List of <see cref="ITodo"/> fake objects.
+        /// List of <see cref="Todo"/> fake objects.
         /// </summary>
         IList<Todo> TodoList { get; }
+
 
     }
 }

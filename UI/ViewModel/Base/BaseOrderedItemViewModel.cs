@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-using TodoSystem.Service.Model.Interface;
+using TodoSystem.UI.Model;
 using TodoSystem.UI.Tools.Model;
 using TodoSystem.UI.ViewModel.Event;
 

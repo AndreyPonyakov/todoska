@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="TodoController" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ITodoController_SelectAll_InputMessage">
+    <wsdl:part name="parameters" element="tns:SelectAll" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_SelectAll_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SelectAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_SelectById_InputMessage">
+    <wsdl:part name="parameters" element="tns:SelectById" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_SelectById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SelectByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_SelectByTitle_InputMessage">
+    <wsdl:part name="parameters" element="tns:SelectByTitle" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_SelectByTitle_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SelectByTitleResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_SelectByCategory_InputMessage">
+    <wsdl:part name="parameters" element="tns:SelectByCategory" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_SelectByCategory_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SelectByCategoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_Create_InputMessage">
+    <wsdl:part name="parameters" element="tns:Create" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_Create_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_Update_InputMessage">
+    <wsdl:part name="parameters" element="tns:Update" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_Update_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_Delete_InputMessage">
+    <wsdl:part name="parameters" element="tns:Delete" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_Delete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_ChangeOrder_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeOrder" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_ChangeOrder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_Check_InputMessage">
+    <wsdl:part name="parameters" element="tns:Check" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_Check_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_SetCategory_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetCategory" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_SetCategory_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetCategoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_SetDeadline_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetDeadline" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_SetDeadline_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetDeadlineResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ITodoController">
+    <wsdl:operation name="SelectAll">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/SelectAll" message="tns:ITodoController_SelectAll_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/SelectAllResponse" message="tns:ITodoController_SelectAll_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SelectById">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/SelectById" message="tns:ITodoController_SelectById_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/SelectByIdResponse" message="tns:ITodoController_SelectById_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SelectByTitle">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/SelectByTitle" message="tns:ITodoController_SelectByTitle_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/SelectByTitleResponse" message="tns:ITodoController_SelectByTitle_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SelectByCategory">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/SelectByCategory" message="tns:ITodoController_SelectByCategory_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/SelectByCategoryResponse" message="tns:ITodoController_SelectByCategory_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Create">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/Create" message="tns:ITodoController_Create_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/CreateResponse" message="tns:ITodoController_Create_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Update">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/Update" message="tns:ITodoController_Update_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/UpdateResponse" message="tns:ITodoController_Update_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Delete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/Delete" message="tns:ITodoController_Delete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/DeleteResponse" message="tns:ITodoController_Delete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeOrder">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/ChangeOrder" message="tns:ITodoController_ChangeOrder_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/ChangeOrderResponse" message="tns:ITodoController_ChangeOrder_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Check">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/Check" message="tns:ITodoController_Check_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/CheckResponse" message="tns:ITodoController_Check_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetCategory">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/SetCategory" message="tns:ITodoController_SetCategory_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/SetCategoryResponse" message="tns:ITodoController_SetCategory_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetDeadline">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/SetDeadline" message="tns:ITodoController_SetDeadline_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/SetDeadlineResponse" message="tns:ITodoController_SetDeadline_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ITodoController" type="tns:ITodoController">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SelectAll">
+      <soap:operation soapAction="http://tempuri.org/ITodoController/SelectAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SelectById">
+      <soap:operation soapAction="http://tempuri.org/ITodoController/SelectById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SelectByTitle">
+      <soap:operation soapAction="http://tempuri.org/ITodoController/SelectByTitle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SelectByCategory">
+      <soap:operation soapAction="http://tempuri.org/ITodoController/SelectByCategory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Create">
+      <soap:operation soapAction="http://tempuri.org/ITodoController/Create" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Update">
+      <soap:operation soapAction="http://tempuri.org/ITodoController/Update" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Delete">
+      <soap:operation soapAction="http://tempuri.org/ITodoController/Delete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeOrder">
+      <soap:operation soapAction="http://tempuri.org/ITodoController/ChangeOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Check">
+      <soap:operation soapAction="http://tempuri.org/ITodoController/Check" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCategory">
+      <soap:operation soapAction="http://tempuri.org/ITodoController/SetCategory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetDeadline">
+      <soap:operation soapAction="http://tempuri.org/ITodoController/SetDeadline" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TodoController">
+    <wsdl:port name="BasicHttpBinding_ITodoController" binding="tns:BasicHttpBinding_ITodoController">
+      <soap:address location="http://localhost:8733/Design_Time_Addresses/Host/TodoController" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

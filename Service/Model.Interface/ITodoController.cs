@@ -75,5 +75,28 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="order">Priority. </param>
         [OperationContract]
         void ChangeOrder(int id, int order);
+
+        /// <summary>
+        /// Make checked.
+        /// </summary>
+        [OperationContract]
+        void Check(int id, bool isChecked);
+
+        /// <summary>
+        /// Change category.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="categoryId">Primary key of new category. </param>
+        [OperationContract]
+        void SetCategory(int id, int categoryId);
+
+        /// <summary>
+        /// Set deadline time.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="deadline">Deadline time. </param>
+        [OperationContract]
+        void SetDeadline(int id, DateTime deadline);
+
     }
 }

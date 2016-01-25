@@ -2,7 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using TodoSystem.Service.Model.Interface;
+using TodoSystem.UI.Model;
+using TodoSystem.UI.Model.TodoControllerServiceReference;
 using TodoSystem.UI.Tools.Model;
 using TodoSystem.UI.ViewModel.Base;
 
@@ -16,27 +17,7 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// ICategory of current category
         /// </summary>
-        public TodoSystem.Service.Model.Interface.Todo Model { get; private set; }
-
-        /// <summary>
-        /// Instance of ITodo.
-        /// </summary>
-        private ITodo _modelInstance;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public ITodo ModelInstance
-        {
-            get
-            {
-                if (_modelInstance == null && Model != null)
-                {
-                    _modelInstance = Service.SelectTodo(Model);
-                }
-                return _modelInstance;
-            }
-        }
+        public Todo Model { get; private set; }
 
         /// <summary>
         /// <see cref="CategoryControllerViewModel"/> instance.
@@ -252,7 +233,7 @@ namespace TodoSystem.UI.ViewModel
         /// Refresh from service.
         /// </summary>
         /// <param name="model">Model. </param>
-        public void Refresh(TodoSystem.Service.Model.Interface.Todo model)
+        public void Refresh(Todo model)
         {
             Model = model;
             Title = Model.Title;
@@ -270,7 +251,7 @@ namespace TodoSystem.UI.ViewModel
         /// Update at service.
         /// </summary>
         /// <param name="model">Model. </param>
-        public void Update(TodoSystem.Service.Model.Interface.Todo model)
+        public void Update(Todo model)
         {
             if (TextModified)
             {
@@ -281,22 +262,26 @@ namespace TodoSystem.UI.ViewModel
             }
             if (DeadlineModified)
             {
-                ModelInstance.SetDeadline(Deadline);
+                Service.TodoController.SetDeadline(Model.Id, Deadline);
+                Model.Deadline = Deadline;
                 DeadlineModified = false;
             }
             if (CheckedModified)
             {
-                ModelInstance.Check(Checked);
+                Service.TodoController.Check(Model.Id, Checked);
+                Model.Checked = Checked; 
                 CheckedModified = false;
             }
             if (CategoryModified && Category?.Model != null)
             {
-                ModelInstance.SetCategory(Category.Model.Id);
+                Service.TodoController.SetCategory(Model.Id, Category.Model.Id);
+                Model.CategoryId = Category.Model.Id;
                 CategoryModified = false;
             }
             if (OrderModified)
             {
                 Service.TodoController.ChangeOrder(Model.Id, Order);
+                Model.Order = Order;
                 OrderModified = false;
             }
         }
@@ -348,11 +333,11 @@ namespace TodoSystem.UI.ViewModel
         /// </summary>
         /// <param name="commandFactory">Factory for <see cref="ICommand"/> instance. </param>
         /// <param name="service">Todo service. </param>
-        /// <param name="categoryController">Category controller. </param>
+        /// <param name="workspace">Workspace with controllers. </param>
         public TodoViewModel(ICommandFactory commandFactory, ITodoService service,
-            CategoryControllerViewModel categoryController) : base(service, commandFactory)
+            WorkspaceViewModel workspace) : base(service, commandFactory)
         {
-            _categoryController = categoryController;
+            _categoryController = workspace.CategoryController;
             ApplyCommand = CommandFactory.CreateCommand(Apply, () => CanApply);
             UndoCommand = CommandFactory.CreateCommand(Undo, () => CanUndo);
             DeleteCommand = CommandFactory.CreateCommand(Delete, () => CanDelete);

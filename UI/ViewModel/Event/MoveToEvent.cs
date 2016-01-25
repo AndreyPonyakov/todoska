@@ -21,7 +21,9 @@ namespace TodoSystem.UI.ViewModel.Event
     [HostProtection(SecurityAction.LinkDemand, SharedState = true)]
     public class MoveToEventHandlerArgs<TS, TD> : EventArgs
     {
-
+        /// <summary>
+        /// Transition information.
+        /// </summary>
         public DataTransition<TS,TD> DataTransition { get; }
 
         /// <summary>

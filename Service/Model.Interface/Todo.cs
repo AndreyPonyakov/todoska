@@ -48,6 +48,7 @@ namespace TodoSystem.Service.Model.Interface
         /// <summary>
         /// Priority.
         /// </summary>
+        [DataMember]
         public int Order {  get; set; }
 
     }

@@ -86,9 +86,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Service\Model.Interface\Model.Interface.csproj">
-      <Project>{a44b0d85-4c92-46c5-847b-4801a999e52b}</Project>
-      <Name>Model.Interface</Name>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{3e869bc7-1618-4f6c-aafd-f31f9721d867}</Project>
+      <Name>Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tools.Model\Tools.Model.csproj">
       <Project>{3a7f4d34-0ce3-4261-8516-55c8ff582c0e}</Project>

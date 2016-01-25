@@ -1,4 +1,7 @@
-﻿namespace TodoSystem.Service.Model.Interface
+﻿using TodoSystem.UI.Model.CategoryControllerServiceReference;
+using TodoSystem.UI.Model.TodoControllerServiceReference;
+
+namespace TodoSystem.UI.Model
 {
     /// <summary>
     /// Service with controllers.
@@ -14,7 +17,5 @@
         /// Todo controller.
         /// </summary>
         ITodoController TodoController { get; }
-
-        ITodo SelectTodo(Todo todo);
     }
 }

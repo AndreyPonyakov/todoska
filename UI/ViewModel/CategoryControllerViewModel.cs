@@ -1,7 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using TodoSystem.Service.Model.Interface;
+using TodoSystem.UI.Model;
+using TodoSystem.UI.Model.CategoryControllerServiceReference;
 using TodoSystem.UI.Tools.Model;
 using TodoSystem.UI.ViewModel.Base;
 using TodoSystem.UI.ViewModel.Event;
@@ -39,8 +40,7 @@ namespace TodoSystem.UI.ViewModel
         public CategoryViewModel CreateItem()
         {
             var category = new CategoryViewModel(_commandFactory, _service);
-            category.Order = (List.Any() ? List.Max(c => c.Order) : 0)+ 1;
-
+            category.Order = List.Any() ? List.Max(c => c.Order) + 1 : 0;
             List.Add(category);
 
             category
@@ -77,11 +77,7 @@ namespace TodoSystem.UI.ViewModel
             category.MoveToEvent += (sender, args) =>
             {
                 List.MoveTo(args.DataTransition);
-                for (var i = 0; i < List.Count; i++)
-                {
-                    List[i].Order = i + 1;
-                }
-                List[0].Order = List[0].Order;
+                List.ForEachEx((val, i) => val.Order = i);
             };
             
             return category;
@@ -107,10 +103,9 @@ namespace TodoSystem.UI.ViewModel
         public void Refresh(ICategoryController model)
         {
             List.Clear();
-            foreach (var item in model.SelectAll())
-            {
-                CreateItem().Refresh(item);
-            }
+            model.SelectAll()
+                .OrderBy(t => t.Order)
+                .ForEachEx(item => CreateItem().Refresh(item));
         }
     }
 }

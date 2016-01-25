@@ -1,7 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using TodoSystem.Service.Model.Interface;
+using TodoSystem.UI.Model;
+using TodoSystem.UI.Model.TodoControllerServiceReference;
 using TodoSystem.UI.Tools.Model;
 using TodoSystem.UI.ViewModel.Base;
 using TodoSystem.UI.ViewModel.Event;
@@ -26,7 +27,7 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// ViewModel of category controller
         /// </summary>
-        private readonly CategoryControllerViewModel _categoryController;
+        private readonly WorkspaceViewModel _workspace;
 
         /// <summary>
         /// Category list.
@@ -43,8 +44,8 @@ namespace TodoSystem.UI.ViewModel
         /// </summary>
         public TodoViewModel CreateItem()
         {
-            var todo = new TodoViewModel(_commandFactory, _service, _categoryController);
-            todo.Order = (List.Any() ? List.Max(c => c.Order) : 0) + 1;
+            var todo = new TodoViewModel(_commandFactory, _service, _workspace);
+            todo.Order = (List.Any() ? List.Max(c => c.Order) : 0);
             List.Add(todo);
 
             todo
@@ -75,10 +76,7 @@ namespace TodoSystem.UI.ViewModel
             todo.MoveToEvent += (sender, args) =>
             {
                 List.MoveTo(args.DataTransition);
-                for(var i = 0;  i < List.Count; i++)
-                {
-                    List[i].Order = i;
-                }
+                List.ForEachEx((val, i) => val.Order = i);
             };
             return todo;
         }
@@ -88,13 +86,13 @@ namespace TodoSystem.UI.ViewModel
         /// </summary>
         /// <param name="commandFactory">Factory for create ICommand. </param>
         /// <param name="service">Todo service. </param>
-        /// <param name="categoryController">ViewModel of category controller. </param>
+        /// <param name="workspace">Workspace with controllers. </param>
         public TodoControllerViewModel(ICommandFactory commandFactory, ITodoService service, 
-            CategoryControllerViewModel categoryController)
+            WorkspaceViewModel workspace)
         {
             _service = service;
             _commandFactory = commandFactory;
-            _categoryController = categoryController;
+            _workspace = workspace;
 
             List = new ObservableCollection<TodoViewModel>();
             CreateCategoryCommand = commandFactory.CreateCommand(() => CreateItem());
@@ -107,11 +105,9 @@ namespace TodoSystem.UI.ViewModel
         public void Refresh(ITodoController model)
         {
             List.Clear();
-            foreach (var item in model.SelectAll())
-            {
-                CreateItem().Refresh(item);
-            }
-
+            model.SelectAll()
+                .OrderBy(t => t.Order)
+                .ForEachEx(item => CreateItem().Refresh(item));
         }
 
     }
