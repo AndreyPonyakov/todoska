@@ -13,6 +13,7 @@ namespace TodoSystem.UI.Model
         /// </summary>
         ICategoryController CategoryController { get; }
 
+
         /// <summary>
         /// Todo controller.
         /// </summary>
