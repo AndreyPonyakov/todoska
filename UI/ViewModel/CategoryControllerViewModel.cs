@@ -77,7 +77,9 @@ namespace TodoSystem.UI.ViewModel
             category.MoveToEvent += (sender, args) =>
             {
                 List.MoveTo(args.DataTransition);
-                List.ForEachEx((val, i) => val.Order = i);
+                List.Select((val, i) => new { Index = i, Value = val })
+                    .ToList()
+                    .ForEach(rec => rec.Value.Order = rec.Index);
             };
             
             return category;
@@ -105,7 +107,8 @@ namespace TodoSystem.UI.ViewModel
             List.Clear();
             model.SelectAll()
                 .OrderBy(t => t.Order)
-                .ForEachEx(item => CreateItem().Refresh(item));
+                .ToList()
+                .ForEach(item => CreateItem().Refresh(item));
         }
     }
 }

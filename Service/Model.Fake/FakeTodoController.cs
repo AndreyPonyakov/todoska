@@ -21,8 +21,7 @@ namespace TodoSystem.Service.Model.Fake
         /// <returns>Sorted list.</returns>
         public IEnumerable<Todo> SelectAll()
         {
-            return _service.TodoList
-                .Select(t => t.Clone());
+            return _service.TodoList;
         }
 
         /// <summary>
@@ -33,7 +32,6 @@ namespace TodoSystem.Service.Model.Fake
         public Todo SelectById(int id)
         {
             return _service.TodoList
-                .Select(t => t.Clone())
                 .FirstOrDefault(t => t.Id == id);
         }
 
@@ -45,9 +43,7 @@ namespace TodoSystem.Service.Model.Fake
         public IEnumerable<Todo> SelectByTitle(string title)
         {
             return _service.TodoList
-                .Where(t => t.Title == title)
-                .Select(t => t.Clone())
-                .ToList();
+                .Where(t => t.Title == title);
         }
 
         /// <summary>
@@ -59,7 +55,6 @@ namespace TodoSystem.Service.Model.Fake
         {
             return _service.TodoList
                 .Where(t => t.CategoryId == categoryId)
-                .Select(t => t.Clone())
                 .ToList();
         }
 
