@@ -5,14 +5,12 @@ using System.Runtime.CompilerServices;
 namespace TodoSystem.UI.Tools.Model
 {
     /// <summary>
-    /// Base class for any viewmodel.  
+    /// Base class for any view model.  
     /// </summary>
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
-        #region implement INotifyPropertyChanged
-
         /// <summary>
-        /// Propperty changed subscriber collection. 
+        /// Property changed subscriber collection. 
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -24,7 +22,7 @@ namespace TodoSystem.UI.Tools.Model
             this.OnPropertyChanged(PropertyChanged, propertyName);
 
         /// <summary>
-        /// Notify property changed for propertry setter.
+        /// Notify property changed for property setter.
         /// </summary>
         /// <typeparam name="T">Property type. </typeparam>
         /// <param name="field">Behind field name. </param>
@@ -37,21 +35,17 @@ namespace TodoSystem.UI.Tools.Model
         }
 
         /// <summary>
-        /// Notify property changed for transit model property of viewmodel.
+        /// Notify property changed for transit model property of view model.
         /// </summary>
         /// <typeparam name="T">Property type. </typeparam>
         /// <param name="getValue">Property getter. </param>
         /// <param name="setValue">Property setter. </param>
         /// <param name="value">New value. </param>
         /// <param name="propertyName">Changed property name. </param>
-        protected void SetField<T>(Func<T> getValue, Action<T> setValue, T value,
-            [CallerMemberName] string propertyName = null)
+        protected void SetField<T>(Func<T> getValue, Action<T> setValue, T value, [CallerMemberName] string propertyName = null)
         {
             Action notificator = () => OnPropertyChanged(propertyName);
             notificator.SetField(getValue, setValue, value);
         }
-
-        #endregion
-
     }
 }

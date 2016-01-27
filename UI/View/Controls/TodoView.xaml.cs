@@ -5,6 +5,9 @@
     /// </summary>
     public partial class TodoView
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TodoView"/> class.
+        /// </summary>
         public TodoView()
         {
             InitializeComponent();

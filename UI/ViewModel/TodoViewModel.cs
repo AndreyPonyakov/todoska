@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
 using TodoSystem.UI.Model;
 using TodoSystem.UI.Model.TodoControllerServiceReference;
 using TodoSystem.UI.Tools.Model;
@@ -12,64 +11,103 @@ namespace TodoSystem.UI.ViewModel
     /// <summary>
     /// ViewModel of Todo class.
     /// </summary>
-    public sealed class TodoViewModel :  BaseOrderedItemViewModel<ITodoService, TodoViewModel>
+    public sealed class TodoViewModel : BaseOrderedItemViewModel<ITodoService, Todo, TodoViewModel>
     {
-        /// <summary>
-        /// ICategory of current category
-        /// </summary>
-        public Todo Model { get; private set; }
-
         /// <summary>
         /// <see cref="CategoryControllerViewModel"/> instance.
         /// </summary>
         private readonly CategoryControllerViewModel _categoryController;
 
-        #region Notifying properties
-        
+        private string _title;
+        private string _desc;
+        private DateTime _deadline = DateTime.Now;
+        private bool _checked;
+
+        private bool _textModified;
+        private bool _deadlineModified;
+        private bool _categoryModified;
+        private bool _checkedModified;
+
+        private CategoryViewModel _category;
+
         /// <summary>
-        /// Title of current todo.
+        /// Initializes a new instance of the <see cref="TodoViewModel"/> class.
+        /// </summary>
+        /// <param name="commandFactory">Factory for <see cref="ICommand"/> instance. </param>
+        /// <param name="service">Todo service. </param>
+        /// <param name="workspace">Workspace with controllers. </param>
+        public TodoViewModel(ICommandFactory commandFactory, ITodoService service, WorkspaceViewModel workspace)
+            : base(service, commandFactory)
+        {
+            _categoryController = workspace.CategoryController;
+
+            this.SetPropertyChanged(
+                new[] { nameof(Title), nameof(Desc) },
+                () => TextModified = true)
+                .SetPropertyChanged(
+                    nameof(Category),
+                    () => CategoryModified = true)
+                .SetPropertyChanged(
+                    nameof(Deadline),
+                    () => DeadlineModified = true)
+                .SetPropertyChanged(
+                    nameof(Checked),
+                    () => CheckedModified = true)
+                .SetPropertyChanged(
+                    new[]
+                        {
+                            nameof(TextModified), nameof(CategoryModified),
+                            nameof(OrderModified), nameof(DeadlineModified),
+                            nameof(CheckedModified)
+                        },
+                    () =>
+                        {
+                            Modified = TextModified || CategoryModified
+                                       || OrderModified || DeadlineModified
+                                       || CheckedModified;
+                        });
+
+        }
+
+        /// <summary>
+        /// Gets or sets a title of current todo.
         /// </summary>
         public string Title
         {
             get { return _title; }
             set { SetField(ref _title, value); }
         }
-        private string _title;
         
         /// <summary>
-        /// Description of current todo.
+        /// Gets or sets a description of current todo.
         /// </summary>
         public string Desc
         {
             get { return _desc; }
             set { SetField(ref _desc, value); }
         }
-        private string _desc;
 
         /// <summary>
-        /// Deadline of current todo.
+        /// Gets or sets a deadline of current todo.
         /// </summary>
         public DateTime Deadline
         {
             get { return _deadline; }
             set { SetField(ref _deadline, value); }
         }
-        private DateTime _deadline = DateTime.Now;
 
         /// <summary>
-        /// Check state of current todo.
+        /// Gets or sets a value indicating whether check state of current todo.
         /// </summary>
         public bool Checked
         {
             get { return _checked; }
             set { SetField(ref _checked, value); }
         }
-        private bool _checked;
 
         /// <summary>
-        /// Category (ViewModel) of current todo.
+        /// Gets or sets a category (ViewModel) of current todo.
         /// </summary>
-        private CategoryViewModel _category;
         public CategoryViewModel Category
         {
             get { return _category; }
@@ -77,163 +115,61 @@ namespace TodoSystem.UI.ViewModel
         }
 
         /// <summary>
-        /// Change notification flag of title or description.
+        /// Gets or sets a value indicating whether change notification flag of title or description.
         /// </summary>
         public bool TextModified
         {
             get { return _textModified; }
             set { SetField(ref _textModified, value); }
         }
-        private bool _textModified;
 
         /// <summary>
-        /// Change notification flag of deadline.
+        /// Gets or sets a value indicating whether change notification flag of deadline.
         /// </summary>
         public bool DeadlineModified
         {
             get { return _deadlineModified; }
             set { SetField(ref _deadlineModified, value); }
         }
-        private bool _deadlineModified;
 
         /// <summary>
-        /// Change notification flag of checked.
+        /// Gets or sets a value indicating whether change notification flag of checked.
         /// </summary>
         public bool CheckedModified
         {
             get { return _checkedModified; }
             set { SetField(ref _checkedModified, value); }
         }
-        private bool _checkedModified;
 
         /// <summary>
-        /// Change notification flag of category.
+        /// Gets or sets a value indicating whether change notification flag of category.
         /// </summary>
         public bool CategoryModified
         {
             get { return _categoryModified; }
             set { SetField(ref _categoryModified, value); }
         }
-        private bool _categoryModified;
-
-        /// <summary>
-        /// Change notification flag of any property.
-        /// </summary>
-        public bool Modified
-        {
-            get { return _modified; }
-            set { SetField(ref _modified, value); }
-        }
-        private bool _modified;
-
-        /// <summary>
-        /// Append notification.
-        /// </summary>
-        /// TODO: implement event.
-        public bool Appended
-        {
-            get { return _appended; }
-            set { SetField(ref _appended, value); }
-        }
-        private bool _appended;
-
-        /// <summary>
-        /// Cancel notification.
-        /// </summary>
-        /// TODO: implement event.
-        public bool Canceled
-        {
-            get { return _canceled; }
-            set { SetField(ref _canceled, value); }
-        }
-        private bool _canceled;
-
-        /// <summary>
-        /// Delete notification.
-        /// </summary>
-        /// TODO: implement event.
-        public bool Deleted
-        {
-            get { return _deleted; }
-            set { SetField(ref _deleted, value); }
-        }
-        private bool _deleted;
-        #endregion
-
-        #region Auto-notifying properties
-        /// <summary>
-        /// Notify any action.
-        /// </summary>
-        public bool InAction => Appended || Canceled || Deleted;
-
-        /// <summary>
-        /// Ability of command execute (apply).
-        /// </summary>
-        public bool CanApply => !InAction && (Modified || Model == null);
-
-        /// <summary>
-        /// Ability of command execute (undo).
-        /// </summary>
-        public bool CanUndo => !InAction && (Modified || Model == null);
-
-        /// <summary>
-        /// Ability of command execute (delete).
-        /// </summary>
-        public bool CanDelete => !InAction && Model != null;
-        #endregion
-
+        
         /// <summary>
         /// Category list for category selection.
         /// </summary>
         public ObservableCollection<CategoryViewModel> CategoryList => _categoryController.List;
 
         /// <summary>
-        /// Apply action.
-        /// </summary>
-        public void Apply()
-        {
-            if (Model == null)
-            {
-                Create();
-            }
-            else
-            {
-                Update(Model);
-            }
-        }
-
-        /// <summary>
-        /// Undo action.
-        /// </summary>
-        public void Undo()
-        {
-            if (Model == null)
-            {
-                Canceled = true;
-            }
-            else 
-            {
-                Refresh(Model);
-            }
-        }
-
-        /// <summary>
         /// Delete action.
         /// </summary>
-        public void Delete()
+        /// <returns>True in case of operation successfulness. </returns>
+        public override bool Delete()
         {
             Service.CategoryController.Delete(Model.Id);
-            if (Service.CategoryController.SelectById(Model.Id) == null)
-            {
-                Deleted = true;
-            }
+            return Service.CategoryController.SelectById(Model.Id) != null;
         }
 
         /// <summary>
         /// Refresh from service.
         /// </summary>
-        /// <param name="model">Model. </param>
-        public void Refresh(Todo model)
+        /// <param name="model">DTO back-end of current todo. </param>
+        public override void Refresh(Todo model)
         {
             Model = model;
             Title = Model.Title;
@@ -243,15 +179,13 @@ namespace TodoSystem.UI.ViewModel
             Deadline = Model.Deadline;
             Checked = Model.Checked;
             Service.TodoController.Update(Model);
-
-            ClearMofidied();
+            base.Refresh(model);
         }
 
         /// <summary>
         /// Update at service.
         /// </summary>
-        /// <param name="model">Model. </param>
-        public void Update(Todo model)
+        public override void Update()
         {
             if (TextModified)
             {
@@ -260,24 +194,28 @@ namespace TodoSystem.UI.ViewModel
                 Service.TodoController.Update(Model);
                 TextModified = false;
             }
+
             if (DeadlineModified)
             {
                 Service.TodoController.SetDeadline(Model.Id, Deadline);
                 Model.Deadline = Deadline;
                 DeadlineModified = false;
             }
+
             if (CheckedModified)
             {
                 Service.TodoController.Check(Model.Id, Checked);
                 Model.Checked = Checked; 
                 CheckedModified = false;
             }
+
             if (CategoryModified && Category?.Model != null)
             {
                 Service.TodoController.SetCategory(Model.Id, Category.Model.Id);
                 Model.CategoryId = Category.Model.Id;
                 CategoryModified = false;
             }
+
             if (OrderModified)
             {
                 Service.TodoController.ChangeOrder(Model.Id, Order);
@@ -289,92 +227,30 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// Create at service.
         /// </summary>
-        public void Create()
+        /// <returns>True in case of operation successfulness. </returns>
+        public override bool Create()
         {
             if (Category?.Model != null)
             {
                 var categoryId = Category.Model.Id;
                 Model = Service.TodoController.Create(Title, Desc, Deadline, categoryId, Order);
-                ClearMofidied();
-                Appended = true;
+                return true;
             }
-        }
 
+            return false;
+        }
 
         /// <summary>
         /// Set false for all modified properties. 
         /// </summary>
-        public void ClearMofidied()
+        public override void ClearMofidied()
         {
+            base.ClearMofidied();
             TextModified = false;
             DeadlineModified = false;
             CheckedModified = false;
             CategoryModified = false;
             OrderModified = false;
         }
-
-        /// <summary>
-        /// Apply command.
-        /// </summary>
-        public ICommand ApplyCommand { get; }
-
-        /// <summary>
-        /// Undo command.
-        /// </summary>
-        public ICommand UndoCommand { get; }
-
-        /// <summary>
-        /// Delete command.
-        /// </summary>
-        public ICommand DeleteCommand { get; }
-
-        /// <summary>
-        /// Create <see cref="TodoControllerViewModel"/> instance.
-        /// </summary>
-        /// <param name="commandFactory">Factory for <see cref="ICommand"/> instance. </param>
-        /// <param name="service">Todo service. </param>
-        /// <param name="workspace">Workspace with controllers. </param>
-        public TodoViewModel(ICommandFactory commandFactory, ITodoService service,
-            WorkspaceViewModel workspace) : base(service, commandFactory)
-        {
-            _categoryController = workspace.CategoryController;
-            ApplyCommand = CommandFactory.CreateCommand(Apply, () => CanApply);
-            UndoCommand = CommandFactory.CreateCommand(Undo, () => CanUndo);
-            DeleteCommand = CommandFactory.CreateCommand(Delete, () => CanDelete);
-
-            this
-                .SetPropertyChanged(
-                    new[] {nameof(Title), nameof(Desc)},
-                    () => TextModified = true)
-                .SetPropertyChanged(nameof(Category), () => CategoryModified = true)
-                .SetPropertyChanged(nameof(Deadline), () => DeadlineModified = true)
-                .SetPropertyChanged(nameof(Checked), () => CheckedModified = true)
-                .SetPropertyChanged(nameof(Order), () => OrderModified = true)
-                .SetPropertyChanged(
-                    new[]
-                    {
-                        nameof(TextModified), nameof(CategoryModified), nameof(OrderModified),
-                        nameof(DeadlineModified), nameof(CheckedModified)
-                    },
-                    () =>
-                    {
-                        Modified = TextModified || CategoryModified || OrderModified
-                                   || DeadlineModified || CheckedModified;
-                    })
-                .SetPropertyChanged(
-                    new[] {nameof(Appended), nameof(Canceled), nameof(Deleted)},
-                    () => OnPropertyChanged(nameof(InAction)))
-                .SetPropertyChanged(
-                    nameof(InAction),
-                    () => OnPropertyChanged(nameof(CanDelete)))
-                .SetPropertyChanged(
-                    new[] {nameof(InAction), nameof(Modified)},
-                    () =>
-                    {
-                        OnPropertyChanged(nameof(CanApply));
-                        OnPropertyChanged(nameof(CanUndo));
-                    });
-        }
-
     }
 }

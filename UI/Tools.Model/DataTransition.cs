@@ -1,24 +1,14 @@
 ﻿namespace TodoSystem.UI.Tools.Model
 {
     /// <summary>
-    /// Data transition struct for drag'n'drop operation.
+    /// Data transition struct for drag-n-drop operation.
     /// </summary>
     /// <typeparam name="TS">Source data type. </typeparam>
     /// <typeparam name="TD">Destination data type. </typeparam>
     public class DataTransition<TS, TD>
     {
         /// <summary>
-        /// Source data of operation.
-        /// </summary>
-        public TS Source { get; }
-
-        /// <summary>
-        /// Destination data of operation.
-        /// </summary>
-        public TD Destination { get; }
-
-        /// <summary>
-        /// Create <see cref="DataTransition{TS,TD}"/> instance. 
+        /// Initializes a new instance of the <see cref="DataTransition{TS,TD}"/> class. 
         /// </summary>
         /// <param name="source">Source data of operation. </param>
         /// <param name="destination">Destination data of operation. </param>
@@ -27,15 +17,25 @@
             Source = source;
             Destination = destination;
         }
+
+        /// <summary>
+        /// Gets source data of operation.
+        /// </summary>
+        public TS Source { get; }
+
+        /// <summary>
+        /// Gets destination data of operation.
+        /// </summary>
+        public TD Destination { get; }
     }
 
     /// <summary>
-    /// Data transition struct for drag'n'drop operation.
+    /// Data transition struct for drag-n-drop operation.
     /// </summary>
     public class DataTransition : DataTransition<object, object>
     {
         /// <summary>
-        /// Create <see cref="DataTransition"/> instance. 
+        /// Initializes a new instance of the <see cref="DataTransition"/> class. 
         /// </summary>
         /// <param name="source">Source data of operation. </param>
         /// <param name="destination">Destination data of operation. </param>

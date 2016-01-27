@@ -5,7 +5,9 @@ namespace TodoSystem.UI.ViewModel.Base
     /// <summary>
     /// Implement common functionality of controller ViewModel.
     /// </summary>
-    public abstract class BaseOrderedControllerViewModel : BaseViewModel
+    /// <typeparam name="TM">Model type. </typeparam>
+    public abstract class BaseOrderedControllerViewModel<TM> : BaseViewModel
+        where TM : class
     {
     }
 }

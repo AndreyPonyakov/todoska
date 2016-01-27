@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="TodoService.cs" />
     <Compile Include="ITodoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,8 +66,13 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Properties\DataSources\TodoSystem.Service.Model.Interface.Category.datasource" />
     <None Include="Properties\DataSources\TodoSystem.Service.Model.Interface.Todo.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Service References\CategoryControllerServiceReference\CategoryController.wsdl" />
     <None Include="Service References\CategoryControllerServiceReference\CategoryController.xsd">
       <SubType>Designer</SubType>

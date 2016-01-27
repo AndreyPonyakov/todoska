@@ -51,7 +51,6 @@ namespace TodoSystem.UI.Tools.View
             return new RelayCommand(execute, canExecute);
         }
 
-
         /// <summary>
         /// Create command.
         /// </summary>

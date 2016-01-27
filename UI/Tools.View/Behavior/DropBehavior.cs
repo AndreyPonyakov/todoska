@@ -9,8 +9,38 @@ namespace TodoSystem.UI.Tools.View.Behavior
     /// <summary>
     /// Behavior of drop effect initialization.
     /// </summary>
-    public sealed  class DropBehavior : Behavior<FrameworkElement>
+    public sealed class DropBehavior : Behavior<FrameworkElement>
     {
+        /// <summary>
+        /// Dependency property of <see cref="Command"/>.
+        /// </summary>
+        public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
+          nameof(Command), typeof(ICommand), typeof(DropBehavior), new PropertyMetadata(null));
+
+        /// <summary>
+        /// Dependency property of <see cref="DataFormat"/>.
+        /// </summary>
+        public static readonly DependencyProperty DataFormatProperty = DependencyProperty.Register(
+          nameof(DataFormat), typeof(Type), typeof(DropBehavior), new PropertyMetadata(typeof(object)));
+
+        /// <summary>
+        /// Gets or sets DataContext type of drop accepted control.
+        /// </summary>
+        public Type DataFormat
+        {
+            get { return (Type)GetValue(DataFormatProperty); }
+            set { SetValue(DataFormatProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets command of finish drag-n-drop action.
+        /// </summary>
+        public ICommand Command
+        {
+            get { return (ICommand)GetValue(CommandProperty); }
+            set { SetValue(CommandProperty, value); }
+        }
+
         /// <summary>
         /// Attach behavior.
         /// </summary>
@@ -63,36 +93,5 @@ namespace TodoSystem.UI.Tools.View.Behavior
 
             Command?.Execute(param);
         }
-
-        /// <summary>
-        /// DataContext type of drop accepted control.
-        /// </summary>
-        public Type DataFormat
-        {
-            get { return (Type)GetValue(DataFormatProperty); }
-            set { SetValue(DataFormatProperty, value); }
-        }
-
-        /// <summary>
-        /// Dependency property of <see cref="DataFormat"/>.
-        /// </summary>
-        public static readonly DependencyProperty DataFormatProperty = DependencyProperty.Register(
-          nameof(DataFormat), typeof(Type), typeof(DropBehavior), new PropertyMetadata(typeof(object)));
-
-        /// <summary>
-        /// Command of finish drag'n'drop action.
-        /// </summary>
-        public ICommand Command
-        {
-            get { return (ICommand)GetValue(CommandProperty); }
-            set { SetValue(CommandProperty, value); }
-        }
-
-        /// <summary>
-        /// Dependency property of <see cref="Command"/>.
-        /// </summary>
-        public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
-          nameof(Command), typeof(ICommand), typeof(DropBehavior), new PropertyMetadata(null));
-
     }
 }

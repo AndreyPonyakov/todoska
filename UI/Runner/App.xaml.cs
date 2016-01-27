@@ -5,6 +5,8 @@ using TodoSystem.UI.ViewModel;
 
 namespace TodoSystem.UI.Runner
 {
+    using TodoSystem.UI.Runner.Properties;
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -13,14 +15,19 @@ namespace TodoSystem.UI.Runner
         /// <summary>
         /// Startup implement.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">Startup arguments (command line parameters). </param>
         protected override void OnStartup(StartupEventArgs e)
         {
             var mainView = new MainWindow();
             mainView.Show();
-            mainView.DataContext = new WorkspaceViewModel(
+            var context = new WorkspaceViewModel(
                 new CommandFactory(),
-                new TodoService());
+                address => new TodoService(address))
+                              {
+                                  Address = Settings.Default.Address
+                              };
+
+            mainView.DataContext = context;
         }
     }
 }

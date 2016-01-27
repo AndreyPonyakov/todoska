@@ -11,6 +11,21 @@ namespace TodoSystem.UI.Tools.View.Behavior
     public sealed class DragBehavior : Behavior<FrameworkElement>
     {
         /// <summary>
+        /// Dependency property of <see cref="DataFormat"/>.
+        /// </summary>
+        public static readonly DependencyProperty DataFormatProperty = DependencyProperty.Register(
+          nameof(DataFormat), typeof(Type), typeof(DragBehavior), new PropertyMetadata(typeof(object)));
+
+        /// <summary>
+        /// Gets or sets DataContext type of dragged control.
+        /// </summary>
+        public Type DataFormat
+        {
+            get { return (Type)GetValue(DataFormatProperty); }
+            set { SetValue(DataFormatProperty, value); }
+        }
+
+        /// <summary>
         /// Attach behavior.
         /// </summary>
         protected override void OnAttached()
@@ -38,20 +53,5 @@ namespace TodoSystem.UI.Tools.View.Behavior
             var dataObject = new DataObject(DataFormat, AssociatedObject.DataContext);
             DragDrop.DoDragDrop(AssociatedObject, dataObject, DragDropEffects.Move);
         }
-
-        /// <summary>
-        /// DataContext type of dragged control.
-        /// </summary>
-        public Type DataFormat
-        {
-            get { return (Type)GetValue(DataFormatProperty); }
-            set { SetValue(DataFormatProperty, value); }
-        }
-
-        /// <summary>
-        /// Dependency property of <see cref="DataFormat"/>.
-        /// </summary>
-        public static readonly DependencyProperty DataFormatProperty = DependencyProperty.Register(
-          nameof(DataFormat), typeof(Type), typeof(DragBehavior), new PropertyMetadata(typeof(object)));
     }
 }

@@ -22,5 +22,14 @@ namespace TodoSystem.UI.Runner.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:8733/Design_Time_Addresses/Host/")]
+        public string Address {
+            get {
+                return ((string)(this["Address"]));
+            }
+        }
     }
 }

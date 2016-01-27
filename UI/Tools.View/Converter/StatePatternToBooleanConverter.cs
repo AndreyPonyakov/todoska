@@ -4,7 +4,7 @@ using System.Windows.Data;
 namespace TodoSystem.UI.Tools.View.Converter
 {
     /// <summary>
-    /// Converter for condiont of state paternt.
+    /// Converter for conditions of state pattern.
     /// </summary>
     public sealed class StatePatternToBooleanConverter : IMultiValueConverter
     {
@@ -18,7 +18,6 @@ namespace TodoSystem.UI.Tools.View.Converter
         /// <returns>Converted value. </returns>
         public object Convert(object[] value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-
             return value.Length >= 2 &&
                 value[0] != null && value[1] != null &&
                 value[0] == value[1];
