@@ -7,8 +7,8 @@
     <ProjectGuid>{BA5F8A25-D1C9-4801-A408-0F6650AFFC27}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Todo.Service.Model.Fake</RootNamespace>
-    <AssemblyName>Todo.Service.Model.Fake</AssemblyName>
+    <RootNamespace>TodoSystem.Service.Model.Fake</RootNamespace>
+    <AssemblyName>TodoSystem.Service.Model.Fake</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,12 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FakeCategory.cs" />
     <Compile Include="FakeCategoryController.cs" />
-    <Compile Include="FakeTodo.cs" />
+    <Compile Include="FakeStorageService.cs" />
     <Compile Include="FakeTodoController.cs" />
-    <Compile Include="FakeTodoService.cs" />
-    <Compile Include="IFakeTodoService.cs" />
+    <Compile Include="IStorageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

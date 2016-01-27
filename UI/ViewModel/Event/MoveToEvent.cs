@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Security.Permissions;
-using Todo.UI.Tools.Model;
+using TodoSystem.UI.Tools.Model;
 
-namespace Todo.UI.ViewModel.Event
+namespace TodoSystem.UI.ViewModel.Event
 {
     /// <summary>
     /// MoveTo event handler.
@@ -21,7 +21,9 @@ namespace Todo.UI.ViewModel.Event
     [HostProtection(SecurityAction.LinkDemand, SharedState = true)]
     public class MoveToEventHandlerArgs<TS, TD> : EventArgs
     {
-
+        /// <summary>
+        /// Transition information.
+        /// </summary>
         public DataTransition<TS,TD> DataTransition { get; }
 
         /// <summary>

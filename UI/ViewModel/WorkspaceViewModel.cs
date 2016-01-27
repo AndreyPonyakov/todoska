@@ -1,37 +1,54 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
-using Todo.Service.Model.Interface;
-using Todo.UI.Tools.Model;
+using TodoSystem.UI.Model;
+using TodoSystem.UI.Tools.Model;
 
-namespace Todo.UI.ViewModel
+namespace TodoSystem.UI.ViewModel
 {
+    /// <summary>
+    /// Root ViewModel.
+    /// </summary>
     public sealed class WorkspaceViewModel : BaseViewModel
     {
-        private INotifyPropertyChanged _controller;
-        private ITodoService _service;
+        /// <summary>
+        /// Todo service.
+        /// </summary>
+        private readonly ITodoService _service;
 
+        /// <summary>
+        /// Current controller.
+        /// </summary>
         public INotifyPropertyChanged Controller
         {
             get { return _controller; }
             set { SetField(ref _controller, value); }
         }
+        private INotifyPropertyChanged _controller;
 
+        /// <summary>
+        /// Category controller.
+        /// </summary>
         public CategoryControllerViewModel CategoryController { get; }
+
+        /// <summary>
+        /// Todo controller.
+        /// </summary>
         public TodoControllerViewModel TodoController { get; }
 
         /// <summary>
         /// Update from serveice.
         /// </summary>
-        public void Update()
+        public void Refresh()
         {
-            CategoryController.Update(_service.CategoryController);
-            TodoController.Update(_service.TodoController);
+            CategoryController.Refresh(_service.CategoryController);
+            TodoController.Refresh(_service.TodoController);
         }
 
         /// <summary>
         /// Update command.
         /// </summary>
-        public ICommand UpdateCommand { get; }
+        public ICommand RefreshCommand { get; }
+
 
         /// <summary>
         /// Create instance of <see cref="WorkspaceViewModel"/>.
@@ -41,9 +58,14 @@ namespace Todo.UI.ViewModel
         public WorkspaceViewModel(ICommandFactory commandFactory, ITodoService service)
         {
             _service = service;
-            UpdateCommand = commandFactory.CreateCommand(Update);
+            RefreshCommand = commandFactory.CreateCommand(Refresh);
+
             CategoryController = new CategoryControllerViewModel(commandFactory, service);
-            TodoController = new TodoControllerViewModel(commandFactory, service, CategoryController);
+            CategoryController.Refresh(service.CategoryController);
+
+            TodoController = new TodoControllerViewModel(commandFactory, service, this);
+            TodoController.Refresh(service.TodoController);
+
             Controller = TodoController;
         }
     }

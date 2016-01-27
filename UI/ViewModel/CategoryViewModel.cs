@@ -1,146 +1,182 @@
 ﻿using System.Drawing;
 using System.Windows.Input;
-using Todo.Service.Model.Interface;
-using Todo.UI.Tools.Model;
-using Todo.UI.ViewModel.Event;
+using TodoSystem.UI.Model;
+using TodoSystem.UI.Model.CategoryControllerServiceReference;
+using TodoSystem.UI.Tools.Model;
+using TodoSystem.UI.ViewModel.Base;
 
-namespace Todo.UI.ViewModel
+namespace TodoSystem.UI.ViewModel
 {
     /// <summary>
     /// ViewModel of category.
     /// TODO State Pattern
     /// </summary>
-    public sealed class CategoryViewModel : BaseViewModel
+    public sealed class CategoryViewModel : BaseOrderedItemViewModel<ITodoService, CategoryViewModel>
     {
-        /// <summary>
-        /// Todo service. 
-        /// </summary>
-        private readonly ITodoService _service;
-
         /// <summary>
         /// ICategory of current category
         /// </summary>
-        public ICategory Model { get; set; }
+        public Category Model { get; set; }
 
         #region Notifying properties
         
-        private string _name;
+        /// <summary>
+        /// Category name.
+        /// </summary>
         public string Name
         {
             get { return _name; }
             set { SetField(ref _name, value); }
         }
+        private string _name;
 
-        private Color _color;
+        /// <summary>
+        /// Category color.
+        /// </summary>
         public Color Color
         {
             get { return _color; }
             set { SetField(ref _color, value); }
         }
+        private Color _color;
 
-        private int _order;
-        public int Order
+        /// <summary>
+        /// Change notification flag of name or color.
+        /// </summary>
+        public bool DataModified
         {
-            get { return _order; }
-            set { SetField(ref _order, value); }
+            get { return _dataModified; }
+            set { SetField(ref _dataModified, value); }
         }
+        private bool _dataModified;
 
-
-        private bool _modified;
+        /// <summary>
+        /// Change notification flag of any property.
+        /// </summary>
         public bool Modified
         {
             get { return _modified; }
             set { SetField(ref _modified, value); }
         }
+        private bool _modified;
 
-        private bool _appended;
+        /// <summary>
+        /// Append notification.
+        /// </summary>
+        /// TODO: implement event.
         public bool Appended
         {
             get { return _appended; }
             set { SetField(ref _appended, value); }
         }
+        private bool _appended;
 
-        private bool _canceled;
+        /// <summary>
+        /// Cancel notification.
+        /// </summary>
+        /// TODO: implement event.
         public bool Canceled
         {
             get { return _canceled; }
             set { SetField(ref _canceled, value); }
         }
+        private bool _canceled;
 
-        private bool _deleted;
+        /// <summary>
+        /// Delete notification.
+        /// </summary>
+        /// TODO: implement event.
         public bool Deleted
         {
             get { return _deleted; }
             set { SetField(ref _deleted, value); }
         }
+        private bool _deleted;
+        
+
         #endregion
 
+        #region Auto-notifying properties
+        /// <summary>
+        /// Notify any action.
+        /// </summary>
         public bool InAction => Appended || Canceled || Deleted;
+
+        /// <summary>
+        /// Ability of command execute (apply).
+        /// </summary>
         public bool CanApply => !InAction && (Modified || Model == null);
+
+        /// <summary>
+        /// Ability of command execute (undo).
+        /// </summary>
         public bool CanUndo => !InAction && (Modified || Model == null);
+
+        /// <summary>
+        /// Ability of command execute (delete).
+        /// </summary>
         public bool CanDelete => !InAction && Model != null;
+        #endregion
 
         /// <summary>
         /// Apply action.
         /// </summary>
+        /// TODO: implement event.
         public void Apply()
         {
             if (Model == null)
             {
-                Model = _service.CategoryController.Create(Name, Color, 0);
+                Model = Service.CategoryController.Create(Name, Color, Order);
                 Appended = true;
-                Modified = false;
+                DataModified = false;
+                OrderModified = false;
             }
             else
             {
-                Model.Name = Name;
-                Model.Color = Color;
-                Model.Order = Order;
-                _service.CategoryController.Update(Model);
-                Modified = false;
+                if (DataModified)
+                {
+                    Model.Name = Name;
+                    Model.Color = Color;
+                    Service.CategoryController.Update(Model);
+                    DataModified = false;
+                }
+                if (OrderModified)
+                {
+                    Service.CategoryController.ChangeOrder(Model.Id, Order);
+                    Model.Order = Order;
+                    OrderModified = false;
+                }
             }
         }
 
         /// <summary>
         /// Undo action.
         /// </summary>
+        /// TODO: implement event.
         public void Undo()
         {
             if (Model == null)
             {
                 Canceled = true;
-                Modified = false;
+                ClearMofidied();
             }
             else
             {
-                Update(Model);
+                Refresh(Model);
             }
         }
 
         /// <summary>
         /// Delete action.
         /// </summary>
+        /// TODO: implement event.
         public void Delete()
         {
-            _service.CategoryController.Delete(Model.Id);
-            if (_service.CategoryController.SelectById(Model.Id) == null)
+            Service.CategoryController.Delete(Model.Id);
+            if (Service.CategoryController.SelectById(Model.Id) == null)
             {
                 Deleted = true;
             }
-        }
-
-        /// <summary>
-        /// MoveTo action.
-        /// </summary>
-        public void MoveTo(DataTransition<CategoryViewModel, CategoryViewModel> dataTransition)
-        {
-            if (dataTransition.Source == dataTransition.Destination)
-            {
-                return;
-            }
-
-            var args = new MoveToEventHandlerArgs<CategoryViewModel, CategoryViewModel>(dataTransition);
-            MoveToEvent?.Invoke(this, args);
         }
 
         /// <summary>
@@ -159,31 +195,57 @@ namespace Todo.UI.ViewModel
         public ICommand DeleteCommand { get; }
 
         /// <summary>
-        /// MoveTo command
+        /// Update from serveice.
         /// </summary>
-        public ICommand MoveToCommand { get; }
+        /// <param name="model">Model. </param>
+        public void Refresh(Category model)
+        {
+            if (model != null)
+            {
+                Model = Service.CategoryController.SelectById(model.Id);
+                Name = Model.Name;
+                Color = Model.Color;
+                Order = Model.Order;
+                Service.CategoryController.Update(Model);
+                ClearMofidied();
+            }
+            else
+            {
+                Model = null;
+            }
+        }
 
-
-        public event MoveToEventHandler<CategoryViewModel, CategoryViewModel> MoveToEvent;
+        /// <summary>
+        /// Set false for all modified properties. 
+        /// </summary>
+        public void ClearMofidied()
+        {
+            DataModified = false;
+            OrderModified = false;
+        }
 
         /// <summary>
         /// Constructor of CategoryViewModel
         /// </summary>
         /// <param name="commandFactory">Factory for <see cref="ICommand"/> instance. </param>
         /// <param name="service">Todo service. </param>
-        public CategoryViewModel(ICommandFactory commandFactory, ITodoService service)
+        public CategoryViewModel(ICommandFactory commandFactory, ITodoService service) : base(service, commandFactory)
         {
-            _service = service;
             ApplyCommand = commandFactory.CreateCommand(Apply, () => CanApply);
             UndoCommand = commandFactory.CreateCommand(Undo, () => CanUndo);
             DeleteCommand = commandFactory.CreateCommand(Delete, () => CanDelete);
-            MoveToCommand = commandFactory.CreateCommand(
-                parameter => MoveTo(((DataTransition) parameter).Cast<CategoryViewModel, CategoryViewModel>()));
 
             this
                 .SetPropertyChanged(
-                    new[] {nameof(Name), nameof(Color), nameof(Order)},
-                    () => Modified = true)
+                    new[] {nameof(Name), nameof(Color)}, () => DataModified = true)
+                .SetPropertyChanged(
+                    nameof(Order), () => OrderModified = true)
+                .SetPropertyChanged(
+                    new[] { nameof(OrderModified), nameof(DataModified) },
+                    () =>
+                    {
+                        Modified = DataModified || OrderModified;
+                    })
                 .SetPropertyChanged(
                     new[] {nameof(Appended), nameof(Canceled), nameof(Deleted)},
                     () => OnPropertyChanged(nameof(InAction)))
@@ -199,16 +261,5 @@ namespace Todo.UI.ViewModel
                     });
         }
 
-        /// <summary>
-        /// Update from serveice.
-        /// </summary>
-        /// <param name="model">Model. </param>
-        public void Update(ICategory model)
-        {
-            Model = model;
-            Name = model.Name;
-            Color = model.Color;
-            Modified = false;
-        }
     }
 }

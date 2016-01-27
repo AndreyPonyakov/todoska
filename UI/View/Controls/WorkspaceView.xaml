@@ -1,13 +1,12 @@
-﻿<UserControl x:Class="Todo.UI.View.Controls.WorkspaceView"
+﻿<UserControl x:Class="TodoSystem.UI.View.Controls.WorkspaceView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Todo.UI.View.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:behavior="clr-namespace:Todo.UI.Tools.View.Behavior;assembly=Todo.UI.Tools.View"
-             xmlns:viewModel="clr-namespace:Todo.UI.ViewModel;assembly=Todo.UI.ViewModel"
-
+             xmlns:controls="clr-namespace:TodoSystem.UI.View.Controls"
+             xmlns:viewModel="clr-namespace:TodoSystem.UI.ViewModel;assembly=TodoSystem.UI.ViewModel"
+             xmlns:behavior="clr-namespace:TodoSystem.UI.Tools.View.Behavior;assembly=TodoSystem.UI.Tools.View"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModel:WorkspaceViewModel}"
              d:DesignHeight="400" d:DesignWidth="600">
@@ -35,7 +34,7 @@
 								TargetState="{Binding CategoryController}"/>
                 </i:Interaction.Behaviors>
             </RadioButton>
-            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding UpdateCommand}">
+            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding RefreshCommand}">
                 <Image Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Actions-view-refresh-icon.png" />
                 <Button.ToolTip>
                     <ToolTip Content="Refresh list"/>
@@ -46,10 +45,10 @@
         <ContentPresenter Grid.Row="1" Content="{Binding Controller}">
             <ContentPresenter.Resources>
                 <DataTemplate DataType="{x:Type viewModel:TodoControllerViewModel}">
-                    <local:TodoControllerView/>
+                    <controls:TodoControllerView/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewModel:CategoryControllerViewModel}">
-                    <local:CategoryControllerView/>
+                    <controls:CategoryControllerView/>
                 </DataTemplate>
             </ContentPresenter.Resources>
         </ContentPresenter>

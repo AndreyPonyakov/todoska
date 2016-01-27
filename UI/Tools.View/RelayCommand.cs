@@ -2,21 +2,27 @@
 using System.Diagnostics;
 using System.Windows.Input;
 
-namespace Todo.UI.Tools.View
+namespace TodoSystem.UI.Tools.View
 {
     /// <summary>
     /// Relay command class. 
     /// </summary>
-    class RelayCommand : ICommand
+    public sealed class RelayCommand : ICommand
     {
+        /// <summary>
+        /// Execute delegate.
+        /// </summary>
         readonly Action<object> _execute;
+
+        /// <summary>
+        /// Execute predicate.
+        /// </summary>
         readonly Predicate<object> _canExecute;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand"/> class.
         /// </summary>
-        /// <param name="execute">The method to be called when the command is 
-        /// invoked.</param>
+        /// <param name="execute">The method to be called when the command is invoked.</param>
         public RelayCommand(Action<object> execute) : this(execute, null)
         {
         }
@@ -24,9 +30,8 @@ namespace Todo.UI.Tools.View
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand"/> class.
         /// </summary>
-        /// <param name="execute">The method to be called when the command is 
-        /// invoked.</param>
-        /// <param name="canExecute">the method that determines whether the command 
+        /// <param name="execute">The method to be called when the command is invoked.</param>
+        /// <param name="canExecute">The method that determines whether the command 
         /// can execute in its current state.</param>
         public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Todo.Service.Model.Interface;
+using TodoSystem.Service.Model.Interface;
 
-namespace Todo.Service.Model.Fake
+namespace TodoSystem.Service.Model.Fake
 {
     /// <summary>
     /// Fake implement of ICategoryController.
@@ -13,15 +13,16 @@ namespace Todo.Service.Model.Fake
         /// <summary>
         /// Service instance.
         /// </summary>
-        private readonly IFakeTodoService _service;
+        private readonly IStorageService _service;
 
         /// <summary>
         /// Get full list if category.
         /// </summary>
         /// <returns>Category list. </returns>
-        public IEnumerable<ICategory> SelectAll()
+        public IEnumerable<Category> SelectAll()
         {
-            return _service.CategoryList;
+            return _service.CategoryList
+                .OrderBy(c => c.Order);
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace Todo.Service.Model.Fake
         /// </summary>
         /// <param name="id">Primary key of category. </param>
         /// <returns>Category instance. </returns>
-        public ICategory SelectById(int id)
+        public Category SelectById(int id)
         {
             return _service.CategoryList
                 .FirstOrDefault(c => c.Id == id);
@@ -40,7 +41,7 @@ namespace Todo.Service.Model.Fake
         /// </summary>
         /// <param name="name">Target name. </param>
         /// <returns>Category list. </returns>
-        public IEnumerable<ICategory> SelectByName(string name)
+        public IEnumerable<Category> SelectByName(string name)
         {
             return _service.CategoryList
                 .Where(c => c.Name == name)
@@ -54,13 +55,14 @@ namespace Todo.Service.Model.Fake
         /// <param name="color">Preferable color. </param>
         /// <param name="order">Priority. </param>
         /// <returns>Category instance. </returns>
-        public ICategory Create(string name, Color color, int order)
+        public Category Create(string name, Color color, int order)
         {
-            var category = new FakeCategory(GeterateId())
+            var category = new Category()
             {
+                Id = GeterateId(),
                 Name = name,
-                Order = order,
-                Color = color
+                Color = color,
+                Order = order
             };
             _service.CategoryList.Add(category);
             return category;
@@ -81,7 +83,7 @@ namespace Todo.Service.Model.Fake
         /// Update category with target attributes.
         /// </summary>
         /// <param name="category">Update category local instance.</param>
-        public void Update(ICategory category)
+        public void Update(Category category)
         {
             _service.CategoryList
                 .Where(c => c.Id == category.Id)
@@ -93,6 +95,20 @@ namespace Todo.Service.Model.Fake
                     c.Color = category.Color;
                 });
         }
+
+        /// <summary>
+        /// Cahnge priority.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="order">Priority. </param>        
+        public void ChangeOrder(int id, int order)
+        {
+            _service.CategoryList
+                .Where(t => t.Id == id)
+                .ToList()
+                .ForEach(t => t.Order = order);
+        }
+
 
         /// <summary>
         /// Delete category by primary key.
@@ -117,9 +133,9 @@ namespace Todo.Service.Model.Fake
         /// Create new instance of <see cref="FakeCategoryController"/>.
         /// </summary>
         /// <param name="service">Service instance. </param>
-        public FakeCategoryController(IFakeTodoService service)
+        public FakeCategoryController()
         {
-            _service = service;
+            _service = FakeStorageService.Instance;
         }
 
     }

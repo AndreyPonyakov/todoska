@@ -3,20 +3,20 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 
-namespace Todo.UI.Tools.View
+namespace TodoSystem.UI.Tools.View
 {
     /// <summary>
     /// Standard colors.
     /// </summary>
-    public class StandardColors
+    public sealed class StandardColors
     {
         /// <summary>
-        /// Color list.
+        /// Get a Color list
         /// </summary>
         public static IEnumerable<Color> Items { get; }
 
         /// <summary>
-        /// Create instance color list.
+        /// Create an instance color list.
         /// </summary>
         static StandardColors()
         {

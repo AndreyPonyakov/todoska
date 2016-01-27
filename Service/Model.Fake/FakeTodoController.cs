@@ -1,55 +1,93 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Todo.Service.Model.Interface;
+using TodoSystem.Service.Model.Interface;
 
-namespace Todo.Service.Model.Fake
+namespace TodoSystem.Service.Model.Fake
 {
+    /// <summary>
+    /// Fake implementation of ITodoController.
+    /// </summary>
     public class FakeTodoController : ITodoController
     {
-        private readonly IFakeTodoService _service;
+        /// <summary>
+        /// Todo service.
+        /// </summary>
+        private readonly IStorageService _service;
 
-        public IEnumerable<ITodo> SelectAll()
+        /// <summary>
+        /// Fetch all todo.
+        /// </summary>
+        /// <returns>Sorted list.</returns>
+        public IEnumerable<Todo> SelectAll()
         {
             return _service.TodoList;
         }
 
-        public ITodo SelectById(int id)
+        /// <summary>
+        /// Get todo by primary key.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Todo SelectById(int id)
         {
             return _service.TodoList
                 .FirstOrDefault(t => t.Id == id);
         }
 
-        public IEnumerable<ITodo> SelectByTitle(string title)
+        /// <summary>
+        /// Get all "todo"es with target title.
+        /// </summary>
+        /// <param name="title">Target key. </param>
+        /// <returns></returns>
+        public IEnumerable<Todo> SelectByTitle(string title)
         {
             return _service.TodoList
-                .Where(t => t.Title == title)
-                .ToList();
+                .Where(t => t.Title == title);
         }
 
-        public IEnumerable<ITodo> SelectByCategory(int categoryId)
+        /// <summary>
+        /// Get all "todo"es with target category.
+        /// </summary>
+        /// <param name="categoryId">Primary key of category. </param>
+        /// <returns></returns>
+        public IEnumerable<Todo> SelectByCategory(int categoryId)
         {
             return _service.TodoList
                 .Where(t => t.CategoryId == categoryId)
                 .ToList();
         }
 
-        public ITodo Create(string title, string desc, DateTime deadline, int categoryId, int order)
+        /// <summary>
+        /// Create new todo.
+        /// </summary>
+        /// <param name="title">Todo title. </param>
+        /// <param name="desc">Todo description. </param>
+        /// <param name="deadline">Todo deadline. </param>
+        /// <param name="categoryId">Primary key of category. </param>
+        /// <param name="order">Priority. </param>
+        /// <returns></returns>
+        public Todo Create(string title, string desc, DateTime deadline, int categoryId, int order)
         {
-            var todo = new FakeTodo(GeterateId())
+            var todo = new Todo()
             {
+                Id = GeterateId(),
                 Title = title,
                 Desc = desc,
-                Order = order
+                Order = order,
+                CategoryId = categoryId,
+                Deadline = deadline
             };
-            todo.SetCategory(categoryId);
-            todo.SetDeadline(deadline);
             _service.TodoList.Add(todo);
             return todo;
 
         }
 
-        public void Update(ITodo todo)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="todo">New todo </param>
+        public void Update(Todo todo)
         {
             _service.TodoList
                 .Where(t => t.Id == todo.Id)
@@ -62,6 +100,10 @@ namespace Todo.Service.Model.Fake
                 });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
         public void Delete(int id)
         {
             var todo = _service.TodoList
@@ -72,6 +114,11 @@ namespace Todo.Service.Model.Fake
             }
         }
 
+        /// <summary>
+        /// Cahnge priority.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="order">Priority. </param>
         public void ChangeOrder(int id, int order)
         {
             _service.TodoList
@@ -80,11 +127,57 @@ namespace Todo.Service.Model.Fake
                 .ForEach(t => t.Order = order);
         }
 
-        public FakeTodoController(IFakeTodoService service)
+        /// <summary>
+        /// Set check.
+        /// <param name="id">Primary key. </param>
+        /// <param name="isChecked">Cheecked state. </param>
+        /// </summary>
+        public void Check(int id, bool isChecked)
         {
-            _service = service;
+            _service.TodoList
+                .Where(t => t.Id == id)
+                .ToList()
+                .ForEach(t => t.Checked = isChecked);
         }
 
+        /// <summary>
+        /// Change of category.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="categoryId">Primary key of category. </param>
+        public void SetCategory(int id, int categoryId)
+        {
+            _service.TodoList
+                .Where(t => t.Id == id)
+                .ToList()
+                .ForEach(t => t.CategoryId = categoryId);
+        }
+
+        /// <summary>
+        /// Change of deadline.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="deadline">New deadline. </param>
+        public void SetDeadline(int id, DateTime deadline)
+        {
+            _service.TodoList
+                .Where(t => t.Id == id)
+                .ToList()
+                .ForEach(t => t.Deadline = deadline);
+        }
+
+        /// <summary>
+        /// Create <see cref="FakeTodoController"/> instance. 
+        /// </summary>
+        public FakeTodoController()
+        {
+            _service = FakeStorageService.Instance;
+        }
+
+        /// <summary>
+        /// Generate new primary key.
+        /// </summary>
+        /// <returns></returns>
         private int GeterateId()
         {
             return _service.TodoList.Any()

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="6d6b1d4c-0374-45ad-8d21-c0a9c7d07eb6" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/Design_Time_Addresses/Host/TodoController" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="TodoController.xsd" MetadataType="Schema" ID="6866bd62-27ed-4439-afe6-155381965a02" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd0" />
+    <MetadataFile FileName="TodoController1.xsd" MetadataType="Schema" ID="d8df0fd6-11d5-4bdb-bde9-89616c5b7d78" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd1" />
+    <MetadataFile FileName="TodoController.disco" MetadataType="Disco" ID="59c975bc-576a-404f-b06c-a37fe9f00e75" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?disco" />
+    <MetadataFile FileName="TodoController.wsdl" MetadataType="Wsdl" ID="7b561e8e-ee6f-4054-8582-8d19e7e6ff03" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?wsdl" />
+    <MetadataFile FileName="TodoController2.xsd" MetadataType="Schema" ID="98253285-2ba4-442f-97f9-b1a42ef05898" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

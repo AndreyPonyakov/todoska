@@ -7,8 +7,8 @@
     <ProjectGuid>{3E869BC7-1618-4F6C-AAFD-F31F9721D867}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Todo.UI.Model</RootNamespace>
-    <AssemblyName>Todo.UI.Model</AssemblyName>
+    <RootNamespace>TodoSystem.UI.Model</RootNamespace>
+    <AssemblyName>TodoSystem.UI.Model</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,6 +33,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,15 +43,89 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Category.cs" />
-    <Compile Include="CategoryController.cs" />
+    <Compile Include="TodoService.cs" />
+    <Compile Include="ITodoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\CategoryControllerServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\TodoControllerServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Service\Model.Interface\Model.Interface.csproj">
-      <Project>{a44b0d85-4c92-46c5-847b-4801a999e52b}</Project>
-      <Name>Model.Interface</Name>
-    </ProjectReference>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\DataSources\TodoSystem.Service.Model.Interface.Category.datasource" />
+    <None Include="Properties\DataSources\TodoSystem.Service.Model.Interface.Todo.datasource" />
+    <None Include="Service References\CategoryControllerServiceReference\CategoryController.wsdl" />
+    <None Include="Service References\CategoryControllerServiceReference\CategoryController.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CategoryControllerServiceReference\CategoryController1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CategoryControllerServiceReference\CategoryController2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CategoryControllerServiceReference\CategoryController3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CategoryControllerServiceReference\TodoSystem.UI.Model.CategoryControllerServiceReference.Category.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TodoControllerServiceReference\TodoController.wsdl" />
+    <None Include="Service References\TodoControllerServiceReference\TodoController.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TodoControllerServiceReference\TodoController1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TodoControllerServiceReference\TodoController2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TodoControllerServiceReference\TodoSystem.UI.Model.TodoControllerServiceReference.Todo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\CategoryControllerServiceReference\" />
+    <WCFMetadataStorage Include="Service References\TodoControllerServiceReference\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CategoryControllerServiceReference\CategoryController.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CategoryControllerServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CategoryControllerServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CategoryControllerServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TodoControllerServiceReference\TodoController.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TodoControllerServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TodoControllerServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\TodoControllerServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

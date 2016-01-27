@@ -2,18 +2,18 @@
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Interactivity;
-using Todo.UI.Tools.View.Converter;
+using TodoSystem.UI.Tools.View.Converter;
 
-namespace Todo.UI.Tools.View.Behavior
+namespace TodoSystem.UI.Tools.View.Behavior
 {
     /// <summary>
     /// Behavior for implement of view change between state.
     /// </summary>
-    public class ToggleButtonStatePatternBehavior : Behavior<ToggleButton>
+    public sealed class ToggleButtonStatePatternBehavior : Behavior<ToggleButton>
     {
 
         /// <summary>
-        /// Attaching
+        /// Attach behavior.
         /// </summary>
         protected override void OnAttached()
         {
@@ -26,6 +26,15 @@ namespace Todo.UI.Tools.View.Behavior
             binding.Bindings.Add(new Binding(nameof(TargetState)) { Source = this });
 
             AssociatedObject.SetBinding(ToggleButton.IsCheckedProperty, binding);
+        }
+
+        /// <summary>
+        /// Detach behavior.
+        /// </summary>
+        protected override void OnDetaching()
+        {
+            base.OnDetaching();
+            AssociatedObject.Click += AssociatedObjectOnChecked;
         }
 
         /// <summary>
@@ -43,7 +52,6 @@ namespace Todo.UI.Tools.View.Behavior
                     State = TargetState;
                 }
             }
-
         }
 
         /// <summary>
@@ -55,6 +63,9 @@ namespace Todo.UI.Tools.View.Behavior
             set { SetValue(StateProperty, value); }
         }
 
+        /// <summary>
+        /// Dependency property of <see cref="State"/>
+        /// </summary>
         public static readonly DependencyProperty StateProperty = DependencyProperty.Register(
           nameof(State), typeof(object), typeof(ToggleButtonStatePatternBehavior), new PropertyMetadata(null));
 
@@ -67,13 +78,10 @@ namespace Todo.UI.Tools.View.Behavior
             set { SetValue(TargetStateProperty, value); }
         }
 
+        /// <summary>
+        /// Dependency property of <see cref="TargetState"/>
+        /// </summary>
         public static readonly DependencyProperty TargetStateProperty = DependencyProperty.Register(
           nameof(TargetState), typeof(object), typeof(ToggleButtonStatePatternBehavior), new PropertyMetadata(null));
-
-        protected override void OnDetaching()
-        {
-            base.OnDetaching();
-            AssociatedObject.Click += AssociatedObjectOnChecked;
-        }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Todo.UI.Tools.Model
+namespace TodoSystem.UI.Tools.Model
 {
     /// <summary>
     /// Helper class for implement INotifyPropertyChanged.

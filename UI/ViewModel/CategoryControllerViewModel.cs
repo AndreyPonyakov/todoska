@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Todo.Service.Model.Interface;
-using Todo.UI.Tools.Model;
-using Todo.UI.ViewModel.Event;
+using TodoSystem.UI.Model;
+using TodoSystem.UI.Model.CategoryControllerServiceReference;
+using TodoSystem.UI.Tools.Model;
+using TodoSystem.UI.ViewModel.Base;
+using TodoSystem.UI.ViewModel.Event;
 
-namespace Todo.UI.ViewModel
+namespace TodoSystem.UI.ViewModel
 {
     /// <summary>
     /// ViewModel of main todo controller
     /// </summary>
-    public class CategoryControllerViewModel : BaseViewModel
+    public sealed class CategoryControllerViewModel : BaseOrderedControllerViewModel
     {
         /// <summary>
         /// Todo Service
@@ -40,8 +40,7 @@ namespace Todo.UI.ViewModel
         public CategoryViewModel CreateItem()
         {
             var category = new CategoryViewModel(_commandFactory, _service);
-            category.Order = (List.Any() ? List.Max(c => c.Order) : 0)+ 1;
-
+            category.Order = List.Any() ? List.Max(c => c.Order) + 1 : 0;
             List.Add(category);
 
             category
@@ -78,9 +77,9 @@ namespace Todo.UI.ViewModel
             category.MoveToEvent += (sender, args) =>
             {
                 List.MoveTo(args.DataTransition);
-                List
-                    .Select((v, i) => new {Index = i, Value = v})
-                    .ToList().ForEach(rec => rec.Value.Order = rec.Index + 1);
+                List.Select((val, i) => new { Index = i, Value = val })
+                    .ToList()
+                    .ForEach(rec => rec.Value.Order = rec.Index);
             };
             
             return category;
@@ -103,12 +102,13 @@ namespace Todo.UI.ViewModel
         /// Update from serveice.
         /// </summary>
         /// <param name="model">Model. </param>
-        public void Update(ICategoryController model)
+        public void Refresh(ICategoryController model)
         {
             List.Clear();
             model.SelectAll()
+                .OrderBy(t => t.Order)
                 .ToList()
-                .ForEach(item => CreateItem().Update(item));
+                .ForEach(item => CreateItem().Refresh(item));
         }
     }
 }
