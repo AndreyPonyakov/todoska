@@ -18,7 +18,7 @@ namespace Model.SqlCe
         /// <returns>List of Todo. </returns>
         public IEnumerable<Interface.Todo> SelectAll()
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 return context.Todoes
                     .ToList()
@@ -33,7 +33,7 @@ namespace Model.SqlCe
         /// <returns>Todo instance. </returns>
         public Interface.Todo SelectById(int id)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 return context.Todoes
                     .Where(c => c.Id == id)
@@ -50,7 +50,7 @@ namespace Model.SqlCe
         /// <returns>List of Todo. </returns>
         public IEnumerable<Interface.Todo> SelectByTitle(string title)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 return context.Todoes
                     .Where(t => t.Title == title)
@@ -66,7 +66,7 @@ namespace Model.SqlCe
         /// <returns>List of Todo. </returns>
         public IEnumerable<Interface.Todo> SelectByCategory(int categoryId)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 return context.Todoes
                     .Where(t => t.CategoryId == categoryId)
@@ -86,9 +86,9 @@ namespace Model.SqlCe
         /// <returns>Created todo. </returns>
         public Interface.Todo Create(string title, string desc, DateTime deadline, int categoryId, int order)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
-                var entity = new Todo()
+                var dto = new Interface.Todo()
                 {
                     Title = title,
                     Desc = desc,
@@ -96,7 +96,7 @@ namespace Model.SqlCe
                     CategoryId = categoryId,
                     Order = order
                 };
-                var result = context.Todoes.Add(entity);
+                var result = context.Todoes.Add(dto.ToEntity());
                 context.SaveChanges();
                 return
                     context.Todoes.Where(c => c.Id == result.Id)
@@ -112,16 +112,18 @@ namespace Model.SqlCe
         /// <param name="todo">Updated todo. </param>
         public void Update(Interface.Todo todo)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 context.Todoes
                     .Where(c => c.Id == todo.Id)
                     .ToList()
-                    .ForEach(c =>
-                    {
-                        c.Title = todo.Title;
-                        c.Desc = todo.Desc;
-                    });
+                    .ForEach(
+                        c =>
+                        {
+                            var entity = todo.ToEntity();
+                            c.Title = entity.Title;
+                            c.Desc = entity.Desc;
+                        });
                 context.SaveChanges();
             }
         }
@@ -132,7 +134,7 @@ namespace Model.SqlCe
         /// <param name="id">Primary key. </param>
         public void Delete(int id)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 context.Todoes
                     .Where(t => t.Id == id)
@@ -149,7 +151,7 @@ namespace Model.SqlCe
         /// <param name="order">Priority in the controller. </param>
         public void ChangeOrder(int id, int order)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 context.Todoes
                     .Where(t => t.Id == id)
@@ -166,7 +168,7 @@ namespace Model.SqlCe
         /// <param name="isChecked">True if the todo is checked. </param>
         public void Check(int id, bool isChecked)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 context.Todoes
                     .Where(t => t.Id == id)
@@ -183,7 +185,7 @@ namespace Model.SqlCe
         /// <param name="categoryId">Primary key of new category. </param>
         public void SetCategory(int id, int categoryId)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 context.Todoes.Where(t => t.Id == id)
                     .ToList()
@@ -199,7 +201,7 @@ namespace Model.SqlCe
         /// <param name="deadline">Deadline time. </param>
         public void SetDeadline(int id, DateTime deadline)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 context.Todoes.Where(t => t.Id == id)
                     .ToList()

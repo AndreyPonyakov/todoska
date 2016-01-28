@@ -52,8 +52,7 @@ namespace TodoSystem.Service.Model.Fake
         public IEnumerable<Category> SelectByName(string name)
         {
             return _service.CategoryList
-                .Where(c => c.Name == name)
-                .ToList();
+                .Where(c => c.Name == name);
         }
 
         /// <summary>

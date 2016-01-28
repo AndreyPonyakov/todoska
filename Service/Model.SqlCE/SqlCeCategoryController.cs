@@ -16,7 +16,7 @@ namespace Model.SqlCe
         /// <returns>Category list. </returns>
         public IEnumerable<Interface.Category> SelectAll()
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 return context.Categories
                     .ToList()
@@ -31,7 +31,7 @@ namespace Model.SqlCe
         /// <returns>Category instance. </returns>
         public Interface.Category SelectById(int id)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 return context.Categories
                     .Where(c => c.Id == id)
@@ -48,7 +48,7 @@ namespace Model.SqlCe
         /// <returns>Category list. </returns>
         public IEnumerable<Interface.Category> SelectByName(string name)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 return context.Categories
                     .Where(c => c.Name == name).ToList()
@@ -65,15 +65,15 @@ namespace Model.SqlCe
         /// <returns>Category instance. </returns>
         public Interface.Category Create(string name, Color color, int order)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
-                var entity = new Category
-                                         {
-                                             Order = order,
-                                             Name = name,
-                                             Color = color.ToArgb()
-                                         };
-                var result = context.Categories.Add(entity);
+                var dto = new Interface.Category()
+                              {
+                                  Order = order,
+                                  Name = name,
+                                  Color = color
+                              };
+                var result = context.Categories.Add(dto.ToEntity());
                 context.SaveChanges();
                 return
                     context.Categories.Where(c => c.Id == result.Id)
@@ -89,16 +89,17 @@ namespace Model.SqlCe
         /// <param name="category">Update category local instance.</param>
         public void Update(Interface.Category category)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 context.Categories
                     .Where(c => c.Id == category.Id)
                     .ToList()
-                    .ForEach(c => 
-                            {
-                                c.Name = category.Name;
-                                c.Color = category.Color.ToArgb();
-                            });
+                    .ForEach(c =>
+                        {
+                            var entity = category.ToEntity();
+                            c.Name = entity.Name;
+                            c.Color = entity.Color;
+                        });
                 context.SaveChanges();
             }
         }
@@ -109,7 +110,7 @@ namespace Model.SqlCe
         /// <param name="id">Primary key of category. </param>
         public void Delete(int id)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 context.Categories
                     .Where(c => c.Id == id)
@@ -126,7 +127,7 @@ namespace Model.SqlCe
         /// <param name="order">Target priority in list. </param>
         public void ChangeOrder(int id, int order)
         {
-            using (var context = new TodoEntities())
+            using (var context = new TodoDbContext())
             {
                 context.Categories.Where(c => c.Id == id)
                     .ToList()

@@ -13,10 +13,10 @@ namespace Model.SqlCe
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class TodoEntities : DbContext
+    public partial class TodoDbContext : DbContext
     {
-        public TodoEntities()
-            : base("name=TodoEntities")
+        public TodoDbContext()
+            : base("name=TodoDbContext")
         {
         }
     

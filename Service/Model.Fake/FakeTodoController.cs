@@ -51,8 +51,7 @@ namespace TodoSystem.Service.Model.Fake
         public IEnumerable<Todo> SelectByTitle(string title)
         {
             return _service.TodoList
-                .Where(t => t.Title == title)
-                .ToList();
+                .Where(t => t.Title == title);
         }
 
         /// <summary>
@@ -63,8 +62,7 @@ namespace TodoSystem.Service.Model.Fake
         public IEnumerable<Todo> SelectByCategory(int categoryId)
         {
             return _service.TodoList
-                .Where(t => t.CategoryId == categoryId)
-                .ToList();
+                .Where(t => t.CategoryId == categoryId);
         }
 
         /// <summary>

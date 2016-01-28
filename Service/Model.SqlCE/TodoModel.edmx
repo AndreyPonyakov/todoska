@@ -58,7 +58,7 @@
           <Property Name="Order" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Category" Relationship="TodoModel.CategoryTodo" FromRole="Todo" ToRole="Category" />
         </EntityType>
-        <EntityContainer Name="TodoEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="TodoDbContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Todoes" EntityType="Self.Todo" />
           <AssociationSet Name="CategoryTodo" Association="TodoModel.CategoryTodo">
@@ -83,7 +83,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="TodoModelStoreContainer" CdmEntityContainer="TodoEntities">
+        <EntityContainerMapping StorageEntityContainer="TodoModelStoreContainer" CdmEntityContainer="TodoDbContext">
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="TodoModel.Category">
               <MappingFragment StoreEntitySet="Category">

@@ -102,7 +102,7 @@ namespace TodoSystem.UI.ViewModel
         public override bool Delete()
         {
             Service.CategoryController.Delete(Model.Id);
-            return Service.CategoryController.SelectById(Model.Id) != null;
+            return Service.CategoryController.SelectById(Model.Id) == null;
         }
 
         /// <summary>

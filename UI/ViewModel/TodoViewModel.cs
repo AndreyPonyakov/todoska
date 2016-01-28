@@ -33,7 +33,7 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="TodoViewModel"/> class.
         /// </summary>
-        /// <param name="commandFactory">Factory for <see cref="ICommand"/> instance. </param>
+        /// <param name="commandFactory">Factory for command instance. </param>
         /// <param name="service">Todo service. </param>
         /// <param name="workspace">Workspace with controllers. </param>
         public TodoViewModel(ICommandFactory commandFactory, ITodoService service, WorkspaceViewModel workspace)
@@ -162,7 +162,7 @@ namespace TodoSystem.UI.ViewModel
         public override bool Delete()
         {
             Service.CategoryController.Delete(Model.Id);
-            return Service.CategoryController.SelectById(Model.Id) != null;
+            return Service.CategoryController.SelectById(Model.Id) == null;
         }
 
         /// <summary>
