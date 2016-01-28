@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using AutoMapper;
 using Interface = TodoSystem.Service.Model.Interface;
 
 namespace Model.SqlCe
@@ -11,6 +12,27 @@ namespace Model.SqlCe
     public class SqlCeCategoryController : Interface.ICategoryController
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SqlCeCategoryController"/> class.
+        /// </summary>
+        public SqlCeCategoryController()
+        {
+            var config = new MapperConfiguration(
+                cfg =>
+                    {
+                        cfg.CreateMap<Category, Interface.Category>()
+                            .ForMember(dest => dest.Color, opt => opt.MapFrom(src => Color.FromArgb(src.Color.Value)));
+                        cfg.CreateMap<Interface.Category, Category>()
+                            .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Color.ToArgb()));
+                    });
+            Mapper = config.CreateMapper();
+        }
+
+        /// <summary>
+        /// Gets mapper for transform from DTO to Entity and conversely.
+        /// </summary>
+        private IMapper Mapper { get; }
+
+        /// <summary>
         /// Gets full list if category.
         /// </summary>
         /// <returns>Category list. </returns>
@@ -20,7 +42,7 @@ namespace Model.SqlCe
             {
                 return context.Categories
                     .ToList()
-                    .Select(c => c.ToDto());
+                    .Select(c => Mapper.Map<Interface.Category>(c));
             }
         }
 
@@ -36,7 +58,7 @@ namespace Model.SqlCe
                 return context.Categories
                     .Where(c => c.Id == id)
                     .ToList()
-                    .Select(c => c.ToDto())
+                    .Select(c => Mapper.Map<Interface.Category>(c))
                     .FirstOrDefault();
             }
         }
@@ -52,7 +74,7 @@ namespace Model.SqlCe
             {
                 return context.Categories
                     .Where(c => c.Name == name).ToList()
-                    .Select(c => c.ToDto());
+                    .Select(c => Mapper.Map<Interface.Category>(c));
             }
         }
 
@@ -73,12 +95,12 @@ namespace Model.SqlCe
                                   Name = name,
                                   Color = color
                               };
-                var result = context.Categories.Add(dto.ToEntity());
+                var result = context.Categories.Add(Mapper.Map<Category>(dto));
                 context.SaveChanges();
                 return
                     context.Categories.Where(c => c.Id == result.Id)
                         .ToList()
-                        .Select(c => c.ToDto())
+                        .Select(c => Mapper.Map<Interface.Category>(c))
                         .FirstOrDefault();
             }
         }
@@ -89,6 +111,7 @@ namespace Model.SqlCe
         /// <param name="category">Update category local instance.</param>
         public void Update(Interface.Category category)
         {
+            var entity = Mapper.Map<Category>(category);
             using (var context = new TodoDbContext())
             {
                 context.Categories
@@ -96,7 +119,6 @@ namespace Model.SqlCe
                     .ToList()
                     .ForEach(c =>
                         {
-                            var entity = category.ToEntity();
                             c.Name = entity.Name;
                             c.Color = entity.Color;
                         });

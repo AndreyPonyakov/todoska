@@ -1,17 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Interface = TodoSystem.Service.Model.Interface;
 
 namespace Model.SqlCe
 {
-    using Interface;
-
     /// <summary>
-    /// Storage implementation for <see cref="ITodoController"/>
+    /// Storage implementation for <see cref="Interface.ITodoController"/>
     /// </summary>
-    public class SqlCeTodoController : ITodoController
+    public class SqlCeTodoController : Interface.ITodoController
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlCeTodoController"/> class.
+        /// </summary>
+        public SqlCeTodoController()
+        {
+            var config = new MapperConfiguration(
+                cfg =>
+                    {
+                        cfg.CreateMap<Todo, Interface.Todo>();
+                        cfg.CreateMap<Interface.Todo, Todo>();
+                    });
+            Mapper = config.CreateMapper();
+        }
+
+        /// <summary>
+        /// Gets mapper for transform from DTO to Entity and conversely.
+        /// </summary>
+        private IMapper Mapper { get; }
+
         /// <summary>
         /// Select full list of todo from. 
         /// </summary>
@@ -22,7 +40,7 @@ namespace Model.SqlCe
             {
                 return context.Todoes
                     .ToList()
-                    .Select(t => t.ToDto());
+                    .Select(t => Mapper.Map<Interface.Todo>(t));
             }
         }
 
@@ -36,9 +54,9 @@ namespace Model.SqlCe
             using (var context = new TodoDbContext())
             {
                 return context.Todoes
-                    .Where(c => c.Id == id)
+                    .Where(t => t.Id == id)
                     .ToList()
-                    .Select(c => c.ToDto())
+                    .Select(t => Mapper.Map<Interface.Todo>(t))
                     .FirstOrDefault();
             }
         }
@@ -55,7 +73,7 @@ namespace Model.SqlCe
                 return context.Todoes
                     .Where(t => t.Title == title)
                     .ToList()
-                    .Select(t => t.ToDto());
+                    .Select(t => Mapper.Map<Interface.Todo>(t));
             }
         }
 
@@ -71,7 +89,7 @@ namespace Model.SqlCe
                 return context.Todoes
                     .Where(t => t.CategoryId == categoryId)
                     .ToList()
-                    .Select(t => t.ToDto());
+                    .Select(t => Mapper.Map<Interface.Todo>(t));
             }
         }
 
@@ -96,12 +114,12 @@ namespace Model.SqlCe
                     CategoryId = categoryId,
                     Order = order
                 };
-                var result = context.Todoes.Add(dto.ToEntity());
+                var result = context.Todoes.Add(Mapper.Map<Todo>(dto));
                 context.SaveChanges();
                 return
-                    context.Todoes.Where(c => c.Id == result.Id)
+                    context.Todoes.Where(t => t.Id == result.Id)
                         .ToList()
-                        .Select(c => c.ToDto())
+                        .Select(t => Mapper.Map<Interface.Todo>(t))
                         .FirstOrDefault();
             }
         }
@@ -114,13 +132,13 @@ namespace Model.SqlCe
         {
             using (var context = new TodoDbContext())
             {
+                var entity = Mapper.Map<Todo>(todo);
                 context.Todoes
-                    .Where(c => c.Id == todo.Id)
+                    .Where(t => t.Id == todo.Id)
                     .ToList()
                     .ForEach(
                         c =>
                         {
-                            var entity = todo.ToEntity();
                             c.Title = entity.Title;
                             c.Desc = entity.Desc;
                         });
