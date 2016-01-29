@@ -4,7 +4,7 @@ using TodoSystem.UI.Tools.Model;
 namespace TodoSystem.UI.ViewModel.Event
 {
     /// <summary>
-    /// Extention methos for MoveTo event.
+    /// Extension methods for MoveTo event.
     /// </summary>
     public static class MoveToEventHelper
     {

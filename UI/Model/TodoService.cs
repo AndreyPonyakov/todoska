@@ -3,28 +3,40 @@ using TodoSystem.UI.Model.TodoControllerServiceReference;
 
 namespace TodoSystem.UI.Model
 {
+    using System;
+    using System.ServiceModel;
+
     /// <summary>
     /// Fake implementation of <see cref="ITodoService"/>.
     /// </summary>
     public sealed class TodoService : ITodoService
     {
         /// <summary>
-        /// Category controller.
+        /// Initializes a new instance of the <see cref="TodoService"/> class.
+        /// </summary>
+        /// <param name="address">Root address string. </param>
+        public TodoService(string address)
+        {
+
+            CategoryController =
+                new CategoryControllerClient(
+                    new BasicHttpBinding(),
+                    new EndpointAddress(
+                        new Uri(new Uri(address), nameof(CategoryController))));
+            TodoController = new TodoControllerClient(
+                new BasicHttpBinding(),
+                new EndpointAddress(
+                    new Uri(new Uri(address), nameof(TodoController))));
+        }
+
+        /// <summary>
+        /// Gets category controller.
         /// </summary>
         public ICategoryController CategoryController { get; }
 
         /// <summary>
-        /// Todo controller.
+        /// Gets todo controller.
         /// </summary>
         public ITodoController TodoController { get; }
-
-        /// <summary>
-        /// Private constructor of <see cref="TodoService"/>.
-        /// </summary>
-        public TodoService()
-        {
-            CategoryController = new CategoryControllerClient();
-            TodoController = new TodoControllerClient();
-        }
     }
 }

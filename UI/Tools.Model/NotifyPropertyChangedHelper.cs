@@ -16,14 +16,14 @@ namespace TodoSystem.UI.Tools.Model
         /// <param name="sender">Sender class. </param>
         /// <param name="handler">Property changed handler. </param>
         /// <param name="propertyName">Property name. </param>
-        public static void OnPropertyChanged<T>(this T sender,
-            PropertyChangedEventHandler handler, string propertyName) where T : class, INotifyPropertyChanged
+        public static void OnPropertyChanged<T>(this T sender, PropertyChangedEventHandler handler, string propertyName) 
+            where T : class, INotifyPropertyChanged
         {
             handler?.Invoke(sender, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>
-        /// Notify property changed for transit model property of viewmodel.
+        /// Notify property changed for transit model property of view model.
         /// </summary>
         /// <typeparam name="T">Property type. </typeparam>
         /// <param name="notificator">Notification delegate. </param>
@@ -46,7 +46,7 @@ namespace TodoSystem.UI.Tools.Model
         }
 
         /// <summary>
-        /// Notify property changed for propertry setter.
+        /// Notify property changed for property setter.
         /// </summary>
         /// <typeparam name="T">Property type. </typeparam>
         /// <param name="notificator">Notification delegate. </param>
@@ -66,6 +66,5 @@ namespace TodoSystem.UI.Tools.Model
 
             return changed;
         }
-
     }
 }

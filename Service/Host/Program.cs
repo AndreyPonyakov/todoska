@@ -3,8 +3,14 @@ using System.ServiceModel;
 
 namespace Host
 {
-    class Program
+    /// <summary>
+    /// Class with enter point of wcf host.
+    /// </summary>
+    public class Program
     {
+        /// <summary>
+        /// Enter point of wcf host
+        /// </summary>
         private static void Main()
         {
             using (var categoryHost = new ServiceHost(typeof(CategoryController)))
@@ -12,7 +18,7 @@ namespace Host
             {
                 categoryHost.Open();
                 todoHost.Open();
-                Console.Write($"Category service started at {DateTime.Now}");
+                Console.Write($"TodoSystem service started at {DateTime.Now}");
                 Console.ReadLine();
             }
         }

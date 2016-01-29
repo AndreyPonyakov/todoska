@@ -11,7 +11,7 @@ namespace TodoSystem.UI.ViewModel.Event
     /// <typeparam name="TD">Destination transition data type. </typeparam>
     /// <param name="sender">Sender element. </param>
     /// <param name="args">Event handler arguments. </param>
-    public delegate void MoveToEventHandler<TS, TD>(object sender, MoveToEventHandlerArgs<TS,TD> args);
+    public delegate void MoveToEventHandler<TS, TD>(object sender, MoveToEventHandlerArgs<TS, TD> args);
 
     /// <summary>
     /// Event argument for MoveTo event.
@@ -22,17 +22,17 @@ namespace TodoSystem.UI.ViewModel.Event
     public class MoveToEventHandlerArgs<TS, TD> : EventArgs
     {
         /// <summary>
-        /// Transition information.
-        /// </summary>
-        public DataTransition<TS,TD> DataTransition { get; }
-
-        /// <summary>
-        /// Create <see cref="MoveToEventHandler{TD,TS}"/> instance.
+        /// Initializes a new instance of the <see cref="MoveToEventHandlerArgs{TS,TD}" /> class.
         /// </summary>
         /// <param name="dataTransition">DataTransition of movement. </param>
         public MoveToEventHandlerArgs(DataTransition<TS, TD> dataTransition)
         {
             DataTransition = dataTransition;
         }
+
+        /// <summary>
+        /// Gets transition information.
+        /// </summary>
+        public DataTransition<TS, TD> DataTransition { get; }
     }
 }

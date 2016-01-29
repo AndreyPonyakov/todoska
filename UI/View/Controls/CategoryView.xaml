@@ -5,18 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModel="clr-namespace:TodoSystem.UI.ViewModel;assembly=TodoSystem.UI.ViewModel"
              xmlns:view="clr-namespace:TodoSystem.UI.Tools.View;assembly=TodoSystem.UI.Tools.View"
+             xmlns:converter="clr-namespace:TodoSystem.UI.Tools.View.Converter;assembly=TodoSystem.UI.Tools.View"
              d:DataContext="{d:DesignInstance viewModel:CategoryViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="500">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converter:DrawingColorToMediaColorConverter x:Key="DrawingColorToMediaColorConverter"/>
         <view:StandardColors x:Key="StandardColors" />
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <TextBox Width="200"  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+        <StackPanel.Background>
+            <SolidColorBrush Color="{Binding Color, Converter={StaticResource DrawingColorToMediaColorConverter}}" />
+        </StackPanel.Background>
+        <TextBox Width="200"  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" />
         <ComboBox Width="200"  ItemsSource="{Binding Source={StaticResource StandardColors}, Path=Items}" 
-                  SelectedItem="{Binding Color, Mode=TwoWay}"
-                  SelectedValuePath="Name">
+                  SelectedItem="{Binding Color, Mode=TwoWay}" SelectedValuePath="Name"  Background="Transparent">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Height="18" Margin="0,0,0,2">
@@ -46,7 +50,7 @@
         </Button>
         <Button Height="30" Width="30" HorizontalAlignment="Left" 
                 Visibility="{Binding CanDelete, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Command="{Binding DeleteCommand}">
+                Command="{Binding TryDeleteCommand}">
             <Image Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Actions-edit-delete-icon.png" />
             <Button.ToolTip>
                 <ToolTip Content="Delete current category..."/>

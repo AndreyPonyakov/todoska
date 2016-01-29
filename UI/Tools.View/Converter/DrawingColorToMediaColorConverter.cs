@@ -9,7 +9,6 @@ namespace TodoSystem.UI.Tools.View.Converter
     /// </summary>
     public sealed class DrawingColorToMediaColorConverter : IValueConverter
     {
-
         /// <summary>
         /// Right converter.
         /// </summary>
@@ -20,12 +19,12 @@ namespace TodoSystem.UI.Tools.View.Converter
         /// <returns>Converted value. </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-
             if (value is System.Drawing.Color)
             {
-                var color = (System.Drawing.Color) value;
+                var color = (System.Drawing.Color)value;
                 return System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
             }
+
             return null;
         }
 
@@ -44,8 +43,8 @@ namespace TodoSystem.UI.Tools.View.Converter
                 var color = (System.Windows.Media.Color)value;
                 return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
             }
-            return null;
 
+            return null;
         }
     }
 }

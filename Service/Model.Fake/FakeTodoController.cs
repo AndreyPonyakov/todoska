@@ -16,9 +16,17 @@ namespace TodoSystem.Service.Model.Fake
         private readonly IStorageService _service;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FakeTodoController"/> class. 
+        /// </summary>
+        public FakeTodoController()
+        {
+            _service = FakeStorageService.Instance;
+        }
+
+        /// <summary>
         /// Fetch all todo.
         /// </summary>
-        /// <returns>Sorted list.</returns>
+        /// <returns>List of selected todo.</returns>
         public IEnumerable<Todo> SelectAll()
         {
             return _service.TodoList;
@@ -27,8 +35,8 @@ namespace TodoSystem.Service.Model.Fake
         /// <summary>
         /// Get todo by primary key.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Primary key. </param>
+        /// <returns>Selected todo. </returns>
         public Todo SelectById(int id)
         {
             return _service.TodoList
@@ -36,10 +44,10 @@ namespace TodoSystem.Service.Model.Fake
         }
 
         /// <summary>
-        /// Get all "todo"es with target title.
+        /// Gets all todo with target title.
         /// </summary>
         /// <param name="title">Target key. </param>
-        /// <returns></returns>
+        /// <returns>List of selected todo.</returns>
         public IEnumerable<Todo> SelectByTitle(string title)
         {
             return _service.TodoList
@@ -47,15 +55,14 @@ namespace TodoSystem.Service.Model.Fake
         }
 
         /// <summary>
-        /// Get all "todo"es with target category.
+        /// Gets all todo with target category.
         /// </summary>
         /// <param name="categoryId">Primary key of category. </param>
-        /// <returns></returns>
+        /// <returns>List of selected todo.</returns>
         public IEnumerable<Todo> SelectByCategory(int categoryId)
         {
             return _service.TodoList
-                .Where(t => t.CategoryId == categoryId)
-                .ToList();
+                .Where(t => t.CategoryId == categoryId);
         }
 
         /// <summary>
@@ -65,8 +72,8 @@ namespace TodoSystem.Service.Model.Fake
         /// <param name="desc">Todo description. </param>
         /// <param name="deadline">Todo deadline. </param>
         /// <param name="categoryId">Primary key of category. </param>
-        /// <param name="order">Priority. </param>
-        /// <returns></returns>
+        /// <param name="order">Priority in the controller. </param>
+        /// <returns>Created todo. </returns>
         public Todo Create(string title, string desc, DateTime deadline, int categoryId, int order)
         {
             var todo = new Todo()
@@ -80,13 +87,12 @@ namespace TodoSystem.Service.Model.Fake
             };
             _service.TodoList.Add(todo);
             return todo;
-
         }
 
         /// <summary>
-        /// 
+        /// Updates from other todo by primary key. 
         /// </summary>
-        /// <param name="todo">New todo </param>
+        /// <param name="todo">Updated todo. </param>
         public void Update(Todo todo)
         {
             _service.TodoList
@@ -101,9 +107,9 @@ namespace TodoSystem.Service.Model.Fake
         }
 
         /// <summary>
-        /// 
+        /// Deletes todo by primary key.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Primary key. </param>
         public void Delete(int id)
         {
             var todo = _service.TodoList
@@ -115,10 +121,10 @@ namespace TodoSystem.Service.Model.Fake
         }
 
         /// <summary>
-        /// Cahnge priority.
+        /// Changes priority.
         /// </summary>
         /// <param name="id">Primary key. </param>
-        /// <param name="order">Priority. </param>
+        /// <param name="order">Priority in the controllers. </param>
         public void ChangeOrder(int id, int order)
         {
             _service.TodoList
@@ -128,10 +134,10 @@ namespace TodoSystem.Service.Model.Fake
         }
 
         /// <summary>
-        /// Set check.
-        /// <param name="id">Primary key. </param>
-        /// <param name="isChecked">Cheecked state. </param>
+        /// Sets checked state.
         /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="isChecked">Checked state. </param>
         public void Check(int id, bool isChecked)
         {
             _service.TodoList
@@ -167,23 +173,14 @@ namespace TodoSystem.Service.Model.Fake
         }
 
         /// <summary>
-        /// Create <see cref="FakeTodoController"/> instance. 
-        /// </summary>
-        public FakeTodoController()
-        {
-            _service = FakeStorageService.Instance;
-        }
-
-        /// <summary>
         /// Generate new primary key.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>New primary key. </returns>
         private int GeterateId()
         {
             return _service.TodoList.Any()
                 ? _service.TodoList.Max(c => c.Id) + 1
                 : 1;
         }
-
     }
 }

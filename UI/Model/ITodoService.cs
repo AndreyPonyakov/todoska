@@ -9,13 +9,12 @@ namespace TodoSystem.UI.Model
     public interface ITodoService
     {
         /// <summary>
-        /// Category controller.
+        /// Gets category controller.
         /// </summary>
         ICategoryController CategoryController { get; }
 
-
         /// <summary>
-        /// Todo controller.
+        /// Gets todo controller.
         /// </summary>
         ITodoController TodoController { get; }
     }

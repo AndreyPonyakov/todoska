@@ -10,36 +10,21 @@ namespace TodoSystem.Service.Model.Fake
     public class FakeStorageService : IStorageService
     {
         /// <summary>
-        /// List of <see cref="Category"/> face objects.
-        /// </summary>
-        public IList<Category> CategoryList { get; }
-
-        /// <summary>
-        /// List of <see cref="Todo"/> fake objects.
-        /// </summary>
-        public IList<Todo> TodoList { get; }
-
-        /// <summary>
         /// Backed field of <see cref="IStorageService"/> instance.
         /// Implement lazy singleton pattern. 
         /// </summary>
-        private static readonly Lazy<IStorageService> InstaceLazy;
+        private static readonly Lazy<IStorageService> _instaceLazy;
 
         /// <summary>
-        /// Singleton instance of <see cref="IStorageService" />.
-        /// </summary>
-        public static IStorageService Instance => InstaceLazy.Value;
-
-        /// <summary>
-        /// Static constructor of <see cref="FakeStorageService"/>.
+        /// Initializes static members of the <see cref="FakeStorageService"/> class.
         /// </summary>
         static FakeStorageService()
         {
-            InstaceLazy = new Lazy<IStorageService>(() => new FakeStorageService());
+            _instaceLazy = new Lazy<IStorageService>(() => new FakeStorageService());
         }
 
         /// <summary>
-        /// Create instance of <see cref="FakeStorageService"/>.
+        /// Prevents a default instance of the<see cref="FakeStorageService"/> class from being created.
         /// </summary>
         private FakeStorageService()
         {
@@ -47,5 +32,19 @@ namespace TodoSystem.Service.Model.Fake
             TodoList = new List<Todo>();
         }
 
+        /// <summary>
+        /// Singleton instance of <see cref="IStorageService" />.
+        /// </summary>
+        public static IStorageService Instance => _instaceLazy.Value;
+
+        /// <summary>
+        /// Gets list of <see cref="Category"/> face objects.
+        /// </summary>
+        public IList<Category> CategoryList { get; }
+
+        /// <summary>
+        /// Gets list of <see cref="Todo"/> fake objects.
+        /// </summary>
+        public IList<Todo> TodoList { get; }
     }
 }

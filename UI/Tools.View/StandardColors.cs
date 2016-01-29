@@ -11,12 +11,7 @@ namespace TodoSystem.UI.Tools.View
     public sealed class StandardColors
     {
         /// <summary>
-        /// Get a Color list
-        /// </summary>
-        public static IEnumerable<Color> Items { get; }
-
-        /// <summary>
-        /// Create an instance color list.
+        /// Initializes static members of the <see cref="StandardColors"/> class.
         /// </summary>
         static StandardColors()
         {
@@ -25,5 +20,10 @@ namespace TodoSystem.UI.Tools.View
                 .OfType<Color>()
                 .ToList();
         }
+
+        /// <summary>
+        /// Gets a Color list
+        /// </summary>
+        public static IEnumerable<Color> Items { get; }
     }
 }

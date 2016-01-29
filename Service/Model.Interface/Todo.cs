@@ -10,46 +10,45 @@ namespace TodoSystem.Service.Model.Interface
     public class Todo
     {
         /// <summary>
-        /// Primary key.
+        /// Gets or sets a value of primary key.
         /// </summary>
         [DataMember]
         public int Id { get; set; }
 
         /// <summary>
-        /// Short title text.
+        /// Gets or sets short text title.
         /// </summary>
         [DataMember]
-        public string Title {  get; set; }
+        public string Title { get; set; }
 
         /// <summary>
-        /// Long text body.
+        /// Gets or sets long text body.
         /// </summary>
         [DataMember]
-        public string Desc {  get; set; }
+        public string Desc { get; set; }
 
         /// <summary>
-        /// Deadline date.
+        /// Gets or sets deadline date.
         /// </summary>
         [DataMember]
-        public DateTime Deadline {get; set; }
+        public DateTime Deadline { get; set; }
 
         /// <summary>
-        /// Primary key of compounded category.
+        /// Gets or sets primary key of compounded category.
         /// </summary>
         [DataMember]
-        public int CategoryId {  get; set; }
+        public int CategoryId { get; set; }
 
         /// <summary>
-        /// Checked state.
+        /// Gets or sets a value indicating whether checked state.
         /// </summary>
         [DataMember]
         public bool Checked { get; set; }
 
         /// <summary>
-        /// Priority.
+        /// Gets or sets priority.
         /// </summary>
         [DataMember]
-        public int Order {  get; set; }
-
+        public int Order { get; set; }
     }
 }

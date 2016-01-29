@@ -13,9 +13,19 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <TextBox Width="450" Text="{Binding Address}"/>
+            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding ApplyAddressCommand}">
+                <Image Source="http://icons.iconarchive.com/icons/hopstarter/soft-scraps/128/Button-Play-icon.png" />
+                <Button.ToolTip>
+                    <ToolTip Content="Appply service."/>
+                </Button.ToolTip>
+            </Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
             <RadioButton Width="110"
 						Style="{StaticResource {x:Static ToolBar.RadioButtonStyleKey}}"
 						Content="Todo" VerticalAlignment="Center" HorizontalAlignment="Stretch">
@@ -40,9 +50,15 @@
                     <ToolTip Content="Refresh list"/>
                 </Button.ToolTip>
             </Button>
-            
+            <Button Height="30" Width="30" HorizontalAlignment="Left" 
+                Command="{Binding ApplyCommand}">
+                <Image Source="http://icons.iconarchive.com/icons/hopstarter/sleek-xp-basic/128/Ok-icon.png" />
+                <Button.ToolTip>
+                    <ToolTip Content="Commit changes"/>
+                </Button.ToolTip>
+            </Button>
         </StackPanel>
-        <ContentPresenter Grid.Row="1" Content="{Binding Controller}">
+        <ContentPresenter Grid.Row="2" Content="{Binding Controller}">
             <ContentPresenter.Resources>
                 <DataTemplate DataType="{x:Type viewModel:TodoControllerViewModel}">
                     <controls:TodoControllerView/>

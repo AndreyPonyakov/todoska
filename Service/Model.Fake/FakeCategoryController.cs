@@ -16,6 +16,14 @@ namespace TodoSystem.Service.Model.Fake
         private readonly IStorageService _service;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FakeCategoryController"/> class.
+        /// </summary>
+        public FakeCategoryController()
+        {
+            _service = FakeStorageService.Instance;
+        }
+
+        /// <summary>
         /// Get full list if category.
         /// </summary>
         /// <returns>Category list. </returns>
@@ -44,39 +52,27 @@ namespace TodoSystem.Service.Model.Fake
         public IEnumerable<Category> SelectByName(string name)
         {
             return _service.CategoryList
-                .Where(c => c.Name == name)
-                .ToList();
+                .Where(c => c.Name == name);
         }
 
         /// <summary>
-        /// Create new category with target attributes.
+        /// Creates new category with target attributes.
         /// </summary>
         /// <param name="name">Short name. </param>
         /// <param name="color">Preferable color. </param>
-        /// <param name="order">Priority. </param>
+        /// <param name="order">Priority in the controller. </param>
         /// <returns>Category instance. </returns>
         public Category Create(string name, Color color, int order)
         {
-            var category = new Category()
-            {
-                Id = GeterateId(),
-                Name = name,
-                Color = color,
-                Order = order
-            };
+            var category = new Category
+                               {
+                                   Id = GeterateId(),
+                                   Name = name,
+                                   Color = color,
+                                   Order = order
+                               };
             _service.CategoryList.Add(category);
             return category;
-        }
-
-        /// <summary>
-        /// Generate new primary key.
-        /// </summary>
-        /// <returns></returns>
-        public int GeterateId()
-        {
-            return _service.CategoryList.Any()
-                ? _service.CategoryList.Max(c => c.Id) + 1
-                : 1;
         }
 
         /// <summary>
@@ -97,10 +93,10 @@ namespace TodoSystem.Service.Model.Fake
         }
 
         /// <summary>
-        /// Cahnge priority.
+        /// Change priority.
         /// </summary>
-        /// <param name="id">Primary key. </param>
-        /// <param name="order">Priority. </param>        
+        /// <param name="id">Primary key of current category. </param>
+        /// <param name="order">New priority. </param>
         public void ChangeOrder(int id, int order)
         {
             _service.CategoryList
@@ -109,16 +105,15 @@ namespace TodoSystem.Service.Model.Fake
                 .ForEach(t => t.Order = order);
         }
 
-
         /// <summary>
         /// Delete category by primary key.
         /// </summary>
         /// <param name="id">Primary key of category. </param>
         public void Delete(int id)
         {
-            if(_service.TodoList.Any(t => t.CategoryId == id))
+            if (_service.TodoList.Any(t => t.CategoryId == id))
             {
-                return;                
+                return;
             }
 
             var category = _service.CategoryList
@@ -130,13 +125,14 @@ namespace TodoSystem.Service.Model.Fake
         }
 
         /// <summary>
-        /// Create new instance of <see cref="FakeCategoryController"/>.
+        /// Generate new primary key.
         /// </summary>
-        /// <param name="service">Service instance. </param>
-        public FakeCategoryController()
+        /// <returns>Primary key for new category.</returns>
+        public int GeterateId()
         {
-            _service = FakeStorageService.Instance;
+            return _service.CategoryList.Any()
+                ? _service.CategoryList.Max(c => c.Id) + 1
+                : 1;
         }
-
     }
 }

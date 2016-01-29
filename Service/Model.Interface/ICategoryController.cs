@@ -11,14 +11,14 @@ namespace TodoSystem.Service.Model.Interface
     public interface ICategoryController
     {
         /// <summary>
-        /// Get full list if category.
+        /// Gets full list if category.
         /// </summary>
         /// <returns>Category list. </returns>
         [OperationContract]
         IEnumerable<Category> SelectAll();
 
         /// <summary>
-        /// Get single category by primary key.
+        /// Fetches single category by primary key.
         /// </summary>
         /// <param name="id">Primary key of category. </param>
         /// <returns>Category instance. </returns>
@@ -26,7 +26,7 @@ namespace TodoSystem.Service.Model.Interface
         Category SelectById(int id);
 
         /// <summary>
-        /// Get category list with target name. 
+        /// Fetches category list with target name. 
         /// </summary>
         /// <param name="name">Target name. </param>
         /// <returns>Category list. </returns>
@@ -34,11 +34,11 @@ namespace TodoSystem.Service.Model.Interface
         IEnumerable<Category> SelectByName(string name);
 
         /// <summary>
-        /// Create new category with target attributes.
+        /// Creates new category with target attributes.
         /// </summary>
         /// <param name="name">Short name. </param>
         /// <param name="color">Preferable color. </param>
-        /// <param name="order">Priority. </param>
+        /// <param name="order">New priority. </param>
         /// <returns>Category instance. </returns>
         [OperationContract]
         Category Create(string name, Color color, int order);
@@ -61,7 +61,7 @@ namespace TodoSystem.Service.Model.Interface
         /// Change priority of order.
         /// </summary>
         /// <param name="id">Primary key. </param>
-        /// <param name="order">Priority. </param>
+        /// <param name="order">Target priority in list. </param>
         [OperationContract]
         void ChangeOrder(int id, int order);
     }

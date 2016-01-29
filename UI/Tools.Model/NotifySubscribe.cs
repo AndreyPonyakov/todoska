@@ -15,11 +15,10 @@ namespace TodoSystem.UI.Tools.Model
         /// </summary>
         /// <typeparam name="T">Sender class type. </typeparam>
         /// <param name="sender">Sender class. </param>
-        /// <param name="handler">Property changed handler. </param>
         /// <param name="propertyName">Property name. </param>
+        /// <param name="handler">Property changed handler. </param>
         /// <returns>Sender class for fluent syntax. </returns>
-        public static T SetPropertyChanged<T>(this T sender,
-            string propertyName, Action handler)
+        public static T SetPropertyChanged<T>(this T sender, string propertyName, Action handler)
             where T : class, INotifyPropertyChanged
         {
             if (sender == null)
@@ -47,8 +46,21 @@ namespace TodoSystem.UI.Tools.Model
         /// <param name="propertyNames">List of property name. </param>
         /// <param name="handler">Property changed handler. </param>
         /// <returns>Sender class for fluent syntax. </returns>
-        private static T SetPropertyChanged<T>(this T sender,
-            IEnumerable<string> propertyNames, Action<string> handler)
+        public static T SetPropertyChanged<T>(this T sender, IEnumerable<string> propertyNames, Action handler)
+            where T : class, INotifyPropertyChanged
+        {
+            return sender.SetPropertyChanged(propertyNames, propertyName => handler());
+        }
+
+        /// <summary>
+        /// Create dependency from INPC property.
+        /// </summary>
+        /// <typeparam name="T">Sender class type. </typeparam>
+        /// <param name="sender">Sender class. </param>
+        /// <param name="propertyNames">List of property name. </param>
+        /// <param name="handler">Property changed handler. </param>
+        /// <returns>Sender class for fluent syntax. </returns>
+        private static T SetPropertyChanged<T>(this T sender, IEnumerable<string> propertyNames, Action<string> handler)
             where T : class, INotifyPropertyChanged
         {
             if (propertyNames != null && sender != null)
@@ -62,22 +74,8 @@ namespace TodoSystem.UI.Tools.Model
                         }
                     };
             }
-            return sender;
-        }
 
-        /// <summary>
-        /// Create dependency from INPC property.
-        /// </summary>
-        /// <typeparam name="T">Sender class type. </typeparam>
-        /// <param name="sender">Sender class. </param>
-        /// <param name="propertyNames">List of property name. </param>
-        /// <param name="handler">Property changed handler. </param>
-        /// <returns>Sender class for fluent syntax. </returns>
-        public static T SetPropertyChanged<T>(this T sender,
-            IEnumerable<string> propertyNames, Action handler)
-            where T : class, INotifyPropertyChanged
-        {
-            return sender.SetPropertyChanged(propertyNames, propertyName => handler());
+            return sender;
         }
     }
 }

@@ -5,6 +5,9 @@
     /// </summary>
     public partial class CategoryView
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryView"/> class.
+        /// </summary>
         public CategoryView()
         {
             InitializeComponent();

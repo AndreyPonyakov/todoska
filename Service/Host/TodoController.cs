@@ -1,11 +1,11 @@
-﻿using TodoSystem.Service.Model.Fake;
+﻿using Model.SqlCe;
 
 namespace Host
 {
     /// <summary>
     /// Service for Todo Controller.
     /// </summary>
-    public class TodoController : FakeTodoController
+    public class TodoController : SqlCeTodoController
     {
     }
 }

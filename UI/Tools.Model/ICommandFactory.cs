@@ -4,7 +4,7 @@ using System.Windows.Input;
 namespace TodoSystem.UI.Tools.Model
 {
     /// <summary>
-    /// Interface for cretate Command class in ViewModel layer.
+    /// Interface for create Command class in ViewModel layer.
     /// </summary>
     public interface ICommandFactory
     {

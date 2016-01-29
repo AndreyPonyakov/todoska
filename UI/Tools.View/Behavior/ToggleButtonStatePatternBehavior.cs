@@ -11,9 +11,38 @@ namespace TodoSystem.UI.Tools.View.Behavior
     /// </summary>
     public sealed class ToggleButtonStatePatternBehavior : Behavior<ToggleButton>
     {
+        /// <summary>
+        /// Dependency property of <see cref="TargetState"/>
+        /// </summary>
+        public static readonly DependencyProperty TargetStateProperty = DependencyProperty.Register(
+          nameof(TargetState), typeof(object), typeof(ToggleButtonStatePatternBehavior), new PropertyMetadata(null));
 
         /// <summary>
-        /// Attach behavior.
+        /// Dependency property of <see cref="State"/>
+        /// </summary>
+        public static readonly DependencyProperty StateProperty = DependencyProperty.Register(
+          nameof(State), typeof(object), typeof(ToggleButtonStatePatternBehavior), new PropertyMetadata(null));
+
+        /// <summary>
+        /// Gets or sets current state of VM.
+        /// </summary>
+        public object State
+        {
+            get { return GetValue(StateProperty); }
+            set { SetValue(StateProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets target state of VM when V must show.
+        /// </summary>
+        public object TargetState
+        {
+            get { return GetValue(TargetStateProperty); }
+            set { SetValue(TargetStateProperty, value); }
+        }
+
+        /// <summary>
+        /// Attaches behavior.
         /// </summary>
         protected override void OnAttached()
         {
@@ -29,7 +58,7 @@ namespace TodoSystem.UI.Tools.View.Behavior
         }
 
         /// <summary>
-        /// Detach behavior.
+        /// Detaches behavior.
         /// </summary>
         protected override void OnDetaching()
         {
@@ -40,8 +69,8 @@ namespace TodoSystem.UI.Tools.View.Behavior
         /// <summary>
         /// Attached event handler.
         /// </summary>
-        /// <param name="sender">Sender. </param>
-        /// <param name="e">Event argument. </param>
+        /// <param name="sender">Sender object (toggle button). </param>
+        /// <param name="e">Click event arguments. </param>
         private void AssociatedObjectOnChecked(object sender, RoutedEventArgs e)
         {
             if (AssociatedObject.IsChecked == true)
@@ -53,35 +82,5 @@ namespace TodoSystem.UI.Tools.View.Behavior
                 }
             }
         }
-
-        /// <summary>
-        /// Current state of VM.
-        /// </summary>
-        public object State
-        {
-            get { return GetValue(StateProperty); }
-            set { SetValue(StateProperty, value); }
-        }
-
-        /// <summary>
-        /// Dependency property of <see cref="State"/>
-        /// </summary>
-        public static readonly DependencyProperty StateProperty = DependencyProperty.Register(
-          nameof(State), typeof(object), typeof(ToggleButtonStatePatternBehavior), new PropertyMetadata(null));
-
-        /// <summary>
-        /// Target state of VM when V must show.
-        /// </summary>
-        public object TargetState
-        {
-            get { return GetValue(TargetStateProperty); }
-            set { SetValue(TargetStateProperty, value); }
-        }
-
-        /// <summary>
-        /// Dependency property of <see cref="TargetState"/>
-        /// </summary>
-        public static readonly DependencyProperty TargetStateProperty = DependencyProperty.Register(
-          nameof(TargetState), typeof(object), typeof(ToggleButtonStatePatternBehavior), new PropertyMetadata(null));
     }
 }

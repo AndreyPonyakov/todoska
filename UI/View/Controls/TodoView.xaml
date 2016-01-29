@@ -41,7 +41,7 @@
             </Button>
             <Button Height="30" Width="30" HorizontalAlignment="Left" 
                 Visibility="{Binding CanDelete, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Command="{Binding DeleteCommand}">
+                Command="{Binding TryDeleteCommand}">
                 <Image Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Actions-edit-delete-icon.png" />
                 <Button.ToolTip>
                     <ToolTip Content="Delete current todo..."/>

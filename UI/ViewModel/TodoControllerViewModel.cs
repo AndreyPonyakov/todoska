@@ -12,13 +12,9 @@ namespace TodoSystem.UI.ViewModel
     /// <summary>
     /// ViewModel class of Todo Controller.
     /// </summary>
-    public sealed class TodoControllerViewModel : BaseOrderedControllerViewModel
+    /// TODO: Pull members up.
+    public sealed class TodoControllerViewModel : BaseOrderedControllerViewModel<ITodoController>
     {
-        /// <summary>
-        /// Todo Service
-        /// </summary>
-        private readonly ITodoService _service;
-
         /// <summary>
         /// Factory for create ICommand instance
         /// </summary>
@@ -30,22 +26,52 @@ namespace TodoSystem.UI.ViewModel
         private readonly WorkspaceViewModel _workspace;
 
         /// <summary>
-        /// Category list.
+        /// Todo Service
+        /// </summary>
+        private ITodoService _service;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TodoControllerViewModel"/> class.
+        /// </summary>
+        /// <param name="commandFactory">Factory for create ICommand. </param>
+        /// <param name="workspace">Workspace with controllers. </param>
+        public TodoControllerViewModel(ICommandFactory commandFactory, WorkspaceViewModel workspace)
+        {
+            _commandFactory = commandFactory;
+            _workspace = workspace;
+
+            List = new ObservableCollection<TodoViewModel>();
+            CreateCategoryCommand = commandFactory.CreateCommand(() => CreateItem());
+            this.SetPropertyChanged(nameof(Service), () => Refresh());
+        }
+
+        /// <summary>
+        /// Gets or sets back-end service.
+        /// </summary>
+        public ITodoService Service
+        {
+            get { return _service; }
+            set { SetField(ref _service, value); }
+        }
+
+        /// <summary>
+        /// Gets value of category list.
         /// </summary>
         public ObservableCollection<TodoViewModel> List { get; }
 
         /// <summary>
-        /// Create category command.
+        /// Gets create category command.
         /// </summary>
-        public ICommand CreateCategoryCommand { get; set; }
+        public ICommand CreateCategoryCommand { get; }
 
         /// <summary>
-        /// Undo create category command.
+        /// Create new item in the todo list.
         /// </summary>
+        /// <returns>A new instance of the <see cref="TodoControllerClient"> class. </see>/></returns>
         public TodoViewModel CreateItem()
         {
             var todo = new TodoViewModel(_commandFactory, _service, _workspace);
-            todo.Order = (List.Any() ? List.Max(c => c.Order) : 0);
+            todo.Order = List.Any() ? List.Max(c => c.Order) : 0;
             List.Add(todo);
 
             todo
@@ -60,6 +86,7 @@ namespace TodoSystem.UI.ViewModel
                         {
                             List.Remove(todo);
                         }
+
                         todo.Canceled = false;
                     })
                 .SetPropertyChanged(
@@ -70,13 +97,14 @@ namespace TodoSystem.UI.ViewModel
                         {
                             List.Remove(todo);
                         }
+
                         todo.Deleted = false;
                     });
 
             todo.MoveToEvent += (sender, args) =>
             {
                 List.MoveTo(args.DataTransition);
-                List.Select((val, i) => new { Index = i, Value = val })
+                List.Select((val, i) => new { Value = val, Index = i })
                     .ToList()
                     .ForEach(rec => rec.Value.Order = rec.Index);
             };
@@ -84,34 +112,26 @@ namespace TodoSystem.UI.ViewModel
         }
 
         /// <summary>
-        /// Create <see cref="TodoControllerViewModel"/> instance.
+        /// Update from service.
         /// </summary>
-        /// <param name="commandFactory">Factory for create ICommand. </param>
-        /// <param name="service">Todo service. </param>
-        /// <param name="workspace">Workspace with controllers. </param>
-        public TodoControllerViewModel(ICommandFactory commandFactory, ITodoService service, 
-            WorkspaceViewModel workspace)
-        {
-            _service = service;
-            _commandFactory = commandFactory;
-            _workspace = workspace;
-
-            List = new ObservableCollection<TodoViewModel>();
-            CreateCategoryCommand = commandFactory.CreateCommand(() => CreateItem());
-        }
-
-        /// <summary>
-        /// Update from serveice.
-        /// </summary>
-        /// <param name="model">Model. </param>
-        public void Refresh(ITodoController model)
+        public void Refresh()
         {
             List.Clear();
-            model.SelectAll()
+            Service.TodoController.SelectAll()
                 .OrderBy(t => t.Order)
                 .ToList()
                 .ForEach(item => CreateItem().Refresh(item));
         }
 
+        /// <summary>
+        /// Commit all uncommitted changes.
+        /// </summary>
+        public void Apply()
+        {
+            List
+                .Where(item => item.CanApply)
+                .ToList()
+                .ForEach(item => item.Apply());
+        }
     }
 }

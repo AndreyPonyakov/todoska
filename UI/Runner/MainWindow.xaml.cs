@@ -6,7 +6,7 @@
     public partial class MainWindow
     {
         /// <summary>
-        /// Create <see cref="MainWindow"/> instance.
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
         public MainWindow()
         {
