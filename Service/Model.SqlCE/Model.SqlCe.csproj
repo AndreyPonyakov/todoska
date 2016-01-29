@@ -85,6 +85,7 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <None Include="packages.config" />
     <None Include="TodoModel.edmx.diagram">
       <DependentUpon>TodoModel.edmx</DependentUpon>

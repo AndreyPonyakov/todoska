@@ -4,13 +4,13 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TodoModel.Store" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TodoModel.Store" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Color" Type="int" />
           <Property Name="Order" Type="int" Nullable="false" />
         </EntityType>
@@ -20,18 +20,33 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Desc" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Desc" Type="nvarchar" MaxLength="200" />
           <Property Name="Deadline" Type="datetime" />
           <Property Name="CategoryId" Type="int" Nullable="false" />
-          <Property Name="Checked" Type="bit" />
+          <Property Name="Checked" Type="bit" Nullable="false" />
           <Property Name="Order" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Todo_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Todo" Type="Self.Todo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Todo">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="TodoModelStoreContainer">
           <EntitySet Name="Category" EntityType="Self.Category" store:Type="Tables" />
           <EntitySet Name="Todo" EntityType="Self.Todo" store:Type="Tables" />
+          <AssociationSet Name="FK_Todo_Category" Association="Self.FK_Todo_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Todo" EntitySet="Todo" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TodoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -40,8 +55,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Color" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Color" Type="Int32" Nullable="true" />
           <Property Name="Order" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Todoes" Relationship="TodoModel.CategoryTodo" FromRole="Category" ToRole="Todo" />
         </EntityType>
@@ -51,10 +66,10 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Desc" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Deadline" Type="DateTime" Precision="3" />
+          <Property Name="Desc" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Deadline" Type="DateTime" Precision="3" Nullable="true" />
           <Property Name="CategoryId" Type="Int32" Nullable="false" />
-          <Property Name="Checked" Type="Boolean" />
+          <Property Name="Checked" Type="Boolean" Nullable="false" />
           <Property Name="Order" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Category" Relationship="TodoModel.CategoryTodo" FromRole="Todo" ToRole="Category" />
         </EntityType>

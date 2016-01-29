@@ -10,8 +10,8 @@ namespace TodoSystem.UI.ViewModel.Event
     /// <typeparam name="TS">Source transition data type. </typeparam>
     /// <typeparam name="TD">Destination transition data type. </typeparam>
     /// <param name="sender">Sender element. </param>
-    /// <param name="args">Event handler arguments. </param>
-    public delegate void MoveToEventHandler<TS, TD>(object sender, MoveToEventHandlerArgs<TS, TD> args);
+    /// <param name="e">Event handler arguments. </param>
+    public delegate void MoveToEventHandler<TS, TD>(object sender, MoveToEventHandlerArgs<TS, TD> e);
 
     /// <summary>
     /// Event argument for MoveTo event.

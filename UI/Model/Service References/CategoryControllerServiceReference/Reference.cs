@@ -23,7 +23,7 @@ namespace TodoSystem.UI.Model.CategoryControllerServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Drawing.Color ColorField;
+        private System.Nullable<System.Drawing.Color> ColorField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdField;
@@ -45,7 +45,7 @@ namespace TodoSystem.UI.Model.CategoryControllerServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Drawing.Color Color {
+        public System.Nullable<System.Drawing.Color> Color {
             get {
                 return this.ColorField;
             }
@@ -129,10 +129,10 @@ namespace TodoSystem.UI.Model.CategoryControllerServiceReference {
         System.Threading.Tasks.Task<TodoSystem.UI.Model.CategoryControllerServiceReference.Category[]> SelectByNameAsync(string name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/Create", ReplyAction="http://tempuri.org/ICategoryController/CreateResponse")]
-        TodoSystem.UI.Model.CategoryControllerServiceReference.Category Create(string name, System.Drawing.Color color, int order);
+        TodoSystem.UI.Model.CategoryControllerServiceReference.Category Create(string name, System.Nullable<System.Drawing.Color> color, int order);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/Create", ReplyAction="http://tempuri.org/ICategoryController/CreateResponse")]
-        System.Threading.Tasks.Task<TodoSystem.UI.Model.CategoryControllerServiceReference.Category> CreateAsync(string name, System.Drawing.Color color, int order);
+        System.Threading.Tasks.Task<TodoSystem.UI.Model.CategoryControllerServiceReference.Category> CreateAsync(string name, System.Nullable<System.Drawing.Color> color, int order);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/Update", ReplyAction="http://tempuri.org/ICategoryController/UpdateResponse")]
         void Update(TodoSystem.UI.Model.CategoryControllerServiceReference.Category category);
@@ -204,11 +204,11 @@ namespace TodoSystem.UI.Model.CategoryControllerServiceReference {
             return base.Channel.SelectByNameAsync(name);
         }
         
-        public TodoSystem.UI.Model.CategoryControllerServiceReference.Category Create(string name, System.Drawing.Color color, int order) {
+        public TodoSystem.UI.Model.CategoryControllerServiceReference.Category Create(string name, System.Nullable<System.Drawing.Color> color, int order) {
             return base.Channel.Create(name, color, order);
         }
         
-        public System.Threading.Tasks.Task<TodoSystem.UI.Model.CategoryControllerServiceReference.Category> CreateAsync(string name, System.Drawing.Color color, int order) {
+        public System.Threading.Tasks.Task<TodoSystem.UI.Model.CategoryControllerServiceReference.Category> CreateAsync(string name, System.Nullable<System.Drawing.Color> color, int order) {
             return base.Channel.CreateAsync(name, color, order);
         }
         

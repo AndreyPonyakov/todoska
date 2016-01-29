@@ -39,6 +39,21 @@ namespace TodoSystem.UI.Tools.Model
         }
 
         /// <summary>
+        /// Create dependency from INPC property with once execute.
+        /// </summary>
+        /// <typeparam name="T">Sender class type. </typeparam>
+        /// <param name="sender">Sender class. </param>
+        /// <param name="propertyName">Property name. </param>
+        /// <param name="handler">Property changed handler. </param>
+        /// <returns>Sender class for fluent syntax. </returns>
+        public static T SetPropertyChangedWithExecute<T>(this T sender, string propertyName, Action handler)
+            where T : class, INotifyPropertyChanged
+        {
+            handler();
+            return sender.SetPropertyChanged(propertyName, handler);
+        }
+
+        /// <summary>
         /// Create dependency from INPC property.
         /// </summary>
         /// <typeparam name="T">Sender class type. </typeparam>

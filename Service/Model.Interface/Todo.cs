@@ -31,7 +31,7 @@ namespace TodoSystem.Service.Model.Interface
         /// Gets or sets deadline date.
         /// </summary>
         [DataMember]
-        public DateTime Deadline { get; set; }
+        public DateTime? Deadline { get; set; }
 
         /// <summary>
         /// Gets or sets primary key of compounded category.

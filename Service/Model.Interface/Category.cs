@@ -25,7 +25,7 @@ namespace TodoSystem.Service.Model.Interface
         /// Gets or sets preferable color of category.
         /// </summary>
         [DataMember]
-        public Color Color { get; set; }
+        public Color? Color { get; set; }
 
         /// <summary>
         /// Gets or sets priority of category in list.

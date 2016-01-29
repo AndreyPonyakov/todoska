@@ -19,7 +19,7 @@ namespace Model.SqlCe
         public string Desc { get; set; }
         public Nullable<System.DateTime> Deadline { get; set; }
         public int CategoryId { get; set; }
-        public Nullable<bool> Checked { get; set; }
+        public bool Checked { get; set; }
         public int Order { get; set; }
     
         public virtual Category Category { get; set; }

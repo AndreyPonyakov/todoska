@@ -20,9 +20,13 @@ namespace Model.SqlCe
                 cfg =>
                     {
                         cfg.CreateMap<Category, Interface.Category>()
-                            .ForMember(dest => dest.Color, opt => opt.MapFrom(src => Color.FromArgb(src.Color.Value)));
+                            .ForMember(
+                                dest => dest.Color,
+                                opt => opt.MapFrom(src => src.Color != null ? (Color?)Color.FromArgb(src.Color.Value) : null));
                         cfg.CreateMap<Interface.Category, Category>()
-                            .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Color.ToArgb()));
+                            .ForMember(
+                                dest => dest.Color,
+                                opt => opt.MapFrom(src => src.Color != null ? (int?)src.Color.Value.ToArgb() : null));
                     });
             Mapper = config.CreateMapper();
         }
@@ -85,7 +89,7 @@ namespace Model.SqlCe
         /// <param name="color">Preferable color. </param>
         /// <param name="order">New priority. </param>
         /// <returns>Category instance. </returns>
-        public Interface.Category Create(string name, Color color, int order)
+        public Interface.Category Create(string name, Color? color, int order)
         {
             using (var context = new TodoDbContext())
             {

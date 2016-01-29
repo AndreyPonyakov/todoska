@@ -1,32 +1,29 @@
-﻿using System.Windows.Input;
+﻿using System.ServiceModel;
+using System.Windows.Input;
+
 using TodoSystem.UI.Tools.Model;
-using TodoSystem.UI.ViewModel.Event;
 
 namespace TodoSystem.UI.ViewModel.Base
 {
     /// <summary>
-    /// Implement common functionality of item ViewModel.
+    /// Class with common functionality of item ViewModel in controller.
     /// </summary>
-    /// <typeparam name="TS">Service type. </typeparam>
-    /// <typeparam name="TM">Model type. </typeparam>
-    /// <typeparam name="TVM">ViewModel type. </typeparam>
-    // ReSharper disable once InconsistentNaming
-    public abstract class BaseOrderedItemViewModel<TS, TM, TVM> : BaseViewModel 
-        where TVM : BaseViewModel
-        where TM : class
+    /// <typeparam name="TService">Service type. </typeparam>
+    /// <typeparam name="TModel">Model type. </typeparam>
+    /// TODO: Move messages into resources.
+    public abstract class BaseItemViewModel<TService, TModel> : BaseViewModel, IItemViewModel<TModel>
+        where TModel : class
     {
         /// <summary>
         /// Back-end service if ViewModel.
         /// </summary>
-        protected readonly TS Service;
+        protected readonly TService Service;
 
         /// <summary>
         /// <see cref="ICommandFactory"/> instance.
         /// </summary>
         protected readonly ICommandFactory CommandFactory;
 
-        private int _order;
-        private bool _orderModified;
         private bool _modified;
 
         private bool _canceled;
@@ -34,11 +31,11 @@ namespace TodoSystem.UI.ViewModel.Base
         private bool _appended;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseOrderedItemViewModel{TS,TVM}"/> class.
+        /// Initializes a new instance of the <see cref="BaseItemViewModel{TService,TModel}"/> class.
         /// </summary>
         /// <param name="service">Back-end service. </param>
         /// <param name="commandFactory"><see cref="ICommand"/> factory.</param>
-        protected BaseOrderedItemViewModel(TS service, ICommandFactory commandFactory)
+        protected BaseItemViewModel(TService service, ICommandFactory commandFactory)
         {
             Service = service;
             CommandFactory = commandFactory;
@@ -47,32 +44,25 @@ namespace TodoSystem.UI.ViewModel.Base
             UndoCommand = CommandFactory.CreateCommand(Undo, () => CanUndo);
             TryDeleteCommand = CommandFactory.CreateCommand(TryDelete, () => CanDelete);
 
-            MoveToCommand = CommandFactory.CreateCommand(
-                parameter => MoveTo(((DataTransition)parameter).Cast<TVM, TVM>()));
-            this.SetPropertyChanged(nameof(Order), () => OrderModified = true)
-                .SetPropertyChanged(
-                    new[]
-                        {
-                            nameof(Appended), nameof(Canceled), nameof(Deleted)
-                        },
-                    () => OnPropertyChanged(nameof(InAction)))
+            this.SetPropertyChanged(
+                new[] { nameof(Appended), nameof(Canceled), nameof(Deleted) },
+                () => OnPropertyChanged(nameof(InAction)))
                 .SetPropertyChanged(
                     nameof(InAction),
                     () => OnPropertyChanged(nameof(CanDelete)))
                 .SetPropertyChanged(
                     new[] { nameof(InAction), nameof(Modified) },
                     () =>
-                    {
-                        OnPropertyChanged(nameof(CanApply));
-                        OnPropertyChanged(nameof(CanUndo));
-                    });
+                        {
+                            OnPropertyChanged(nameof(CanApply));
+                            OnPropertyChanged(nameof(CanUndo));
+                        });
         }
 
         /// <summary>
         /// Gets DTO back-end todo.
         /// </summary>
-        public TM Model { get; protected set; }
-
+        public TModel Model { get; protected set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether change notification flag of any property.
@@ -86,7 +76,6 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// Gets or sets a value indicating whether append notification.
         /// </summary>
-        /// TODO: implement event.
         public bool Appended
         {
             get { return _appended; }
@@ -96,7 +85,6 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// Gets or sets a value indicating whether cancel notification.
         /// </summary>
-        /// TODO: implement event.
         public bool Canceled
         {
             get { return _canceled; }
@@ -106,36 +94,10 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// Gets or sets a value indicating whether delete notification.
         /// </summary>
-        /// TODO: implement event.
         public bool Deleted
         {
             get { return _deleted; }
             set { SetField(ref _deleted, value); }
-        }
-
-        /// <summary>
-        /// MoveTo event handler.
-        /// </summary>
-        /// <typeparam name="TVM">ViewModel type. </typeparam>
-        public event MoveToEventHandler<TVM, TVM> MoveToEvent;
-
-        /// <summary>
-        /// Gets or sets priority.
-        /// </summary>
-        public int Order
-        {
-            get { return _order; }
-            set { SetField(ref _order, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether change notification flag of priority.
-        /// </summary>
-        /// 
-        public bool OrderModified
-        {
-            get { return _orderModified; }
-            set { SetField(ref _orderModified, value); }
         }
 
         /// <summary>
@@ -159,9 +121,10 @@ namespace TodoSystem.UI.ViewModel.Base
         public bool CanDelete => !InAction && Model != null;
 
         /// <summary>
-        /// Gets MoveTo command
+        /// Gets a value indicating whether service error.
         /// </summary>
-        public ICommand MoveToCommand { get; }
+        public bool HasServiceError { get; } = false;
+
         /// <summary>
         /// Gets create category command
         /// </summary>
@@ -178,42 +141,61 @@ namespace TodoSystem.UI.ViewModel.Base
         public ICommand TryDeleteCommand { get; protected set; }
 
         /// <summary>
-        /// MoveTo action.
+        /// Apply action.
         /// </summary>
-        /// <param name="dataTransition">Transition data. </param>
-        public void MoveTo(DataTransition<TVM, TVM> dataTransition)
+        public void Apply()
         {
-            if (dataTransition.Source == dataTransition.Destination)
+            ClearErrors(nameof(HasServiceError));
+
+            if (!ContentValidate())
             {
+                AppendErrors(nameof(HasServiceError), "Content did not pass validation.");
                 return;
             }
 
-            var args = new MoveToEventHandlerArgs<TVM, TVM>(dataTransition);
-            MoveToEvent?.Invoke(this, args);
-        }
-
-        /// <summary>
-        /// Apply action.
-        /// </summary>
-        /// TODO: implement event.
-        public void Apply()
-        {
             if (Model == null)
             {
-                Create();
-                Appended = true;
-                ClearMofidied();
+                if (Service == null)
+                {
+                    AppendErrors(nameof(HasServiceError), "Service did not initialize.");
+                    return;
+                }
+
+                try
+                {
+                    Create();
+                    Appended = true;
+                    ClearMofidied();
+                }
+                catch (FaultException)
+                {
+                    AppendErrors(nameof(HasServiceError), "Service cannot append this record.");
+                }
+                catch (CommunicationException)
+                {
+                    AppendErrors(nameof(HasServiceError), "Service encountered with problems.");
+                }
             }
             else
             {
-                Update();
+                try
+                {
+                    Update();
+                }
+                catch (FaultException)
+                {
+                    AppendErrors(nameof(HasServiceError), "Service cannot update this record.");
+                }
+                catch (CommunicationException)
+                {
+                    AppendErrors(nameof(HasServiceError), "Service encountered with problems.");
+                }
             }
         }
 
         /// <summary>
         /// Undo action.
         /// </summary>
-        /// TODO: implement event.
         public void Undo()
         {
             if (Model == null)
@@ -231,25 +213,37 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// Attempt complete delete action.
         /// </summary>
-        /// TODO: implement event.
         public void TryDelete()
         {
-            if (Delete())
+            ClearErrors(nameof(HasServiceError));
+            try
             {
-                Deleted = true;
+                if (Delete())
+                {
+                    Deleted = true;
+                }
+            }
+            catch (FaultException)
+            {
+                AppendErrors(nameof(HasServiceError), "Service cannot delete this record.");
+            }
+            catch (CommunicationException)
+            {
+                AppendErrors(nameof(HasServiceError), "Service encountered with problems.");
             }
         }
 
         /// <summary>
         /// Delete action.
         /// </summary>
+        /// <returns>True if records does't exist already. </returns>
         public abstract bool Delete();
 
         /// <summary>
         /// Refresh from service.
         /// </summary>
         /// <param name="model">DTO back-end of current todo. </param>
-        public virtual void Refresh(TM model)
+        public virtual void Refresh(TModel model)
         {
             ClearMofidied();
         }
@@ -268,9 +262,12 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// Set false for all modified properties. 
         /// </summary>
-        public virtual void ClearMofidied()
-        {
-            OrderModified = false;
-        }
+        public abstract void ClearMofidied();
+
+        /// <summary>
+        /// Checks validation of content properties.
+        /// </summary>
+        /// <returns>True if content passed validation. </returns>
+        public abstract bool ContentValidate();
     }
 }

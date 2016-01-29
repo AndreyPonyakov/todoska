@@ -1,12 +1,12 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using TodoSystem.UI.Model;
+using TodoSystem.UI.Runner.Properties;
 using TodoSystem.UI.Tools.View;
 using TodoSystem.UI.ViewModel;
 
 namespace TodoSystem.UI.Runner
 {
-    using TodoSystem.UI.Runner.Properties;
-
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -28,6 +28,8 @@ namespace TodoSystem.UI.Runner
                               };
 
             mainView.DataContext = context;
+            mainView.Dispatcher.ShutdownStarted +=
+                (sender, args) => (context.Service as IDisposable)?.Dispose();
         }
     }
 }

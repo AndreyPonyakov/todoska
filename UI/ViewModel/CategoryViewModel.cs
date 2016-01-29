@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
-using System.Windows.Input;
+using System.Linq;
+
 using TodoSystem.UI.Model;
 using TodoSystem.UI.Model.CategoryControllerServiceReference;
 using TodoSystem.UI.Tools.Model;
@@ -9,19 +10,18 @@ namespace TodoSystem.UI.ViewModel
 {
     /// <summary>
     /// ViewModel of category.
-    /// TODO State Pattern
     /// </summary>
-    public sealed class CategoryViewModel : BaseOrderedItemViewModel<ITodoService, Category, CategoryViewModel>
+    public sealed class CategoryViewModel : BaseOrderableItemViewModel<ITodoService, Category, CategoryViewModel>
     {
-        private string _name;
-        private Color _color;
+        private string _name = string.Empty;
+        private Color? _color;
 
         private bool _dataModified;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoryViewModel"/> class.
         /// </summary>
-        /// <param name="commandFactory">Factory for <see cref="ICommand"/> instance. </param>
+        /// <param name="commandFactory">Factory for command instance. </param>
         /// <param name="service">Todo service. </param>
         public CategoryViewModel(ICommandFactory commandFactory, ITodoService service)
             : base(service, commandFactory)
@@ -34,7 +34,10 @@ namespace TodoSystem.UI.ViewModel
                     () =>
                         {
                             Modified = DataModified || OrderModified;
-                        });
+                        })
+                .SetPropertyChangedWithExecute(
+                    nameof(Name),
+                    () => Validate(Name.Length > 3, nameof(Name), "Name must be more 3 characters."));
         }
 
         /// <summary>
@@ -49,7 +52,7 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// Gets or sets category color.
         /// </summary>
-        public Color Color
+        public Color? Color
         {
             get { return _color; }
             set { SetField(ref _color, value); }
@@ -126,6 +129,21 @@ namespace TodoSystem.UI.ViewModel
         {
             base.ClearMofidied();
             DataModified = false;
+        }
+
+        /// <summary>
+        /// Checks validation of content properties.
+        /// </summary>
+        /// <returns>True if content passed validation. </returns>
+        public override bool ContentValidate()
+        {
+            return !ErrorContainer
+                .Join(
+                    new[] { nameof(Name), nameof(Color), nameof(Order) },
+                    left => left.Key, 
+                    right => right,
+                    (left, right) => left.Value.Any())
+                .Any();
         }
     }
 }

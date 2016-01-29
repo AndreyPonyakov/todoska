@@ -34,7 +34,7 @@ namespace TodoSystem.UI.ViewModel
             ApplyCommand = commandFactory.CreateCommand(Apply);
             ApplyAddressCommand = commandFactory.CreateCommand(ApplyAddress);
 
-            CategoryController = new CategoryControllerViewModel(commandFactory);
+            CategoryController = new CategoryControllerViewModel(commandFactory, this);
             TodoController = new TodoControllerViewModel(commandFactory, this);
 
             Controller = TodoController;
@@ -53,7 +53,18 @@ namespace TodoSystem.UI.ViewModel
         public ITodoService Service
         {
             get { return _service; }
-            set { SetField(ref _service, value); }
+            set
+            {
+                var last = _service;
+                try
+                {
+                    SetField(ref _service, value);
+                }
+                finally
+                {
+                    (last as IDisposable)?.Dispose();
+                }
+            }
         }
 
         /// <summary>
@@ -100,16 +111,19 @@ namespace TodoSystem.UI.ViewModel
         public TodoControllerViewModel TodoController { get; }
 
         /// <summary>
-        /// Update from service.
+        /// Refreshes data from service.
         /// </summary>
         public void Refresh()
         {
+            CategoryController.Clear();
+            TodoController.Clear();
+
             CategoryController.Refresh();
             TodoController.Refresh();
         }
 
         /// <summary>
-        /// Commit all uncommitted changes.
+        /// Commits all uncommitted changes.
         /// </summary>
         public void Apply()
         {
@@ -118,10 +132,11 @@ namespace TodoSystem.UI.ViewModel
         }
 
         /// <summary>
-        /// Apply new address and create new service.
+        /// Applies new address and create new service.
         /// </summary>
         public void ApplyAddress()
         {
+            ClearErrors(nameof(Address));
             Service = _serviceFactory(Address);
         }
     }
