@@ -41,7 +41,7 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="order">New priority. </param>
         /// <returns>Category instance. </returns>
         [OperationContract]
-        Category Create(string name, Color color, int order);
+        Category Create(string name, Color? color, int order);
 
         /// <summary>
         /// Update category with target attributes.

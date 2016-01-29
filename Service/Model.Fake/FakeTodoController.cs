@@ -74,7 +74,7 @@ namespace TodoSystem.Service.Model.Fake
         /// <param name="categoryId">Primary key of category. </param>
         /// <param name="order">Priority in the controller. </param>
         /// <returns>Created todo. </returns>
-        public Todo Create(string title, string desc, DateTime deadline, int categoryId, int order)
+        public Todo Create(string title, string desc, DateTime? deadline, int categoryId, int order)
         {
             var todo = new Todo()
             {
@@ -164,7 +164,7 @@ namespace TodoSystem.Service.Model.Fake
         /// </summary>
         /// <param name="id">Primary key. </param>
         /// <param name="deadline">New deadline. </param>
-        public void SetDeadline(int id, DateTime deadline)
+        public void SetDeadline(int id, DateTime? deadline)
         {
             _service.TodoList
                 .Where(t => t.Id == id)

@@ -16,7 +16,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding CreateCategoryCommand}">
+            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding CreateItemCommand}">
                 <Image Source="http://icons.iconarchive.com/icons/hopstarter/button/128/Button-Add-icon.png" />
                 <Button.ToolTip>
                     <ToolTip Content="Append category..."/>

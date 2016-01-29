@@ -34,6 +34,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,8 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\BaseOrderedControllerViewModel.cs" />
-    <Compile Include="Base\BaseOrderedItemViewModel.cs" />
+    <Compile Include="Base\BaseItemViewModel.cs" />
+    <Compile Include="Base\BaseOrderableControllerViewModel.cs" />
+    <Compile Include="Base\BaseOrderableItemViewModel.cs" />
+    <Compile Include="Base\IItemViewModel.cs" />
+    <Compile Include="Base\IOrderableItemViewModel.cs" />
     <Compile Include="CategoryViewModel.cs" />
     <Compile Include="Event\MoveToEvent.cs" />
     <Compile Include="Event\MoveToEventHelper.cs" />

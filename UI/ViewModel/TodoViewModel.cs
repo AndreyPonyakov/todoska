@@ -11,16 +11,16 @@ namespace TodoSystem.UI.ViewModel
     /// <summary>
     /// ViewModel of Todo class.
     /// </summary>
-    public sealed class TodoViewModel : BaseOrderedItemViewModel<ITodoService, Todo, TodoViewModel>
+    public sealed class TodoViewModel : BaseOrderableItemViewModel<ITodoService, Todo, TodoViewModel>
     {
         /// <summary>
         /// <see cref="CategoryControllerViewModel"/> instance.
         /// </summary>
         private readonly CategoryControllerViewModel _categoryController;
 
-        private string _title;
+        private string _title = string.Empty;
         private string _desc;
-        private DateTime _deadline = DateTime.Now;
+        private DateTime? _deadline = DateTime.Now;
         private bool _checked;
 
         private bool _textModified;
@@ -65,8 +65,13 @@ namespace TodoSystem.UI.ViewModel
                             Modified = TextModified || CategoryModified
                                        || OrderModified || DeadlineModified
                                        || CheckedModified;
-                        });
-
+                        })
+                .SetPropertyChangedWithExecute(
+                    nameof(Title),
+                    () => Validate(Title.Length > 4, nameof(Title), "Title must have more 4 characters."))
+                .SetPropertyChangedWithExecute(
+                    nameof(Category),
+                    () => Validate(Category != null, nameof(Category), "Category must be not null."));
         }
 
         /// <summary>
@@ -90,7 +95,7 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// Gets or sets a deadline of current todo.
         /// </summary>
-        public DateTime Deadline
+        public DateTime? Deadline
         {
             get { return _deadline; }
             set { SetField(ref _deadline, value); }
@@ -161,8 +166,8 @@ namespace TodoSystem.UI.ViewModel
         /// <returns>True in case of operation successfulness. </returns>
         public override bool Delete()
         {
-            Service.CategoryController.Delete(Model.Id);
-            return Service.CategoryController.SelectById(Model.Id) == null;
+            Service.TodoController.Delete(Model.Id);
+            return Service.TodoController.SelectById(Model.Id) == null;
         }
 
         /// <summary>
@@ -250,7 +255,22 @@ namespace TodoSystem.UI.ViewModel
             DeadlineModified = false;
             CheckedModified = false;
             CategoryModified = false;
-            OrderModified = false;
         }
+
+        /// <summary>
+        /// Checks validation of content properties.
+        /// </summary>
+        /// <returns>True if content passed validation. </returns>
+        public override bool ContentValidate()
+        {
+            return !ErrorContainer
+                .Join(
+                    new[] { nameof(Title), nameof(Desc), nameof(Category), nameof(Deadline), nameof(Checked), nameof(Order) },
+                    left => left.Key,
+                    right => right,
+                    (left, right) => left.Value.Any())
+                .Any();
+        }
+
     }
 }

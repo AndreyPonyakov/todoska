@@ -9,7 +9,7 @@
   <xs:element name="ArrayOfCategory" nillable="true" type="tns:ArrayOfCategory" />
   <xs:complexType name="Category">
     <xs:sequence>
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Drawing" minOccurs="0" name="Color" type="q1:Color" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Drawing" minOccurs="0" name="Color" nillable="true" type="q1:Color" />
       <xs:element minOccurs="0" name="Id" type="xs:int" />
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Order" type="xs:int" />

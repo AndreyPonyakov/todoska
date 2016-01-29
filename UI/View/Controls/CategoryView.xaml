@@ -57,7 +57,12 @@
             </Button.ToolTip>
         </Button>
         <Grid MinWidth="200" Width="200">
-            <Rectangle Fill="Transparent"/>
+            <Grid MinWidth="200" Width="200">
+                <Label Background="Transparent">
+                    <TextBlock  Tag="{Binding HasServiceError}" Foreground="Red"
+                        Text="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Label>
+            </Grid>
         </Grid>
     </StackPanel>
 

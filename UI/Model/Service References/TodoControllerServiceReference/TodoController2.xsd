@@ -10,7 +10,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="CategoryId" type="xs:int" />
       <xs:element minOccurs="0" name="Checked" type="xs:boolean" />
-      <xs:element minOccurs="0" name="Deadline" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Deadline" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Desc" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Id" type="xs:int" />
       <xs:element minOccurs="0" name="Order" type="xs:int" />

@@ -51,7 +51,7 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="order">New priority value. </param>
         /// <returns>Created todo. </returns>
         [OperationContract]
-        Todo Create(string title, string desc, DateTime deadline, int categoryId, int order);
+        Todo Create(string title, string desc, DateTime? deadline, int categoryId, int order);
 
         /// <summary>
         /// Updates from other DTO todo instance. 
@@ -97,6 +97,6 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="id">Primary key. </param>
         /// <param name="deadline">Deadline time. </param>
         [OperationContract]
-        void SetDeadline(int id, DateTime deadline);
+        void SetDeadline(int id, DateTime? deadline);
     }
 }

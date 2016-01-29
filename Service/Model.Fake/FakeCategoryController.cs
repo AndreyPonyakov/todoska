@@ -62,7 +62,7 @@ namespace TodoSystem.Service.Model.Fake
         /// <param name="color">Preferable color. </param>
         /// <param name="order">Priority in the controller. </param>
         /// <returns>Category instance. </returns>
-        public Category Create(string name, Color color, int order)
+        public Category Create(string name, Color? color, int order)
         {
             var category = new Category
                                {

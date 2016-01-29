@@ -9,16 +9,31 @@
              xmlns:behavior="clr-namespace:TodoSystem.UI.Tools.View.Behavior;assembly=TodoSystem.UI.Tools.View"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModel:WorkspaceViewModel}"
-             d:DesignHeight="400" d:DesignWidth="600">
+             d:DesignHeight="500" d:DesignWidth="600">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <TextBox Width="450" Text="{Binding Address}"/>
-            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding ApplyAddressCommand}">
+            <TextBox Width="450" Text="{Binding Address}" Height="30" VerticalAlignment="Top">
+                <Validation.ErrorTemplate>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <AdornedElementPlaceholder x:Name="textBox"/>
+                            <ItemsControl ItemsSource="{Binding}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ErrorContent}" Foreground="Red"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Validation.ErrorTemplate>
+            </TextBox>
+            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding ApplyAddressCommand}"  VerticalAlignment="Top">
                 <Image Source="http://icons.iconarchive.com/icons/hopstarter/soft-scraps/128/Button-Play-icon.png" />
                 <Button.ToolTip>
                     <ToolTip Content="Appply service."/>

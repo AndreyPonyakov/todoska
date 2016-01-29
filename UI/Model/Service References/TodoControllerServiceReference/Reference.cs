@@ -29,7 +29,7 @@ namespace TodoSystem.UI.Model.TodoControllerServiceReference {
         private bool CheckedField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.DateTime DeadlineField;
+        private System.Nullable<System.DateTime> DeadlineField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescField;
@@ -80,7 +80,7 @@ namespace TodoSystem.UI.Model.TodoControllerServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime Deadline {
+        public System.Nullable<System.DateTime> Deadline {
             get {
                 return this.DeadlineField;
             }
@@ -183,10 +183,10 @@ namespace TodoSystem.UI.Model.TodoControllerServiceReference {
         System.Threading.Tasks.Task<TodoSystem.UI.Model.TodoControllerServiceReference.Todo[]> SelectByCategoryAsync(int categoryId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/Create", ReplyAction="http://tempuri.org/ITodoController/CreateResponse")]
-        TodoSystem.UI.Model.TodoControllerServiceReference.Todo Create(string title, string desc, System.DateTime deadline, int categoryId, int order);
+        TodoSystem.UI.Model.TodoControllerServiceReference.Todo Create(string title, string desc, System.Nullable<System.DateTime> deadline, int categoryId, int order);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/Create", ReplyAction="http://tempuri.org/ITodoController/CreateResponse")]
-        System.Threading.Tasks.Task<TodoSystem.UI.Model.TodoControllerServiceReference.Todo> CreateAsync(string title, string desc, System.DateTime deadline, int categoryId, int order);
+        System.Threading.Tasks.Task<TodoSystem.UI.Model.TodoControllerServiceReference.Todo> CreateAsync(string title, string desc, System.Nullable<System.DateTime> deadline, int categoryId, int order);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/Update", ReplyAction="http://tempuri.org/ITodoController/UpdateResponse")]
         void Update(TodoSystem.UI.Model.TodoControllerServiceReference.Todo todo);
@@ -219,10 +219,10 @@ namespace TodoSystem.UI.Model.TodoControllerServiceReference {
         System.Threading.Tasks.Task SetCategoryAsync(int id, int categoryId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/SetDeadline", ReplyAction="http://tempuri.org/ITodoController/SetDeadlineResponse")]
-        void SetDeadline(int id, System.DateTime deadline);
+        void SetDeadline(int id, System.Nullable<System.DateTime> deadline);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/SetDeadline", ReplyAction="http://tempuri.org/ITodoController/SetDeadlineResponse")]
-        System.Threading.Tasks.Task SetDeadlineAsync(int id, System.DateTime deadline);
+        System.Threading.Tasks.Task SetDeadlineAsync(int id, System.Nullable<System.DateTime> deadline);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -284,11 +284,11 @@ namespace TodoSystem.UI.Model.TodoControllerServiceReference {
             return base.Channel.SelectByCategoryAsync(categoryId);
         }
         
-        public TodoSystem.UI.Model.TodoControllerServiceReference.Todo Create(string title, string desc, System.DateTime deadline, int categoryId, int order) {
+        public TodoSystem.UI.Model.TodoControllerServiceReference.Todo Create(string title, string desc, System.Nullable<System.DateTime> deadline, int categoryId, int order) {
             return base.Channel.Create(title, desc, deadline, categoryId, order);
         }
         
-        public System.Threading.Tasks.Task<TodoSystem.UI.Model.TodoControllerServiceReference.Todo> CreateAsync(string title, string desc, System.DateTime deadline, int categoryId, int order) {
+        public System.Threading.Tasks.Task<TodoSystem.UI.Model.TodoControllerServiceReference.Todo> CreateAsync(string title, string desc, System.Nullable<System.DateTime> deadline, int categoryId, int order) {
             return base.Channel.CreateAsync(title, desc, deadline, categoryId, order);
         }
         
@@ -332,11 +332,11 @@ namespace TodoSystem.UI.Model.TodoControllerServiceReference {
             return base.Channel.SetCategoryAsync(id, categoryId);
         }
         
-        public void SetDeadline(int id, System.DateTime deadline) {
+        public void SetDeadline(int id, System.Nullable<System.DateTime> deadline) {
             base.Channel.SetDeadline(id, deadline);
         }
         
-        public System.Threading.Tasks.Task SetDeadlineAsync(int id, System.DateTime deadline) {
+        public System.Threading.Tasks.Task SetDeadlineAsync(int id, System.Nullable<System.DateTime> deadline) {
             return base.Channel.SetDeadlineAsync(id, deadline);
         }
     }

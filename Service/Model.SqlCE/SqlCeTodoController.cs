@@ -102,7 +102,7 @@ namespace Model.SqlCe
         /// <param name="categoryId">New category primary key. </param>
         /// <param name="order">New priority value. </param>
         /// <returns>Created todo. </returns>
-        public Interface.Todo Create(string title, string desc, DateTime deadline, int categoryId, int order)
+        public Interface.Todo Create(string title, string desc, DateTime? deadline, int categoryId, int order)
         {
             using (var context = new TodoDbContext())
             {
@@ -217,7 +217,7 @@ namespace Model.SqlCe
         /// </summary>
         /// <param name="id">Primary key. </param>
         /// <param name="deadline">Deadline time. </param>
-        public void SetDeadline(int id, DateTime deadline)
+        public void SetDeadline(int id, DateTime? deadline)
         {
             using (var context = new TodoDbContext())
             {

@@ -9,7 +9,7 @@ namespace TodoSystem.UI.Model
     /// <summary>
     /// Fake implementation of <see cref="ITodoService"/>.
     /// </summary>
-    public sealed class TodoService : ITodoService
+    public sealed class TodoService : ITodoService, IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TodoService"/> class.
@@ -17,7 +17,6 @@ namespace TodoSystem.UI.Model
         /// <param name="address">Root address string. </param>
         public TodoService(string address)
         {
-
             CategoryController =
                 new CategoryControllerClient(
                     new BasicHttpBinding(),
@@ -38,5 +37,14 @@ namespace TodoSystem.UI.Model
         /// Gets todo controller.
         /// </summary>
         public ITodoController TodoController { get; }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            (CategoryController as IDisposable)?.Dispose();
+            (TodoController as IDisposable)?.Dispose();
+        }
     }
 }
