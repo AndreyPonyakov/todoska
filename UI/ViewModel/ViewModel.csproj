@@ -49,6 +49,7 @@
     <Compile Include="Base\IItemViewModel.cs" />
     <Compile Include="Base\IOrderableItemViewModel.cs" />
     <Compile Include="CategoryViewModel.cs" />
+    <Compile Include="Event\ItemChangedEvent.cs" />
     <Compile Include="Event\MoveToEvent.cs" />
     <Compile Include="Event\MoveToEventHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

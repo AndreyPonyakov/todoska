@@ -27,6 +27,9 @@ namespace TodoSystem.UI.ViewModel
             : base(commandFactory)
         {
             _workspace = workspace;
+            CreateItemCommand = commandFactory.CreateCommand(
+                () => CreateItem(),
+                () => Service != null && workspace.GetErrors(nameof(Service)) == null);
         }
 
         /// <summary>

@@ -31,13 +31,11 @@ namespace TodoSystem.UI.ViewModel
                 () => DataModified = true)
                 .SetPropertyChanged(
                     new[] { nameof(OrderModified), nameof(DataModified) },
-                    () =>
-                        {
-                            Modified = DataModified || OrderModified;
-                        })
+                    () => { Modified = DataModified || OrderModified; })
                 .SetPropertyChangedWithExecute(
-                    nameof(Name),
-                    () => Validate(Name.Length > 3, nameof(Name), "Name must be more 3 characters."));
+                    nameof(Name), () => Validate(Name.Length > 3, nameof(Name), "Name must be more 3 characters."))
+                .SetPropertyChanged(
+                    new[] { nameof(Name), nameof(Color), nameof(Order) }, ItemChanged);
         }
 
         /// <summary>
@@ -143,7 +141,7 @@ namespace TodoSystem.UI.ViewModel
                     left => left.Key, 
                     right => right,
                     (left, right) => left.Value.Any())
-                .Any();
+                .Any(rec => rec);
         }
     }
 }

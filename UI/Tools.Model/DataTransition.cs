@@ -1,7 +1,9 @@
-﻿namespace TodoSystem.UI.Tools.Model
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace TodoSystem.UI.Tools.Model
 {
     /// <summary>
-    /// Data transition struct for drag-n-drop operation.
+    /// Data transition struct for transition operation.
     /// </summary>
     /// <typeparam name="TS">Source data type. </typeparam>
     /// <typeparam name="TD">Destination data type. </typeparam>
@@ -30,8 +32,9 @@
     }
 
     /// <summary>
-    /// Data transition struct for drag-n-drop operation.
+    /// Data transition struct for transition operation.
     /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Template class.")]
     public class DataTransition : DataTransition<object, object>
     {
         /// <summary>

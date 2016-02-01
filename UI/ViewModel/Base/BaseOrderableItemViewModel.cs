@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using TodoSystem.UI.Tools.Model;
 using TodoSystem.UI.ViewModel.Event;
 
@@ -49,7 +50,6 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// Gets or sets a value indicating whether change notification flag of priority.
         /// </summary>
-        /// 
         public bool OrderModified
         {
             get { return _orderModified; }

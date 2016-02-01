@@ -1,7 +1,9 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.ServiceModel;
 using System.Windows.Input;
 
 using TodoSystem.UI.Tools.Model;
+using TodoSystem.UI.ViewModel.Event;
 
 namespace TodoSystem.UI.ViewModel.Base
 {
@@ -60,7 +62,12 @@ namespace TodoSystem.UI.ViewModel.Base
         }
 
         /// <summary>
-        /// Gets DTO back-end todo.
+        /// On item changed event handler.
+        /// </summary>
+        public event ItemChangedEventHandler ItemChangedEvent;
+
+        /// <summary>
+        /// Gets or sets DTO back-end todo.
         /// </summary>
         public TModel Model { get; protected set; }
 
@@ -113,12 +120,12 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// Ability of command execute (undo).
         /// </summary>
-        public bool CanUndo => !InAction && (Modified || Model == null);
+        public bool CanUndo => !InAction && Model != null && Modified;
 
         /// <summary>
         /// Ability of command execute (delete).
         /// </summary>
-        public bool CanDelete => !InAction && Model != null;
+        public bool CanDelete => !InAction;
 
         /// <summary>
         /// Gets a value indicating whether service error.
@@ -136,7 +143,7 @@ namespace TodoSystem.UI.ViewModel.Base
         public ICommand UndoCommand { get; }
 
         /// <summary>
-        /// Gets delete  command.
+        /// Gets or sets delete  command.
         /// </summary>
         public ICommand TryDeleteCommand { get; protected set; }
 
@@ -198,12 +205,7 @@ namespace TodoSystem.UI.ViewModel.Base
         /// </summary>
         public void Undo()
         {
-            if (Model == null)
-            {
-                Canceled = true;
-                ClearMofidied();
-            }
-            else
+            if (Model != null)
             {
                 Refresh(Model);
                 ClearMofidied();
@@ -215,28 +217,47 @@ namespace TodoSystem.UI.ViewModel.Base
         /// </summary>
         public void TryDelete()
         {
-            ClearErrors(nameof(HasServiceError));
-            try
+            if (Model == null)
             {
-                if (Delete())
+                try
                 {
-                    Deleted = true;
+                    Canceled = true;
+                    ClearMofidied();
+                }
+                catch (FaultException)
+                {
+                    AppendErrors(nameof(HasServiceError), "Service cannot refresh this record.");
+                }
+                catch (CommunicationException)
+                {
+                    AppendErrors(nameof(HasServiceError), "Service encountered with problems.");
                 }
             }
-            catch (FaultException)
+            else
             {
-                AppendErrors(nameof(HasServiceError), "Service cannot delete this record.");
-            }
-            catch (CommunicationException)
-            {
-                AppendErrors(nameof(HasServiceError), "Service encountered with problems.");
+                ClearErrors(nameof(HasServiceError));
+                try
+                {
+                    if (Delete())
+                    {
+                        Deleted = true;
+                    }
+                }
+                catch (FaultException)
+                {
+                    AppendErrors(nameof(HasServiceError), "Service cannot delete this record.");
+                }
+                catch (CommunicationException)
+                {
+                    AppendErrors(nameof(HasServiceError), "Service encountered with problems.");
+                }
             }
         }
 
         /// <summary>
         /// Delete action.
         /// </summary>
-        /// <returns>True if records does't exist already. </returns>
+        /// <returns>True if records doesn't exist already. </returns>
         public abstract bool Delete();
 
         /// <summary>
@@ -269,5 +290,13 @@ namespace TodoSystem.UI.ViewModel.Base
         /// </summary>
         /// <returns>True if content passed validation. </returns>
         public abstract bool ContentValidate();
+
+        /// <summary>
+        /// Handles item changed behavior.
+        /// </summary>
+        protected virtual void ItemChanged()
+        {
+            ItemChangedEvent?.Invoke(this, new EventArgs());
+        }
     }
 }

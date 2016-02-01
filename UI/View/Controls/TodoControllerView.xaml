@@ -8,22 +8,85 @@
              xmlns:behavior="clr-namespace:TodoSystem.UI.Tools.View.Behavior;assembly=TodoSystem.UI.Tools.View"
              xmlns:controls="clr-namespace:TodoSystem.UI.View.Controls"
              d:DataContext="{d:DesignInstance viewModel:TodoControllerViewModel}"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Margin="0,0,-443,0">
+             mc:Ignorable="d" >
+    <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding CreateItemCommand}">
-                <Image Source="http://icons.iconarchive.com/icons/hopstarter/button/128/Button-Add-icon.png" />
+        <Grid Grid.Column="0" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" MinWidth="100"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="25"/>
+            </Grid.ColumnDefinitions>
+            <Label FontWeight="Bold" Width="32" Grid.Column="0" HorizontalAlignment="Center">
+                <TextBlock TextDecorations="Underline" Margin="4,0,0,0">#</TextBlock>
+            </Label>
+            <Label FontWeight="Bold" Grid.Column="1">
+                <TextBlock TextDecorations="Underline">Title</TextBlock>
+            </Label>
+            <Label FontWeight="Bold" Grid.Column="2">
+                <TextBlock TextDecorations="Underline">Description</TextBlock>
+            </Label>
+            <StackPanel Orientation="Horizontal" Grid.Column="3">
+                <Label FontWeight="Bold" Width="184">
+                    <TextBlock TextDecorations="Underline">Category</TextBlock>
+                </Label>
+                <Label FontWeight="Bold" Width="102">
+                    <TextBlock TextDecorations="Underline">Deadline</TextBlock>
+                </Label>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button  Margin="0,6,0,0" Height="23" Grid.Column="1"
+                     HorizontalAlignment="Left" Command="{Binding CreateItemCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="http://icons.iconarchive.com/icons/hopstarter/button/128/Button-Add-icon.png" />
+                    <TextBlock Margin="6,0,6,0">Add</TextBlock>
+                </StackPanel>
                 <Button.ToolTip>
                     <ToolTip Content="Append todo..."/>
                 </Button.ToolTip>
             </Button>
-        </StackPanel>
-        <ListBox Grid.Row="1" ItemsSource="{Binding List}">
+        </Grid>        
+        <ListBox Grid.Row="1" ItemsSource="{Binding List}" BorderThickness="0">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <StackPanel>
+                                    <Separator x:Name="Separator" Visibility="Collapsed"/>
+                                    <ContentPresenter/>
+                                    <Separator />
+                                </StackPanel>
+                                <ControlTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                        <Setter Property="Visibility" TargetName="Separator" Value="Visible"/>
+                                    </DataTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True" >
+                            <Setter Property="Background" Value="Transparent" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                    </Style.Resources>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0" AllowDrop="True">
@@ -38,8 +101,6 @@
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-
         </ListBox>
     </Grid>
-
 </UserControl>

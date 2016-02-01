@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace TodoSystem.UI.Tools.View.Converter
 {
     /// <summary>
-    /// Converter from System.Drawing.Color to System.Windows.Media.Color.
+    /// Class-converter to hide empty error's list.
     /// </summary>
-    public sealed class DrawingColorToMediaColorConverter : IValueConverter
+    public sealed class ErrorCollectionToVisibilityConverter : IValueConverter
     {
         /// <summary>
         /// Right converter.
@@ -19,19 +23,13 @@ namespace TodoSystem.UI.Tools.View.Converter
         /// <returns>Converted value. </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is System.Drawing.Color?)
+            var collection = value as ReadOnlyObservableCollection<ValidationError>;
+            if (collection == null || !collection.Any())
             {
-                var ccolor = ((System.Drawing.Color?)value).Value;
-                return System.Windows.Media.Color.FromArgb(ccolor.A, ccolor.R, ccolor.G, ccolor.B);
+                return Visibility.Collapsed;
             }
 
-            if (value is System.Drawing.Color)
-            {
-                var color = (System.Drawing.Color)value;
-                return System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
-            }
-
-            return null;
+            return Visibility.Visible;
         }
 
         /// <summary>
@@ -44,13 +42,7 @@ namespace TodoSystem.UI.Tools.View.Converter
         /// <returns>Converted value. </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is System.Windows.Media.Color)
-            {
-                var color = (System.Windows.Media.Color)value;
-                return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
-            }
-
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

@@ -71,7 +71,10 @@ namespace TodoSystem.UI.ViewModel
                     () => Validate(Title.Length > 4, nameof(Title), "Title must have more 4 characters."))
                 .SetPropertyChangedWithExecute(
                     nameof(Category),
-                    () => Validate(Category != null, nameof(Category), "Category must be not null."));
+                    () => Validate(Category != null, nameof(Category), "Category must be not null."))
+                .SetPropertyChanged(
+                    new[] { nameof(Title), nameof(Desc), nameof(Category), nameof(Deadline), nameof(Checked), nameof(Order) }, 
+                    ItemChanged);
         }
 
         /// <summary>
@@ -269,8 +272,7 @@ namespace TodoSystem.UI.ViewModel
                     left => left.Key,
                     right => right,
                     (left, right) => left.Value.Any())
-                .Any();
+                .Any(rec => rec);
         }
-
     }
 }

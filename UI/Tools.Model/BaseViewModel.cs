@@ -52,6 +52,61 @@ namespace TodoSystem.UI.Tools.Model
         }
 
         /// <summary>
+        /// Validates for the property named <paramref name="propertyName"/>.
+        /// </summary>
+        /// <param name="isValid">New validate state. </param>
+        /// <param name="propertyName">The name of the property. </param>
+        /// <param name="message">Validate message. </param>
+        /// <param name="unique">True for repeatable message. </param>
+        public void Validate(bool isValid, string propertyName, string message, bool unique = true)
+        {
+            if (isValid)
+            {
+                ClearErrors(propertyName);
+            }
+            else
+            {
+                AppendErrors(propertyName, message, unique);
+            }
+        }
+
+        /// <summary>
+        /// Append errors for the property named <paramref name="propertyName"/>.
+        /// </summary>
+        /// <param name="propertyName">The name of the property. </param>
+        /// <param name="message">Validate message. </param>
+        /// <param name="unique">False for repeatable message. </param>
+        public void AppendErrors(string propertyName, string message, bool unique = true)
+        {
+            if (ErrorContainer.ContainsKey(propertyName))
+            {
+                if (!unique || !ErrorContainer[propertyName].Contains(message))
+                {
+                    ErrorContainer[propertyName].Add(message);
+                    RaiseErrorsChanged(propertyName);
+                }
+            }
+            else
+            {
+                ErrorContainer[propertyName] = new List<string> { message };
+                RaiseErrorsChanged(propertyName);
+            }
+        }
+
+        /// <summary>
+        /// Remove errors for the property named <paramref name="propertyName"/>.
+        /// </summary>
+        /// <param name="propertyName">The name of the property. </param>
+        public void ClearErrors(string propertyName)
+        {
+            if (ErrorContainer.ContainsKey(propertyName))
+            {
+                ErrorContainer.Remove(propertyName);
+                RaiseErrorsChanged(propertyName);
+            }
+        }
+
+        /// <summary>
         /// Property changed 
         /// </summary>
         /// <param name="propertyName">Changed property name. </param>
@@ -94,61 +149,6 @@ namespace TodoSystem.UI.Tools.Model
         protected void RaiseErrorsChanged(string propertyName)
         {
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-        }
-
-        /// <summary>
-        /// Validates for the property named <paramref name="propertyName"/>.
-        /// </summary>
-        /// <param name="isValid">New validate state. </param>
-        /// <param name="propertyName">The name of the property. </param>
-        /// <param name="message">Validate message. </param>
-        /// <param name="unique">True for repeatable message. </param>
-        public void Validate(bool isValid, string propertyName, string message, bool unique = true)
-        {
-            if (isValid)
-            {
-                ClearErrors(propertyName);
-            }
-            else
-            {
-                AppendErrors(propertyName, message, unique);
-            }
-        }
-
-        /// <summary>
-        /// Append erros for the property named <paramref name="propertyName"/>.
-        /// </summary>
-        /// <param name="propertyName">The name of the property. </param>
-        /// <param name="message">Validate message. </param>
-        /// <param name="unique">False for repeatable message. </param>
-        public void AppendErrors(string propertyName, string message, bool unique = true)
-        {
-            if (ErrorContainer.ContainsKey(propertyName))
-            {
-                if (!unique || !ErrorContainer[propertyName].Contains(message))
-                {
-                    ErrorContainer[propertyName].Add(message);
-                    RaiseErrorsChanged(propertyName);
-                }
-            }
-            else
-            {
-                ErrorContainer[propertyName] = new List<string> { message };
-                RaiseErrorsChanged(propertyName);
-            }
-        }
-
-        /// <summary>
-        /// Remove erros for the property named <paramref name="propertyName"/>.
-        /// </summary>
-        /// <param name="propertyName">The name of the property. </param>
-        public void ClearErrors(string propertyName)
-        {
-            if (ErrorContainer.ContainsKey(propertyName))
-            {
-                ErrorContainer.Remove(propertyName);
-                RaiseErrorsChanged(propertyName);
-            }
         }
     }
 }

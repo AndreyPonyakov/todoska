@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseViewModel.cs" />
-    <Compile Include="DataTransition.cs" />
+    <Compile Include="DataTransition.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="NotifyPropertyChangedHelper.cs" />
     <Compile Include="NotifySubscribe.cs" />

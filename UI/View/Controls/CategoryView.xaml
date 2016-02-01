@@ -6,49 +6,68 @@
              xmlns:viewModel="clr-namespace:TodoSystem.UI.ViewModel;assembly=TodoSystem.UI.ViewModel"
              xmlns:view="clr-namespace:TodoSystem.UI.Tools.View;assembly=TodoSystem.UI.Tools.View"
              xmlns:converter="clr-namespace:TodoSystem.UI.Tools.View.Converter;assembly=TodoSystem.UI.Tools.View"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behavior="clr-namespace:TodoSystem.UI.Tools.View.Behavior;assembly=TodoSystem.UI.Tools.View"
              d:DataContext="{d:DesignInstance viewModel:CategoryViewModel}"
-             mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="500">
+             mc:Ignorable="d" >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converter:DrawingColorToMediaColorConverter x:Key="DrawingColorToMediaColorConverter"/>
+        <converter:ErrorCollectionToVisibilityConverter x:Key="ErrorCollectionToVisibilityConverter"/>
         <view:StandardColors x:Key="StandardColors" />
     </UserControl.Resources>
-    <StackPanel Orientation="Horizontal">
-        <StackPanel.Background>
-            <SolidColorBrush Color="{Binding Color, Converter={StaticResource DrawingColorToMediaColorConverter}}" />
-        </StackPanel.Background>
-        <TextBox Width="200"  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" />
-        <ComboBox Width="200"  ItemsSource="{Binding Source={StaticResource StandardColors}, Path=Items}" 
-                  SelectedItem="{Binding Color, Mode=TwoWay}" SelectedValuePath="Name"  Background="Transparent">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Height="18" Margin="0,0,0,2">
-                        <Border BorderThickness="1" CornerRadius="2" 
-                  BorderBrush="Black" Width="50" VerticalAlignment="Stretch"
-                  Background="{Binding Name}"/>
-                        <TextBlock Text="{Binding Name}" Margin="8,0,0,0"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <Button Height="30" Width="30" HorizontalAlignment="Left" 
-                Visibility="{Binding CanApply, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Command="{Binding ApplyCommand}">
-            <Image Source="http://icons.iconarchive.com/icons/hopstarter/sleek-xp-basic/128/Ok-icon.png" />
-            <Button.ToolTip>
-                <ToolTip Content="Cancel appended category..."/>
-            </Button.ToolTip>
-        </Button>
-        <Button Height="30" Width="30" HorizontalAlignment="Left" 
-                Visibility="{Binding CanUndo, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Command="{Binding UndoCommand}">
-            <Image Source="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-9/128/Undo-icon.png" />
-            <Button.ToolTip>
-                <ToolTip Content="Cancel changed category..."/>
-            </Button.ToolTip>
-        </Button>
-        <Button Height="30" Width="30" HorizontalAlignment="Left" 
+    <i:Interaction.Triggers>
+        <view:DataEventTrigger EventName="ItemChangedEvent">
+            <i:InvokeCommandAction Command="{Binding ApplyCommand}"/>
+        </view:DataEventTrigger>
+    </i:Interaction.Triggers>
+    <Grid HorizontalAlignment="Stretch" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="25"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0">
+            <TextBox Width="200" Text="{Binding Name, UpdateSourceTrigger=LostFocus}" Name ="CategoryName" Background="Transparent" Margin="6">
+                <i:Interaction.Behaviors>
+                    <behavior:UpdatePropertyOnEnterPressBehavior
+                        Element="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
+                        Property="TextBox.Text"/>
+                    <behavior:RevertPropertyOnEscPressBehavior
+                        Element="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
+                        Property="TextBox.Text" Command="{Binding UndoCommand}"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <ComboBox Width="80"  ItemsSource="{Binding Source={StaticResource StandardColors}, Path=Items}"  Margin="6"
+                  SelectedItem="{Binding Color, Mode=TwoWay}" SelectedValuePath="Name">
+                <ComboBox.Background>
+                    <SolidColorBrush Color="{Binding Color, Converter={StaticResource DrawingColorToMediaColorConverter}}" Opacity="0.7"/>
+                </ComboBox.Background>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Height="18" Margin="0,0,0,2">
+                            <Border BorderThickness="1" CornerRadius="2" 
+                                BorderBrush="Black" Width="50" VerticalAlignment="Stretch"
+                                Background="{Binding Name}"/>
+                            <TextBlock Text="{Binding Name}" Margin="8,0,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Width" Value="200"/>
+                        <Style.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue"/>
+                        </Style.Resources>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
+        </StackPanel>
+        <Button Height="23" Width="23" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="0"
                 Visibility="{Binding CanDelete, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Command="{Binding TryDeleteCommand}">
             <Image Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Actions-edit-delete-icon.png" />
@@ -56,14 +75,16 @@
                 <ToolTip Content="Delete current category..."/>
             </Button.ToolTip>
         </Button>
-        <Grid MinWidth="200" Width="200">
-            <Grid MinWidth="200" Width="200">
-                <Label Background="Transparent">
-                    <TextBlock  Tag="{Binding HasServiceError}" Foreground="Red"
-                        Text="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-                </Label>
-            </Grid>
+        <Label Margin="0,3,0,0" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" 
+                Tag="{Binding HasServiceError}" Foreground="Red" BorderThickness="0"
+                Visibility="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors), Converter={StaticResource ErrorCollectionToVisibilityConverter}}"
+                Content="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}">
+            <Validation.ErrorTemplate>
+                <ControlTemplate />
+            </Validation.ErrorTemplate>
+        </Label>
+        <Grid Grid.Column="1" Grid.Row="0">
+            <Rectangle Fill="Transparent"/>
         </Grid>
-    </StackPanel>
-
+    </Grid>
 </UserControl>
