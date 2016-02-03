@@ -6,9 +6,9 @@ using System.Linq;
 namespace TodoSystem.UI.Tools.Model
 {
     /// <summary>
-    /// Class for create dependency.
+    /// Class for create property changed dependency.
     /// </summary>
-    public static class NotifySubscribe
+    public static class NotifyPropertyChangeSubscriber
     {
         /// <summary>
         /// Create dependency from INPC property.

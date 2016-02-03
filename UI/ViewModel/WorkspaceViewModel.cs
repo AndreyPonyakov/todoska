@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 using TodoSystem.UI.Model;
 using TodoSystem.UI.Tools.Model;
@@ -34,7 +35,7 @@ namespace TodoSystem.UI.ViewModel
             ApplyCommand = commandFactory.CreateCommand(Apply);
             ApplyAddressCommand = commandFactory.CreateCommand(ApplyAddress);
 
-            CategoryController = new CategoryControllerViewModel(commandFactory, this);
+            CategoryController = new CategoryControllerViewModel(commandFactory);
             TodoController = new TodoControllerViewModel(commandFactory, this);
 
             Controller = TodoController;
@@ -45,6 +46,18 @@ namespace TodoSystem.UI.ViewModel
                         CategoryController.Service = Service;
                         TodoController.Service = Service;
                     });
+            Action serviceNotifyError = () =>
+                {
+                    ClearErrors(nameof(Address));
+                    var todoErrors = TodoController.GetErrors(nameof(TodoController.Service)) ?? Enumerable.Empty<string>();
+                    var categoryErrors = CategoryController.GetErrors(nameof(CategoryController.Service)) ?? Enumerable.Empty<string>();
+                    todoErrors.Cast<string>()
+                        .Union(categoryErrors.OfType<string>())
+                        .ToList()
+                        .ForEach(message => AppendErrors(nameof(Address), message));
+                };
+            TodoController.SetDataErrorInfo(nameof(TodoController.Service), serviceNotifyError);
+            CategoryController.SetDataErrorInfo(nameof(CategoryController.Service), serviceNotifyError);
         }
 
         /// <summary>
@@ -52,7 +65,11 @@ namespace TodoSystem.UI.ViewModel
         /// </summary>
         public ITodoService Service
         {
-            get { return _service; }
+            get
+            {
+                return _service;
+            }
+
             set
             {
                 var last = _service;

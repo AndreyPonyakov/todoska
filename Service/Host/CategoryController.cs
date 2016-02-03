@@ -1,6 +1,4 @@
-﻿using TodoSystem.Service.Model.Fake;
-
-namespace Host
+﻿namespace Host
 {
     using Model.SqlCe;
 

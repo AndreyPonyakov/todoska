@@ -68,7 +68,7 @@ namespace Model.SqlCe
         }
 
         /// <summary>
-        /// Fetches category list with target name. 
+        /// Fetches category list with target name.
         /// </summary>
         /// <param name="name">Target name. </param>
         /// <returns>Category list. </returns>
@@ -93,7 +93,7 @@ namespace Model.SqlCe
         {
             using (var context = new TodoDbContext())
             {
-                var dto = new Interface.Category()
+                var dto = new Interface.Category
                               {
                                   Order = order,
                                   Name = name,

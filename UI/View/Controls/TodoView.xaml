@@ -16,7 +16,7 @@
         <converter:ErrorCollectionToVisibilityConverter x:Key="ErrorCollectionToVisibilityConverter"/>
     </UserControl.Resources>
     <i:Interaction.Triggers>
-        <view:DataEventTrigger EventName="ItemChangedEvent">
+        <view:DataEventTrigger EventName="AttributeChanged">
             <i:InvokeCommandAction Command="{Binding ApplyCommand}"/>
         </view:DataEventTrigger>
     </i:Interaction.Triggers>

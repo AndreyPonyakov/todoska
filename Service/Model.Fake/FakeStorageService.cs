@@ -18,7 +18,7 @@ namespace TodoSystem.Service.Model.Fake
         }
 
         /// <summary>
-        /// Prevents a default instance of the<see cref="FakeStorageService"/> class from being created.
+        /// Prevents a default instance of the <see cref="FakeStorageService"/> class from being created.
         /// </summary>
         private FakeStorageService()
         {
@@ -27,7 +27,7 @@ namespace TodoSystem.Service.Model.Fake
         }
 
         /// <summary>
-        /// Singleton instance of <see cref="IStorageService" />.
+        /// Gets singleton instance of <see cref="IStorageService" />.
         /// </summary>
         public static IStorageService Instance => InstaceLazy.Value;
 
@@ -43,7 +43,7 @@ namespace TodoSystem.Service.Model.Fake
 
         /// <summary>
         /// Gets backed field of <see cref="IStorageService"/> instance.
-        /// Implement lazy singleton pattern. 
+        /// Implement lazy singleton pattern.
         /// </summary>
         private static Lazy<IStorageService> InstaceLazy { get; }
     }

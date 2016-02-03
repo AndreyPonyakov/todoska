@@ -1,7 +1,3 @@
-using System;
-using System.ComponentModel;
-using System.Windows.Input;
-
 using TodoSystem.UI.Tools.Model;
 using TodoSystem.UI.ViewModel.Event;
 
@@ -13,14 +9,13 @@ namespace TodoSystem.UI.ViewModel.Base
     /// <typeparam name="TModel">Model type. </typeparam>
     /// <typeparam name="TViewModel">ViewModel type. </typeparam>
     public interface IOrderableItemViewModel<TModel, TViewModel> : IItemViewModel<TModel>
-        where TModel : class 
+        where TModel : class
         where TViewModel : BaseViewModel
     {
         /// <summary>
-        /// MoveTo event handler.
+        /// Moved event handler.
         /// </summary>
-        /// <typeparam name="TViewModel">ViewModel type. </typeparam>
-        event MoveToEventHandler<TViewModel, TViewModel> MoveToEvent;
+        event MovedEventHandler<TViewModel, TViewModel> Moved;
 
         /// <summary>
         /// Gets or sets priority.

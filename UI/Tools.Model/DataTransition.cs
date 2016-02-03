@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
+﻿#pragma warning disable SA1402 // File may only contain a single class
 namespace TodoSystem.UI.Tools.Model
 {
     /// <summary>
@@ -10,7 +9,7 @@ namespace TodoSystem.UI.Tools.Model
     public class DataTransition<TS, TD>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataTransition{TS,TD}"/> class. 
+        /// Initializes a new instance of the <see cref="DataTransition{TS,TD}"/> class.
         /// </summary>
         /// <param name="source">Source data of operation. </param>
         /// <param name="destination">Destination data of operation. </param>
@@ -34,11 +33,10 @@ namespace TodoSystem.UI.Tools.Model
     /// <summary>
     /// Data transition struct for transition operation.
     /// </summary>
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Template class.")]
     public class DataTransition : DataTransition<object, object>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataTransition"/> class. 
+        /// Initializes a new instance of the <see cref="DataTransition"/> class.
         /// </summary>
         /// <param name="source">Source data of operation. </param>
         /// <param name="destination">Destination data of operation. </param>
@@ -59,3 +57,4 @@ namespace TodoSystem.UI.Tools.Model
         }
     }
 }
+#pragma warning restore SA1402 // File may only contain a single class

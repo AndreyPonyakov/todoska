@@ -27,9 +27,6 @@ namespace TodoSystem.UI.ViewModel
             : base(commandFactory)
         {
             _workspace = workspace;
-            CreateItemCommand = commandFactory.CreateCommand(
-                () => CreateItem(),
-                () => Service != null && workspace.GetErrors(nameof(Service)) == null);
         }
 
         /// <summary>
@@ -46,9 +43,9 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// Update from service.
         /// </summary>
-        /// TODO: implement pull model of notifying errors.
         public override void Refresh()
         {
+            ClearErrors(nameof(Service));
             try
             {
                 List.Clear();
@@ -59,7 +56,7 @@ namespace TodoSystem.UI.ViewModel
             }
             catch (CommunicationException)
             {
-                _workspace.AppendErrors(nameof(_workspace.Address), "There was no todo endpoint.");
+                AppendErrors(nameof(Service), "There was no todo endpoint.");
             }
         }
     }

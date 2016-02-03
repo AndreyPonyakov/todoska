@@ -16,7 +16,7 @@ namespace TodoSystem.Service.Model.Fake
         private readonly IStorageService _service;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FakeTodoController"/> class. 
+        /// Initializes a new instance of the <see cref="FakeTodoController"/> class.
         /// </summary>
         public FakeTodoController()
         {
@@ -76,7 +76,7 @@ namespace TodoSystem.Service.Model.Fake
         /// <returns>Created todo. </returns>
         public Todo Create(string title, string desc, DateTime? deadline, int categoryId, int order)
         {
-            var todo = new Todo()
+            var todo = new Todo
             {
                 Id = GeterateId(),
                 Title = title,
@@ -90,7 +90,7 @@ namespace TodoSystem.Service.Model.Fake
         }
 
         /// <summary>
-        /// Updates from other todo by primary key. 
+        /// Updates from other todo by primary key.
         /// </summary>
         /// <param name="todo">Updated todo. </param>
         public void Update(Todo todo)

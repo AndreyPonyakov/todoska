@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 using TodoSystem.UI.Model;
@@ -34,8 +35,7 @@ namespace TodoSystem.UI.ViewModel
                     () => { Modified = DataModified || OrderModified; })
                 .SetPropertyChangedWithExecute(
                     nameof(Name), () => Validate(Name.Length > 3, nameof(Name), "Name must be more 3 characters."))
-                .SetPropertyChanged(
-                    new[] { nameof(Name), nameof(Color), nameof(Order) }, ItemChanged);
+                .SetPropertyChanged(Attributes, ItemChanged);
         }
 
         /// <summary>
@@ -64,6 +64,16 @@ namespace TodoSystem.UI.ViewModel
             get { return _dataModified; }
             set { SetField(ref _dataModified, value); }
         }
+
+        /// <summary>
+        /// Gets list of attribute properties.
+        /// </summary>
+        public override IEnumerable<string> Attributes
+            => base.Attributes
+                .Union(new[]
+                       {
+                           nameof(Name), nameof(Color)
+                       });
 
         /// <summary>
         /// Create at service.
@@ -121,27 +131,12 @@ namespace TodoSystem.UI.ViewModel
         }
 
         /// <summary>
-        /// Set false for all modified properties. 
+        /// Set false for all modified properties.
         /// </summary>
         public override void ClearMofidied()
         {
             base.ClearMofidied();
             DataModified = false;
-        }
-
-        /// <summary>
-        /// Checks validation of content properties.
-        /// </summary>
-        /// <returns>True if content passed validation. </returns>
-        public override bool ContentValidate()
-        {
-            return !ErrorContainer
-                .Join(
-                    new[] { nameof(Name), nameof(Color), nameof(Order) },
-                    left => left.Key, 
-                    right => right,
-                    (left, right) => left.Value.Any())
-                .Any(rec => rec);
         }
     }
 }

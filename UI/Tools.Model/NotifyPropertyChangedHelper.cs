@@ -16,7 +16,7 @@ namespace TodoSystem.UI.Tools.Model
         /// <param name="sender">Sender class. </param>
         /// <param name="handler">Property changed handler. </param>
         /// <param name="propertyName">Property name. </param>
-        public static void OnPropertyChanged<T>(this T sender, PropertyChangedEventHandler handler, string propertyName) 
+        public static void OnPropertyChanged<T>(this T sender, PropertyChangedEventHandler handler, string propertyName)
             where T : class, INotifyPropertyChanged
         {
             handler?.Invoke(sender, new PropertyChangedEventArgs(propertyName));

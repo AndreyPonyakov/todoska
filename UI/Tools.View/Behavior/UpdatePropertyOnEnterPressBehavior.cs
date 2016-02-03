@@ -73,14 +73,18 @@ namespace TodoSystem.UI.Tools.View.Behavior
         /// <param name="e">Argument container. </param>
         private void AssociatedObjectOnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            if (e.Key != Key.Return)
             {
-                if (Element != null && Property != null)
-                {
-                    BindingOperations.GetBindingExpression(Element, Property)?.UpdateSource();
-                    BindingOperations.GetMultiBindingExpression(Element, Property)?.UpdateSource();
-                }
+                return;
             }
+
+            if (Element == null || Property == null)
+            {
+                return;
+            }
+
+            BindingOperations.GetBindingExpression(Element, Property)?.UpdateSource();
+            BindingOperations.GetMultiBindingExpression(Element, Property)?.UpdateSource();
         }
     }
 }

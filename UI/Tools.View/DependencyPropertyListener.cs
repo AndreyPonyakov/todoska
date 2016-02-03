@@ -19,9 +19,9 @@ namespace TodoSystem.UI.Tools.View
         public DependencyPropertyListener()
         {
             _property = DependencyProperty.RegisterAttached(
-                nameof(DependencyPropertyListener) + _index++, 
-                typeof(object), 
-                typeof(DependencyPropertyListener), 
+                nameof(DependencyPropertyListener) + _index++,
+                typeof(object),
+                typeof(DependencyPropertyListener),
                 new PropertyMetadata(null, HandleValueChanged));
         }
 

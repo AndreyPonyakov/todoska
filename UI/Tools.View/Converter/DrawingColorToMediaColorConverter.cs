@@ -19,12 +19,6 @@ namespace TodoSystem.UI.Tools.View.Converter
         /// <returns>Converted value. </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is System.Drawing.Color?)
-            {
-                var ccolor = ((System.Drawing.Color?)value).Value;
-                return System.Windows.Media.Color.FromArgb(ccolor.A, ccolor.R, ccolor.G, ccolor.B);
-            }
-
             if (value is System.Drawing.Color)
             {
                 var color = (System.Drawing.Color)value;

@@ -26,7 +26,7 @@ namespace TodoSystem.Service.Model.Interface
         Category SelectById(int id);
 
         /// <summary>
-        /// Fetches category list with target name. 
+        /// Fetches category list with target name.
         /// </summary>
         /// <param name="name">Target name. </param>
         /// <returns>Category list. </returns>

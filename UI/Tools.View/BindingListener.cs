@@ -13,7 +13,6 @@ namespace TodoSystem.UI.Tools.View
         private DependencyPropertyListener _listener;
         private Binding _binding;
         private FrameworkElement _target;
-        private object _value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BindingListener"/> class.
@@ -29,11 +28,15 @@ namespace TodoSystem.UI.Tools.View
         /// </summary>
         public Binding Binding
         {
-            get { return this._binding; }
+            get
+            {
+                return _binding;
+            }
+
             set
             {
-                this._binding = value;
-                this.Attach();
+                _binding = value;
+                Attach();
             }
         }
 
@@ -42,40 +45,41 @@ namespace TodoSystem.UI.Tools.View
         /// </summary>
         public FrameworkElement Element
         {
-            get { return this._target; }
+            get
+            {
+                return _target;
+            }
+
             set
             {
-                this._target = value;
-                this.Attach();
+                _target = value;
+                Attach();
             }
         }
 
         /// <summary>
         /// Gets binding value.
         /// </summary>
-        public object Value
-        {
-            get { return this._value; }
-        }
+        public object Value { get; private set; }
 
         private static List<DependencyPropertyListener> FreeListeners { get; } = new List<DependencyPropertyListener>();
 
         private void Attach()
         {
-            this.Detach();
+            Detach();
 
-            if (this._target != null && this._binding != null)
+            if (_target != null && _binding != null)
             {
-                this._listener = this.GetListener();
-                this._listener.Attach(_target, _binding);
+                _listener = GetListener();
+                _listener.Attach(_target, _binding);
             }
         }
 
         private void Detach()
         {
-            if (this._listener != null)
+            if (_listener != null)
             {
-                this.ReturnListener();
+                ReturnListener();
             }
         }
 
@@ -87,28 +91,27 @@ namespace TodoSystem.UI.Tools.View
             {
                 listener = FreeListeners[FreeListeners.Count - 1];
                 FreeListeners.RemoveAt(FreeListeners.Count - 1);
-                return listener;
             }
             else
             {
                 listener = new DependencyPropertyListener();
+                listener.Changed += HandleValueChanged;
             }
 
-            listener.Changed += HandleValueChanged;
             return listener;
         }
 
         private void ReturnListener()
         {
-            this._listener.Changed -= this.HandleValueChanged;
-            FreeListeners.Add(this._listener);
-            this._listener = null;
+            _listener.Changed -= HandleValueChanged;
+            FreeListeners.Add(_listener);
+            _listener = null;
         }
 
         private void HandleValueChanged(object sender, BindingChangedEventArgs e)
         {
-            this._value = e.EventArgs.NewValue;
-            this._changedHandler(this, e);
+            Value = e.EventArgs.NewValue;
+            _changedHandler(this, e);
         }
     }
 }

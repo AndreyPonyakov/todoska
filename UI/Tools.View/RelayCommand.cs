@@ -5,7 +5,7 @@ using System.Windows.Input;
 namespace TodoSystem.UI.Tools.View
 {
     /// <summary>
-    /// Relay command class. 
+    /// Relay command class.
     /// </summary>
     public sealed class RelayCommand : ICommand
     {
@@ -23,7 +23,8 @@ namespace TodoSystem.UI.Tools.View
         /// Initializes a new instance of the <see cref="RelayCommand"/> class.
         /// </summary>
         /// <param name="execute">The method to be called when the command is invoked.</param>
-        public RelayCommand(Action<object> execute) : this(execute, null)
+        public RelayCommand(Action<object> execute)
+            : this(execute, null)
         {
         }
 

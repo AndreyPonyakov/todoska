@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Interactivity;
+using Expression = System.Linq.Expressions.Expression;
 
 namespace TodoSystem.UI.Tools.View
 {
@@ -21,7 +20,7 @@ namespace TodoSystem.UI.Tools.View
         /// </summary>
         public static readonly DependencyProperty SourceProperty =
             DependencyProperty.Register(
-                "Source",
+                nameof(Source),
                 typeof(Binding),
                 typeof(DataEventTrigger),
                 new PropertyMetadata(null, HandleSourceChanged));
@@ -31,7 +30,7 @@ namespace TodoSystem.UI.Tools.View
         /// </summary>
         public static readonly DependencyProperty EventNameProperty =
             DependencyProperty.Register(
-                "EventName",
+                nameof(EventName),
                 typeof(string),
                 typeof(DataEventTrigger),
                 new PropertyMetadata(null, HandleEventNameChanged));
@@ -46,8 +45,7 @@ namespace TodoSystem.UI.Tools.View
         /// </summary>
         public DataEventTrigger()
         {
-            _listener = new BindingListener(HandleBindingValueChanged);
-            _listener.Binding = new Binding();
+            _listener = new BindingListener(HandleBindingValueChanged) { Binding = new Binding() };
         }
 
         /// <summary>
@@ -74,8 +72,7 @@ namespace TodoSystem.UI.Tools.View
         protected override void OnAttached()
         {
             base.OnAttached();
-
-            this._listener.Element = this.AssociatedObject;
+            _listener.Element = AssociatedObject;
         }
 
         /// <summary>
@@ -84,8 +81,7 @@ namespace TodoSystem.UI.Tools.View
         protected override void OnDetaching()
         {
             base.OnDetaching();
-
-            this._listener.Element = null;
+            _listener.Element = null;
         }
 
         /// <summary>
@@ -94,17 +90,14 @@ namespace TodoSystem.UI.Tools.View
         /// <param name="e">Dependency object changed arguments. </param>
         protected virtual void OnSourceChanged(DependencyPropertyChangedEventArgs e)
         {
-            this._listener.Binding = this.Source;
+            _listener.Binding = Source;
         }
 
         /// <summary>
         /// Notification that the EventName has changed.
         /// </summary>
         /// <param name="e">Dependency object changed arguments. </param>
-        protected virtual void OnEventNameChanged(DependencyPropertyChangedEventArgs e)
-        {
-            UpdateHandler();
-        }
+        protected virtual void OnEventNameChanged(DependencyPropertyChangedEventArgs e) => UpdateHandler();
 
         private static void HandleEventNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
@@ -116,33 +109,28 @@ namespace TodoSystem.UI.Tools.View
             ((DataEventTrigger)sender).OnSourceChanged(e);
         }
 
-        private void HandleBindingValueChanged(object sender, BindingChangedEventArgs e)
-        {
-            this.UpdateHandler();
-        }
+        private void HandleBindingValueChanged(object sender, BindingChangedEventArgs e) => UpdateHandler();
 
         private void UpdateHandler()
         {
             if (_currentEvent != null)
             {
-                _currentEvent.RemoveEventHandler(this._currentTarget, this._currentDelegate);
-
+                _currentEvent.RemoveEventHandler(_currentTarget, _currentDelegate);
                 _currentEvent = null;
                 _currentTarget = null;
                 _currentDelegate = null;
             }
 
-            this._currentTarget = this._listener.Value;
+            _currentTarget = _listener.Value;
 
-            if (this._currentTarget != null && !string.IsNullOrEmpty(this.EventName))
+            if (_currentTarget != null && !string.IsNullOrEmpty(EventName))
             {
-                Type targetType = this._currentTarget.GetType();
-                this._currentEvent = targetType.GetEvent(this.EventName);
-                if (this._currentEvent != null)
+                var targetType = _currentTarget.GetType();
+                _currentEvent = targetType.GetEvent(EventName);
+                if (_currentEvent != null)
                 {
-                    var handlerMethod = this.GetType().GetMethod("OnEvent", BindingFlags.NonPublic | BindingFlags.Instance);
-                    this._currentDelegate = this.GetDelegate(this._currentEvent, this.OnMethod);
-                    this._currentEvent.AddEventHandler(this._currentTarget, this._currentDelegate);
+                    _currentDelegate = GetDelegate(_currentEvent, OnMethod);
+                    _currentEvent.AddEventHandler(_currentTarget, _currentDelegate);
                 }
             }
         }
@@ -151,28 +139,29 @@ namespace TodoSystem.UI.Tools.View
         {
             if (typeof(EventHandler).IsAssignableFrom(eventInfo.EventHandlerType))
             {
-                MethodInfo method = this.GetType().GetMethod("OnEvent", BindingFlags.NonPublic | BindingFlags.Instance);
+                var method = GetType().GetMethod(nameof(OnEvent), BindingFlags.NonPublic | BindingFlags.Instance);
                 return Delegate.CreateDelegate(eventInfo.EventHandlerType, this, method);
             }
 
-            Type handlerType = eventInfo.EventHandlerType;
-            ParameterInfo[] eventParams = handlerType.GetMethod("Invoke").GetParameters();
+            var handlerType = eventInfo.EventHandlerType;
+            var eventParams =
+                handlerType.GetMethod(nameof(action.Invoke)).GetParameters();
 
-            IEnumerable<ParameterExpression> parameters = eventParams.Select(p => System.Linq.Expressions.Expression.Parameter(p.ParameterType, "x"));
+            var parameters = eventParams.Select(p => Expression.Parameter(p.ParameterType, "x"));
 
-            MethodCallExpression methodExpression = System.Linq.Expressions.Expression.Call(System.Linq.Expressions.Expression.Constant(action), action.GetType().GetMethod("Invoke"));
-            LambdaExpression lambdaExpression = System.Linq.Expressions.Expression.Lambda(methodExpression, parameters.ToArray());
-            return Delegate.CreateDelegate(handlerType, lambdaExpression.Compile(), "Invoke", false);
+            var methodExpression = Expression.Call(
+                Expression.Constant(action),
+                action.GetType().GetMethod(nameof(action.Invoke)));
+            var lambdaExpression = Expression.Lambda(methodExpression, parameters.ToArray());
+            return Delegate.CreateDelegate(
+                handlerType,
+                lambdaExpression.Compile(),
+                nameof(action.Invoke),
+                false);
         }
 
-        private void OnMethod()
-        {
-            this.InvokeActions(null);
-        }
+        private void OnMethod() => InvokeActions(null);
 
-        private void OnEvent(object sender, EventArgs e)
-        {
-            this.InvokeActions(e);
-        }
+        private void OnEvent(EventArgs e) => InvokeActions(e);
     }
 }

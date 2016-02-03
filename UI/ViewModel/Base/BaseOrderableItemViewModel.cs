@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using TodoSystem.UI.Tools.Model;
 using TodoSystem.UI.ViewModel.Event;
@@ -11,7 +12,7 @@ namespace TodoSystem.UI.ViewModel.Base
     /// <typeparam name="TService">Service type. </typeparam>
     /// <typeparam name="TModel">Model type. </typeparam>
     /// <typeparam name="TViewModel">ViewModel type. </typeparam>
-    public abstract class BaseOrderableItemViewModel<TService, TModel, TViewModel> 
+    public abstract class BaseOrderableItemViewModel<TService, TModel, TViewModel>
         : BaseItemViewModel<TService, TModel>, IOrderableItemViewModel<TModel, TViewModel>
         where TViewModel : BaseViewModel
         where TModel : class
@@ -35,8 +36,7 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// MoveTo event handler.
         /// </summary>
-        /// <typeparam name="TViewModel">ViewModel type. </typeparam>
-        public event MoveToEventHandler<TViewModel, TViewModel> MoveToEvent;
+        public event MovedEventHandler<TViewModel, TViewModel> Moved;
 
         /// <summary>
         /// Gets or sets priority.
@@ -62,6 +62,12 @@ namespace TodoSystem.UI.ViewModel.Base
         public ICommand MoveToCommand { get; }
 
         /// <summary>
+        /// Gets list of attribute properties.
+        /// </summary>
+        public override IEnumerable<string> Attributes
+            => Enumerable.Repeat(nameof(Order), 1).Union(base.Attributes);
+
+        /// <summary>
         /// MoveTo action.
         /// </summary>
         /// <param name="dataTransition">Transition data. </param>
@@ -72,12 +78,12 @@ namespace TodoSystem.UI.ViewModel.Base
                 return;
             }
 
-            var args = new MoveToEventHandlerArgs<TViewModel, TViewModel>(dataTransition);
-            MoveToEvent?.Invoke(this, args);
+            var args = new MovedEventHandlerArgs<TViewModel, TViewModel>(dataTransition);
+            Moved?.Invoke(this, args);
         }
 
         /// <summary>
-        /// Set false for all modified properties. 
+        /// Set false for all modified properties.
         /// </summary>
         public override void ClearMofidied()
         {
