@@ -3,85 +3,59 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:controls="clr-namespace:TodoSystem.UI.View.Controls"
              xmlns:viewModel="clr-namespace:TodoSystem.UI.ViewModel;assembly=TodoSystem.UI.ViewModel"
-             xmlns:behavior="clr-namespace:TodoSystem.UI.Tools.View.Behavior;assembly=TodoSystem.UI.Tools.View"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance viewModel:WorkspaceViewModel}"
-             d:DesignHeight="500" d:DesignWidth="600">
-    <Grid>
+             d:DataContext="{d:DesignInstance viewModel:WorkspaceViewModel}">
+    <Grid Margin="8">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <TextBox Width="450" Text="{Binding Address}" Height="30" VerticalAlignment="Top">
+        <Grid Grid.Row="0" Margin="6,0,6,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" VerticalContentAlignment="Center" Padding="0,0,0,3">Service address:</Label>
+            <TextBox Grid.Column="1" Text="{Binding Address}" Height="Auto" VerticalAlignment="Top" Margin="6 0 6 0"/>
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button  Margin="0,0,0,0" Height="23" Grid.Column="1" HorizontalAlignment="Left" Command="{Binding ApplyAddressCommand}" >
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="http://icons.iconarchive.com/icons/hopstarter/soft-scraps/128/Button-Play-icon.png" />
+                        <TextBlock Margin="6,0,6,0">Connect</TextBlock>
+                    </StackPanel>
+                    <Button.ToolTip>
+                        <ToolTip Content="Connect to service..."/>
+                    </Button.ToolTip>
+                </Button>
+            </Grid>
+        </Grid>
+        <StackPanel Grid.Row="1" >
+            <ItemsControl Tag="{Binding Address}" ItemsSource="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)}">
                 <Validation.ErrorTemplate>
-                    <ControlTemplate>
-                        <StackPanel>
-                            <AdornedElementPlaceholder x:Name="textBox"/>
-                            <ItemsControl ItemsSource="{Binding}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding ErrorContent}" Foreground="Red"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </ControlTemplate>
+                    <ControlTemplate />
                 </Validation.ErrorTemplate>
-            </TextBox>
-            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding ApplyAddressCommand}"  VerticalAlignment="Top">
-                <Image Source="http://icons.iconarchive.com/icons/hopstarter/soft-scraps/128/Button-Play-icon.png" />
-                <Button.ToolTip>
-                    <ToolTip Content="Appply service."/>
-                </Button.ToolTip>
-            </Button>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding ErrorContent}" Foreground="Red" BorderThickness="0" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <RadioButton Width="110"
-						Style="{StaticResource {x:Static ToolBar.RadioButtonStyleKey}}"
-						Content="Todo" VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                <i:Interaction.Behaviors>
-                    <behavior:ToggleButtonStatePatternBehavior
-								State="{Binding Controller, Mode=TwoWay}"
-								TargetState="{Binding TodoController}"/>
-                </i:Interaction.Behaviors>
-            </RadioButton>
-            <RadioButton  Width="110"
-							Style="{StaticResource {x:Static ToolBar.RadioButtonStyleKey}}"
-							Content="Category" VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                <i:Interaction.Behaviors>
-                    <behavior:ToggleButtonStatePatternBehavior
-								State="{Binding Controller, Mode=TwoWay}"
-								TargetState="{Binding CategoryController}"/>
-                </i:Interaction.Behaviors>
-            </RadioButton>
-            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding RefreshCommand}">
-                <Image Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Actions-view-refresh-icon.png" />
-                <Button.ToolTip>
-                    <ToolTip Content="Refresh list"/>
-                </Button.ToolTip>
-            </Button>
-            <Button Height="30" Width="30" HorizontalAlignment="Left" 
-                Command="{Binding ApplyCommand}">
-                <Image Source="http://icons.iconarchive.com/icons/hopstarter/sleek-xp-basic/128/Ok-icon.png" />
-                <Button.ToolTip>
-                    <ToolTip Content="Commit changes"/>
-                </Button.ToolTip>
-            </Button>
-        </StackPanel>
-        <ContentPresenter Grid.Row="2" Content="{Binding Controller}">
-            <ContentPresenter.Resources>
-                <DataTemplate DataType="{x:Type viewModel:TodoControllerViewModel}">
-                    <controls:TodoControllerView/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type viewModel:CategoryControllerViewModel}">
-                    <controls:CategoryControllerView/>
-                </DataTemplate>
-            </ContentPresenter.Resources>
-        </ContentPresenter>
+        <TabControl Grid.Row="2">
+            <TabItem Header="Todo">
+                <controls:TodoControllerView DataContext="{Binding TodoController}"/>
+            </TabItem>
+            <TabItem Header="Category" >
+                <controls:CategoryControllerView DataContext="{Binding CategoryController}"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>

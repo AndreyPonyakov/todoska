@@ -5,41 +5,97 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewModel="clr-namespace:TodoSystem.UI.ViewModel;assembly=TodoSystem.UI.ViewModel"
              xmlns:converter="clr-namespace:TodoSystem.UI.Tools.View.Converter;assembly=TodoSystem.UI.Tools.View"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:view="clr-namespace:TodoSystem.UI.Tools.View;assembly=TodoSystem.UI.Tools.View"
+             xmlns:behavior="clr-namespace:TodoSystem.UI.Tools.View.Behavior;assembly=TodoSystem.UI.Tools.View"
              d:DataContext="{d:DesignInstance viewModel:TodoViewModel}"
-             mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="700">
+             mc:Ignorable="d" >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converter:DrawingColorToMediaColorConverter x:Key="DrawingColorToMediaColorConverter"/>
+        <converter:ErrorCollectionToVisibilityConverter x:Key="ErrorCollectionToVisibilityConverter"/>
     </UserControl.Resources>
+    <i:Interaction.Triggers>
+        <view:DataEventTrigger EventName="AttributeChanged">
+            <i:InvokeCommandAction Command="{Binding ApplyCommand}"/>
+        </view:DataEventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
-        <StackPanel Orientation="Horizontal">
-            <StackPanel.Background>
-                <SolidColorBrush Color="{Binding Category.Color, Converter={StaticResource DrawingColorToMediaColorConverter}}" />
-            </StackPanel.Background>
-            <CheckBox IsChecked="{Binding Checked}" Width="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Width="100" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Background="Transparent"/>
-            <TextBox Width="150" Text="{Binding Desc, UpdateSourceTrigger=PropertyChanged}" Background="Transparent"/>
-            <ComboBox Width="150" ItemsSource="{Binding CategoryList}" SelectedItem="{Binding Category}" 
-                      DisplayMemberPath="Name" Background="Transparent"/>
-            <DatePicker SelectedDate="{Binding Deadline, Mode=TwoWay}" Background="Transparent"/>
-            <Button Height="30" Width="30" HorizontalAlignment="Left" 
-                Visibility="{Binding CanApply, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Command="{Binding ApplyCommand}">
-                <Image Source="http://icons.iconarchive.com/icons/hopstarter/sleek-xp-basic/128/Ok-icon.png" />
-                <Button.ToolTip>
-                    <ToolTip Content="Apply changed todo..."/>
-                </Button.ToolTip>
-            </Button>
-            <Button Height="30" Width="30" HorizontalAlignment="Left" 
-                Visibility="{Binding CanUndo, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Command="{Binding UndoCommand}">
-                <Image Source="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-9/128/Undo-icon.png" />
-                <Button.ToolTip>
-                    <ToolTip Content="Cancel changed todo..."/>
-                </Button.ToolTip>
-            </Button>
-            <Button Height="30" Width="30" HorizontalAlignment="Left" 
+        <Grid HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" MinWidth="100"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="25"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0" >
+                <CheckBox IsChecked="{Binding Checked}" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="6"/>
+            </StackPanel>
+            <TextBox HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" Text="{Binding Title}" Background="Transparent"  Margin="6">
+                <i:Interaction.Behaviors>
+                    <behavior:UpdatePropertyOnEnterPressBehavior
+                        Element="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
+                        Property="TextBox.Text"/>
+                    <behavior:RevertPropertyOnEscPressBehavior
+                        Element="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
+                        Property="TextBox.Text" Command="{Binding UndoCommand}"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBox HorizontalAlignment="Stretch" Text="{Binding Desc}" Background="Transparent" Margin="6" Grid.Column="2" Grid.Row="0">
+                <i:Interaction.Behaviors>
+                    <behavior:UpdatePropertyOnEnterPressBehavior
+                        Element="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}"
+                        Property="TextBox.Text"/>
+                    <behavior:RevertPropertyOnEscPressBehavior
+                        Element="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBox}}}" 
+                        Property="TextBox.Text" Command="{Binding UndoCommand}"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="0" >
+                <ComboBox Width="80" ItemsSource="{Binding CategoryList}" SelectedItem="{Binding Category}" Margin="6" Height="26">
+                    <ComboBox.Background>
+                        <SolidColorBrush Color="{Binding Category.Color, Converter={StaticResource DrawingColorToMediaColorConverter}}" Opacity="0.6"/>
+                    </ComboBox.Background>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="30">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="2"/>
+                                    <RowDefinition Height="18"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Horizontal" Margin="2,0,0,0" Grid.Row="1">
+                                    <Border BorderThickness="1" CornerRadius="2" BorderBrush="Black" Width="50" VerticalAlignment="Stretch">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="{Binding Color, Converter={StaticResource DrawingColorToMediaColorConverter}}"/>
+                                        </Border.Background>
+                                    </Border>
+                                    <Grid Width="35"/>
+                                    <TextBlock Text="{Binding Name}" Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="Width" Value="180"/>
+                            <Style.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#AAAAAAAA"/>
+                            </Style.Resources>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+                <Label Width="80" Margin="6,6,6,6" FontWeight="Bold" BorderThickness="0" Validation.ErrorTemplate="{x:Null}">
+                    <TextBlock Text="{Binding Category.Name}" Validation.ErrorTemplate="{x:Null}" />
+                </Label>
+                <DatePicker SelectedDate="{Binding Deadline, Mode=TwoWay}" Width="90" Background="Transparent"  Margin="6"/>
+            </StackPanel>
+            <Button Height="23" Width="23" HorizontalAlignment="Left" Grid.Column="4" Grid.Row="0" 
                 Visibility="{Binding CanDelete, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Command="{Binding TryDeleteCommand}">
                 <Image Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Actions-edit-delete-icon.png" />
@@ -47,14 +103,14 @@
                     <ToolTip Content="Delete current todo..."/>
                 </Button.ToolTip>
             </Button>
-            <Grid MinWidth="200" Width="200">
-                <Label Background="Transparent">
-                    <TextBlock  Tag="{Binding HasServiceError}" Foreground="Red"
-                        Text="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-                </Label>
-            </Grid>
-        </StackPanel>
-            
-
+            <Label Margin="0,3,0,0" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" 
+                Tag="{Binding HasServiceError}" Foreground="Red" BorderThickness="0"
+                Visibility="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors), Converter={StaticResource ErrorCollectionToVisibilityConverter}}"
+                Content="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}">
+                <Validation.ErrorTemplate>
+                   <ControlTemplate />
+                </Validation.ErrorTemplate>
+            </Label>
+        </Grid>
     </Grid>
 </UserControl>

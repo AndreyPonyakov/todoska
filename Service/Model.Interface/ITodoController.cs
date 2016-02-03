@@ -11,7 +11,7 @@ namespace TodoSystem.Service.Model.Interface
     public interface ITodoController
     {
         /// <summary>
-        /// Select full list of todo from. 
+        /// Select full list of todo from.
         /// </summary>
         /// <returns>List of Todo. </returns>
         [OperationContract]
@@ -54,7 +54,7 @@ namespace TodoSystem.Service.Model.Interface
         Todo Create(string title, string desc, DateTime? deadline, int categoryId, int order);
 
         /// <summary>
-        /// Updates from other DTO todo instance. 
+        /// Updates from other DTO todo instance.
         /// </summary>
         /// <param name="todo">Updated todo. </param>
         [OperationContract]

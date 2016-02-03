@@ -6,7 +6,7 @@ namespace TodoSystem.UI.ViewModel.Event
     /// <summary>
     /// Extension methods for MoveTo event.
     /// </summary>
-    public static class MoveToEventHelper
+    public static class MovedEventHelper
     {
         /// <summary>
         /// Implement MoveTo event handler for list.

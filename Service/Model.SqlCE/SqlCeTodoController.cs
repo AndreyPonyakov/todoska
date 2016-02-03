@@ -31,7 +31,7 @@ namespace Model.SqlCe
         private IMapper Mapper { get; }
 
         /// <summary>
-        /// Select full list of todo from. 
+        /// Select full list of todo from.
         /// </summary>
         /// <returns>List of Todo. </returns>
         public IEnumerable<Interface.Todo> SelectAll()
@@ -106,7 +106,7 @@ namespace Model.SqlCe
         {
             using (var context = new TodoDbContext())
             {
-                var dto = new Interface.Todo()
+                var dto = new Interface.Todo
                 {
                     Title = title,
                     Desc = desc,
@@ -125,7 +125,7 @@ namespace Model.SqlCe
         }
 
         /// <summary>
-        /// Updates from other DTO todo instance. 
+        /// Updates from other DTO todo instance.
         /// </summary>
         /// <param name="todo">Updated todo. </param>
         public void Update(Interface.Todo todo)

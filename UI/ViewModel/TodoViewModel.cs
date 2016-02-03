@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+
 using TodoSystem.UI.Model;
 using TodoSystem.UI.Model.TodoControllerServiceReference;
 using TodoSystem.UI.Tools.Model;
@@ -71,7 +73,8 @@ namespace TodoSystem.UI.ViewModel
                     () => Validate(Title.Length > 4, nameof(Title), "Title must have more 4 characters."))
                 .SetPropertyChangedWithExecute(
                     nameof(Category),
-                    () => Validate(Category != null, nameof(Category), "Category must be not null."));
+                    () => Validate(Category != null, nameof(Category), "Category must be not null."))
+                .SetPropertyChanged(Attributes, ItemChanged);
         }
 
         /// <summary>
@@ -82,7 +85,7 @@ namespace TodoSystem.UI.ViewModel
             get { return _title; }
             set { SetField(ref _title, value); }
         }
-        
+
         /// <summary>
         /// Gets or sets a description of current todo.
         /// </summary>
@@ -154,11 +157,24 @@ namespace TodoSystem.UI.ViewModel
             get { return _categoryModified; }
             set { SetField(ref _categoryModified, value); }
         }
-        
+
         /// <summary>
-        /// Category list for category selection.
+        /// Gets list of attribute properties.
         /// </summary>
-        public ObservableCollection<CategoryViewModel> CategoryList => _categoryController.List;
+        public override IEnumerable<string> Attributes
+            =>
+                base.Attributes.Union(
+                    new[]
+                        {
+                            nameof(Title), nameof(Desc), nameof(Category),
+                            nameof(Deadline), nameof(Checked)
+                        });
+
+        /// <summary>
+        /// Gets category list for category selection.
+        /// </summary>
+        public ObservableCollection<CategoryViewModel> CategoryList
+            => _categoryController.List;
 
         /// <summary>
         /// Delete action.
@@ -210,7 +226,7 @@ namespace TodoSystem.UI.ViewModel
             if (CheckedModified)
             {
                 Service.TodoController.Check(Model.Id, Checked);
-                Model.Checked = Checked; 
+                Model.Checked = Checked;
                 CheckedModified = false;
             }
 
@@ -246,7 +262,7 @@ namespace TodoSystem.UI.ViewModel
         }
 
         /// <summary>
-        /// Set false for all modified properties. 
+        /// Set false for all modified properties.
         /// </summary>
         public override void ClearMofidied()
         {
@@ -256,21 +272,5 @@ namespace TodoSystem.UI.ViewModel
             CheckedModified = false;
             CategoryModified = false;
         }
-
-        /// <summary>
-        /// Checks validation of content properties.
-        /// </summary>
-        /// <returns>True if content passed validation. </returns>
-        public override bool ContentValidate()
-        {
-            return !ErrorContainer
-                .Join(
-                    new[] { nameof(Title), nameof(Desc), nameof(Category), nameof(Deadline), nameof(Checked), nameof(Order) },
-                    left => left.Key,
-                    right => right,
-                    (left, right) => left.Value.Any())
-                .Any();
-        }
-
     }
 }

@@ -45,7 +45,7 @@ namespace TodoSystem.Service.Model.Fake
         }
 
         /// <summary>
-        /// Get category list with target name. 
+        /// Get category list with target name.
         /// </summary>
         /// <param name="name">Target name. </param>
         /// <returns>Category list. </returns>

@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Input;
-
-using TodoSystem.UI.Tools.Model;
 
 namespace TodoSystem.UI.ViewModel.Base
 {
@@ -13,6 +13,16 @@ namespace TodoSystem.UI.ViewModel.Base
         where TModel : class
     {
         /// <summary>
+        /// Indicates append notification.
+        /// </summary>
+        event EventHandler<EventArgs> Appended;
+
+        /// <summary>
+        /// Indicates delete notification.
+        /// </summary>
+        event EventHandler<EventArgs> Deleted;
+
+        /// <summary>
         /// Gets DTO back-end todo.
         /// </summary>
         TModel Model { get; }
@@ -21,29 +31,6 @@ namespace TodoSystem.UI.ViewModel.Base
         /// Gets or sets a value indicating whether change notification flag of any property.
         /// </summary>
         bool Modified { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether append notification.
-        /// </summary>
-        /// TODO: implement event.
-        bool Appended { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether cancel notification.
-        /// </summary>
-        /// TODO: implement event.
-        bool Canceled { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether delete notification.
-        /// </summary>
-        /// TODO: implement event.
-        bool Deleted { get; set; }
-
-        /// <summary>
-        /// Gets a value indicating whether notify any action.
-        /// </summary>
-        bool InAction { get; }
 
         /// <summary>
         /// Gets a value indicating whether ability of command execute (apply).
@@ -79,6 +66,11 @@ namespace TodoSystem.UI.ViewModel.Base
         /// Gets delete  command.
         /// </summary>
         ICommand TryDeleteCommand { get; }
+
+        /// <summary>
+        /// Gets list of attribute properties.
+        /// </summary>
+        IEnumerable<string> Attributes { get; }
 
         /// <summary>
         /// Apply action.
@@ -119,7 +111,7 @@ namespace TodoSystem.UI.ViewModel.Base
         bool Create();
 
         /// <summary>
-        /// Set false for all modified properties. 
+        /// Set false for all modified properties.
         /// </summary>
         void ClearMofidied();
 

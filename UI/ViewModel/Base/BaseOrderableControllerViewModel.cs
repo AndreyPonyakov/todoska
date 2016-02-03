@@ -30,8 +30,10 @@ namespace TodoSystem.UI.ViewModel.Base
         {
             CommandFactory = commandFactory;
             List = new ObservableCollection<TItemViewModel>();
-            CreateItemCommand = commandFactory.CreateCommand(() => CreateItem());
-            this.SetPropertyChanged(nameof(Service), () => Refresh());
+            CreateItemCommand = commandFactory.CreateCommand(
+                () => CreateItem(),
+                () => Service != null && !this.HasErrors(nameof(Service)));
+            this.SetPropertyChanged(nameof(Service), Refresh);
         }
 
         /// <summary>
@@ -97,36 +99,8 @@ namespace TodoSystem.UI.ViewModel.Base
             item.Order = List.Any() ? List.Max(c => c.Order) + 1 : 0;
             List.Add(item);
 
-            item.SetPropertyChanged(
-                nameof(item.Appended),
-                () =>
-                {
-                    if (item.Appended)
-                    {
-                        item.Appended = false;
-                    }
-                }).SetPropertyChanged(
-                        nameof(item.Canceled),
-                        () =>
-                        {
-                            if (item.Canceled)
-                            {
-                                item.Canceled = false;
-                                List.Remove(item);
-                            }
-                        })
-                .SetPropertyChanged(
-                    nameof(item.Deleted),
-                    () =>
-                    {
-                        if (item.Deleted)
-                        {
-                            item.Deleted = false;
-                            List.Remove(item);
-                        }
-                    });
-
-            item.MoveToEvent += (sender, args) =>
+            item.Deleted += (sender, args) => List.Remove(sender as TItemViewModel);
+            item.Moved += (sender, args) =>
             {
                 List.MoveTo(args.DataTransition);
                 List.Select((val, i) => new { Value = val, Index = i })

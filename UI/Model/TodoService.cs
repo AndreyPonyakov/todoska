@@ -1,11 +1,11 @@
-﻿using TodoSystem.UI.Model.CategoryControllerServiceReference;
+﻿using System;
+using System.ServiceModel;
+
+using TodoSystem.UI.Model.CategoryControllerServiceReference;
 using TodoSystem.UI.Model.TodoControllerServiceReference;
 
 namespace TodoSystem.UI.Model
 {
-    using System;
-    using System.ServiceModel;
-
     /// <summary>
     /// Fake implementation of <see cref="ITodoService"/>.
     /// </summary>
@@ -20,12 +20,10 @@ namespace TodoSystem.UI.Model
             CategoryController =
                 new CategoryControllerClient(
                     new BasicHttpBinding(),
-                    new EndpointAddress(
-                        new Uri(new Uri(address), nameof(CategoryController))));
+                    new EndpointAddress(new Uri(new Uri(address), nameof(CategoryController))));
             TodoController = new TodoControllerClient(
                 new BasicHttpBinding(),
-                new EndpointAddress(
-                    new Uri(new Uri(address), nameof(TodoController))));
+                new EndpointAddress(new Uri(new Uri(address), nameof(TodoController))));
         }
 
         /// <summary>

@@ -14,19 +14,12 @@ namespace TodoSystem.UI.ViewModel
     public sealed class CategoryControllerViewModel : BaseOrderableControllerViewModel<ITodoService, Category, CategoryViewModel>
     {
         /// <summary>
-        /// ViewModel of main workspace.
-        /// </summary>
-        private readonly WorkspaceViewModel _workspace;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="CategoryControllerViewModel"/> class.
         /// </summary>
         /// <param name="commandFactory">Factory for create ICommand instance. </param>
-        /// <param name="workspace">Workspace with controllers. </param>
-        public CategoryControllerViewModel(ICommandFactory commandFactory, WorkspaceViewModel workspace)
+        public CategoryControllerViewModel(ICommandFactory commandFactory)
             : base(commandFactory)
         {
-            _workspace = workspace;
         }
 
         /// <summary>
@@ -36,16 +29,16 @@ namespace TodoSystem.UI.ViewModel
         public override CategoryViewModel CreateItem()
         {
             var category = new CategoryViewModel(CommandFactory, Service);
-            AppendItem(category);            
+            AppendItem(category);
             return category;
         }
 
         /// <summary>
         /// Updates at the service.
         /// </summary>
-        /// TODO: implement pull model of notifying errors.
         public override void Refresh()
         {
+            ClearErrors(nameof(Service));
             try
             {
                 List.Clear();
@@ -57,7 +50,7 @@ namespace TodoSystem.UI.ViewModel
             }
             catch (CommunicationException)
             {
-                _workspace.AppendErrors(nameof(_workspace.Address), "There was no category endpoint.");
+                AppendErrors(nameof(Service), "There was no category endpoint.");
             }
         }
     }

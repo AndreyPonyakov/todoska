@@ -1,4 +1,7 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ServiceModel;
 using System.Windows.Input;
 
 using TodoSystem.UI.Tools.Model;
@@ -14,21 +17,7 @@ namespace TodoSystem.UI.ViewModel.Base
     public abstract class BaseItemViewModel<TService, TModel> : BaseViewModel, IItemViewModel<TModel>
         where TModel : class
     {
-        /// <summary>
-        /// Back-end service if ViewModel.
-        /// </summary>
-        protected readonly TService Service;
-
-        /// <summary>
-        /// <see cref="ICommandFactory"/> instance.
-        /// </summary>
-        protected readonly ICommandFactory CommandFactory;
-
         private bool _modified;
-
-        private bool _canceled;
-        private bool _deleted;
-        private bool _appended;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseItemViewModel{TService,TModel}"/> class.
@@ -45,22 +34,31 @@ namespace TodoSystem.UI.ViewModel.Base
             TryDeleteCommand = CommandFactory.CreateCommand(TryDelete, () => CanDelete);
 
             this.SetPropertyChanged(
-                new[] { nameof(Appended), nameof(Canceled), nameof(Deleted) },
-                () => OnPropertyChanged(nameof(InAction)))
-                .SetPropertyChanged(
-                    nameof(InAction),
-                    () => OnPropertyChanged(nameof(CanDelete)))
-                .SetPropertyChanged(
-                    new[] { nameof(InAction), nameof(Modified) },
-                    () =>
-                        {
-                            OnPropertyChanged(nameof(CanApply));
-                            OnPropertyChanged(nameof(CanUndo));
-                        });
+                nameof(Modified),
+                () =>
+                    {
+                        OnPropertyChanged(nameof(CanApply));
+                        OnPropertyChanged(nameof(CanUndo));
+                    });
         }
 
         /// <summary>
-        /// Gets DTO back-end todo.
+        /// Indicates append notification.
+        /// </summary>
+        public event EventHandler<EventArgs> Appended;
+
+        /// <summary>
+        /// Indicates delete notification.
+        /// </summary>
+        public event EventHandler<EventArgs> Deleted;
+
+        /// <summary>
+        /// On item changed event handler.
+        /// </summary>
+        public event EventHandler<EventArgs> AttributeChanged;
+
+        /// <summary>
+        /// Gets or sets DTO back-end todo.
         /// </summary>
         public TModel Model { get; protected set; }
 
@@ -74,51 +72,24 @@ namespace TodoSystem.UI.ViewModel.Base
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether append notification.
+        /// Gets list of attribute properties.
         /// </summary>
-        public bool Appended
-        {
-            get { return _appended; }
-            set { SetField(ref _appended, value); }
-        }
+        public virtual IEnumerable<string> Attributes => Enumerable.Empty<string>();
 
         /// <summary>
-        /// Gets or sets a value indicating whether cancel notification.
+        /// Gets a value indicating whether ability of command execute (apply).
         /// </summary>
-        public bool Canceled
-        {
-            get { return _canceled; }
-            set { SetField(ref _canceled, value); }
-        }
+        public bool CanApply => Modified || Model == null;
 
         /// <summary>
-        /// Gets or sets a value indicating whether delete notification.
+        /// Gets a value indicating whether ability of command execute (undo).
         /// </summary>
-        public bool Deleted
-        {
-            get { return _deleted; }
-            set { SetField(ref _deleted, value); }
-        }
+        public bool CanUndo => Model != null && Modified;
 
         /// <summary>
-        /// Notify any action.
+        /// Gets a value indicating whether ability of command execute (delete).
         /// </summary>
-        public bool InAction => Appended || Canceled || Deleted;
-
-        /// <summary>
-        /// Ability of command execute (apply).
-        /// </summary>
-        public bool CanApply => !InAction && (Modified || Model == null);
-
-        /// <summary>
-        /// Ability of command execute (undo).
-        /// </summary>
-        public bool CanUndo => !InAction && (Modified || Model == null);
-
-        /// <summary>
-        /// Ability of command execute (delete).
-        /// </summary>
-        public bool CanDelete => !InAction && Model != null;
+        public bool CanDelete => true;
 
         /// <summary>
         /// Gets a value indicating whether service error.
@@ -136,9 +107,19 @@ namespace TodoSystem.UI.ViewModel.Base
         public ICommand UndoCommand { get; }
 
         /// <summary>
-        /// Gets delete  command.
+        /// Gets or sets delete  command.
         /// </summary>
         public ICommand TryDeleteCommand { get; protected set; }
+
+        /// <summary>
+        /// Gets back-end service if ViewModel.
+        /// </summary>
+        protected TService Service { get; }
+
+        /// <summary>
+        /// Gets <see cref="ICommandFactory"/> instance.
+        /// </summary>
+        protected ICommandFactory CommandFactory { get; }
 
         /// <summary>
         /// Apply action.
@@ -164,7 +145,7 @@ namespace TodoSystem.UI.ViewModel.Base
                 try
                 {
                     Create();
-                    Appended = true;
+                    Appended?.Invoke(this, new EventArgs());
                     ClearMofidied();
                 }
                 catch (FaultException)
@@ -198,12 +179,7 @@ namespace TodoSystem.UI.ViewModel.Base
         /// </summary>
         public void Undo()
         {
-            if (Model == null)
-            {
-                Canceled = true;
-                ClearMofidied();
-            }
-            else
+            if (Model != null)
             {
                 Refresh(Model);
                 ClearMofidied();
@@ -215,28 +191,47 @@ namespace TodoSystem.UI.ViewModel.Base
         /// </summary>
         public void TryDelete()
         {
-            ClearErrors(nameof(HasServiceError));
-            try
+            if (Model == null)
             {
-                if (Delete())
+                try
                 {
-                    Deleted = true;
+                    Deleted?.Invoke(this, new EventArgs());
+                    ClearMofidied();
+                }
+                catch (FaultException)
+                {
+                    AppendErrors(nameof(HasServiceError), "Service cannot refresh this record.");
+                }
+                catch (CommunicationException)
+                {
+                    AppendErrors(nameof(HasServiceError), "Service encountered with problems.");
                 }
             }
-            catch (FaultException)
+            else
             {
-                AppendErrors(nameof(HasServiceError), "Service cannot delete this record.");
-            }
-            catch (CommunicationException)
-            {
-                AppendErrors(nameof(HasServiceError), "Service encountered with problems.");
+                ClearErrors(nameof(HasServiceError));
+                try
+                {
+                    if (Delete())
+                    {
+                        Deleted?.Invoke(this, new EventArgs());
+                    }
+                }
+                catch (FaultException)
+                {
+                    AppendErrors(nameof(HasServiceError), "Service cannot delete this record.");
+                }
+                catch (CommunicationException)
+                {
+                    AppendErrors(nameof(HasServiceError), "Service encountered with problems.");
+                }
             }
         }
 
         /// <summary>
         /// Delete action.
         /// </summary>
-        /// <returns>True if records does't exist already. </returns>
+        /// <returns>True if records doesn't exist already. </returns>
         public abstract bool Delete();
 
         /// <summary>
@@ -260,7 +255,7 @@ namespace TodoSystem.UI.ViewModel.Base
         public abstract bool Create();
 
         /// <summary>
-        /// Set false for all modified properties. 
+        /// Set false for all modified properties.
         /// </summary>
         public abstract void ClearMofidied();
 
@@ -268,6 +263,14 @@ namespace TodoSystem.UI.ViewModel.Base
         /// Checks validation of content properties.
         /// </summary>
         /// <returns>True if content passed validation. </returns>
-        public abstract bool ContentValidate();
+        public bool ContentValidate() => !this.HasErrors(Attributes);
+
+        /// <summary>
+        /// Handles item changed behavior.
+        /// </summary>
+        protected virtual void ItemChanged()
+        {
+            AttributeChanged?.Invoke(this, new EventArgs());
+        }
     }
 }

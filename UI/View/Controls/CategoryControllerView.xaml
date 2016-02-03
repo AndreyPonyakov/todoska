@@ -8,26 +8,71 @@
              xmlns:behavior="clr-namespace:TodoSystem.UI.Tools.View.Behavior;assembly=TodoSystem.UI.Tools.View"
              xmlns:controls="clr-namespace:TodoSystem.UI.View.Controls"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance viewModel:CategoryControllerViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Margin="0,0,-154,0">
+             d:DataContext="{d:DesignInstance viewModel:CategoryControllerViewModel}" >
+    <Grid >
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button Height="30" Width="30" HorizontalAlignment="Left" Command="{Binding CreateItemCommand}">
-                <Image Source="http://icons.iconarchive.com/icons/hopstarter/button/128/Button-Add-icon.png" />
+        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+            <Label FontWeight="Bold" Width="200" Margin="6,0,6,0">
+                <TextBlock TextDecorations="Underline">Name</TextBlock>
+            </Label>
+            <Label FontWeight="Bold" Width="80" Margin="6,0,6,0">
+                <TextBlock TextDecorations="Underline">Color</TextBlock>
+            </Label>
+        </StackPanel>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button  Margin="0,6,0,0" Height="23" Grid.Column="1"
+                     HorizontalAlignment="Left" Command="{Binding CreateItemCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="http://icons.iconarchive.com/icons/hopstarter/button/128/Button-Add-icon.png" />
+                    <TextBlock Margin="6,0,6,0">Add</TextBlock>
+                </StackPanel>
                 <Button.ToolTip>
                     <ToolTip Content="Append category..."/>
                 </Button.ToolTip>
             </Button>
-        </StackPanel>
-        <ListBox Grid.Row="1" ItemsSource="{Binding List}">
+        </Grid>
+        <ListBox Grid.Row="1" ItemsSource="{Binding List}" BorderThickness="0">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <StackPanel>
+                                    <Separator x:Name="Separator" Visibility="Collapsed"/>
+                                    <ContentPresenter/>
+                                    <Separator />
+                                </StackPanel>
+                                <ControlTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                        <Setter Property="Visibility" TargetName="Separator" Value="Visible"/>
+                                    </DataTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True" >
+                            <Setter Property="Background" Value="Transparent" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                    </Style.Resources>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Margin="0" AllowDrop="True">
-                        <controls:CategoryView/>
+                    <Grid Margin="0" AllowDrop="True"  HorizontalAlignment="Stretch">
+                        <controls:CategoryView HorizontalAlignment="Stretch"/>
                         <i:Interaction.Behaviors>
                             <behavior:DragBehavior 
                                 DataFormat="viewModel:CategoryViewModel"/>

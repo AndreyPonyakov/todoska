@@ -1,14 +1,15 @@
-﻿namespace TodoSystem.UI.Tools.Model
+﻿#pragma warning disable SA1402 // File may only contain a single class
+namespace TodoSystem.UI.Tools.Model
 {
     /// <summary>
-    /// Data transition struct for drag-n-drop operation.
+    /// Data transition struct for transition operation.
     /// </summary>
     /// <typeparam name="TS">Source data type. </typeparam>
     /// <typeparam name="TD">Destination data type. </typeparam>
     public class DataTransition<TS, TD>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataTransition{TS,TD}"/> class. 
+        /// Initializes a new instance of the <see cref="DataTransition{TS,TD}"/> class.
         /// </summary>
         /// <param name="source">Source data of operation. </param>
         /// <param name="destination">Destination data of operation. </param>
@@ -30,12 +31,12 @@
     }
 
     /// <summary>
-    /// Data transition struct for drag-n-drop operation.
+    /// Data transition struct for transition operation.
     /// </summary>
     public class DataTransition : DataTransition<object, object>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataTransition"/> class. 
+        /// Initializes a new instance of the <see cref="DataTransition"/> class.
         /// </summary>
         /// <param name="source">Source data of operation. </param>
         /// <param name="destination">Destination data of operation. </param>
@@ -56,3 +57,4 @@
         }
     }
 }
+#pragma warning restore SA1402 // File may only contain a single class
