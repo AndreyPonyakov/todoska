@@ -25,7 +25,7 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// Undo create new item.
         /// </summary>
-        /// <returns>A new <see cref="CategoryViewModel"/> instance. </returns>
+        /// <returns>A new instance of the <see cref="CategoryViewModel"/> class. </returns>
         public override CategoryViewModel CreateItem()
         {
             var category = new CategoryViewModel(CommandFactory, Service);

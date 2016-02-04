@@ -2,18 +2,8 @@
 using System.Security.Permissions;
 using TodoSystem.UI.Tools.Model;
 
-#pragma warning disable SA1649 // File name must match first type name
 namespace TodoSystem.UI.ViewModel.Event
 {
-    /// <summary>
-    /// MoveTo event handler.
-    /// </summary>
-    /// <typeparam name="TS">Source transition data type. </typeparam>
-    /// <typeparam name="TD">Destination transition data type. </typeparam>
-    /// <param name="sender">Sender element. </param>
-    /// <param name="e">Event handler arguments. </param>
-    public delegate void MovedEventHandler<TS, TD>(object sender, MovedEventHandlerArgs<TS, TD> e);
-
     /// <summary>
     /// Event argument for MoveTo event.
     /// </summary>
@@ -37,4 +27,3 @@ namespace TodoSystem.UI.ViewModel.Event
         public DataTransition<TS, TD> DataTransition { get; }
     }
 }
-#pragma warning restore SA1649 // File name must match first type name

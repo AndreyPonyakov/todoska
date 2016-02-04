@@ -1,3 +1,5 @@
+using System;
+
 using TodoSystem.UI.Tools.Model;
 using TodoSystem.UI.ViewModel.Event;
 
@@ -15,7 +17,7 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// Moved event handler.
         /// </summary>
-        event MovedEventHandler<TViewModel, TViewModel> Moved;
+        event EventHandler<MovedEventHandlerArgs<TViewModel, TViewModel>> Moved;
 
         /// <summary>
         /// Gets or sets priority.
