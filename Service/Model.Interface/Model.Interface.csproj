@@ -60,7 +60,10 @@
   <ItemGroup>
     <Compile Include="Category.cs" />
     <Compile Include="ICategoryController.cs" />
+    <Compile Include="ICategoryRepository.cs" />
+    <Compile Include="IRepository.cs" />
     <Compile Include="ITodoController.cs" />
+    <Compile Include="ITodoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>

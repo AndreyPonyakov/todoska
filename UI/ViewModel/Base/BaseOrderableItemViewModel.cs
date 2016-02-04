@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using TodoSystem.UI.Tools.Model;
@@ -36,7 +37,7 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// MoveTo event handler.
         /// </summary>
-        public event MovedEventHandler<TViewModel, TViewModel> Moved;
+        public event EventHandler<MovedEventHandlerArgs<TViewModel, TViewModel>> Moved;
 
         /// <summary>
         /// Gets or sets priority.

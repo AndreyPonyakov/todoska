@@ -36,6 +36,10 @@
     <CodeAnalysisRuleSet>Host.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.4.2.0\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -68,6 +72,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Model.Implementation\Model.Implementation.csproj">
+      <Project>{1ee0f4ac-6d50-43a8-b64f-2faf7cc0d15a}</Project>
+      <Name>Model.Implementation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model.SqlCE\Model.SqlCe.csproj">
       <Project>{a6a33aac-6706-461d-9d1a-c481535afb40}</Project>
       <Name>Model.SqlCe</Name>
