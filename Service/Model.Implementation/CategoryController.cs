@@ -9,14 +9,14 @@ namespace TodoSystem.Model.Implementation
     /// <summary>
     /// Storage implementation for <see cref="ICategoryController"/>
     /// </summary>
-    public abstract class BaseCategoryController : ICategoryController
+    public sealed class CategoryController : ICategoryController
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseCategoryController"/> class.
+        /// Initializes a new instance of the <see cref="CategoryController"/> class.
         /// </summary>
         /// <param name="repository">Category repository. </param>
         /// <exception cref="ArgumentNullException">Throws if the repository is null. </exception>
-        protected BaseCategoryController(ICategoryRepository repository)
+        public CategoryController(ICategoryRepository repository)
         {
             if (repository == null)
             {

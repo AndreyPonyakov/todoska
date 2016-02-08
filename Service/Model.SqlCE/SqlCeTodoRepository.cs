@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using AutoMapper;
 
-using TodoSystem.Model.SqlCe;
+using AutoMapper;
 
 using Interface = TodoSystem.Service.Model.Interface;
 
-namespace Model.SqlCe
+namespace TodoSystem.Model.SqlCe
 {
     /// <summary>
     /// Interface for plain database todo table management.

@@ -12,21 +12,6 @@ namespace TodoSystem.Model.Implementation.Test
     [TestFixture]
     public class CategoryControllerTest
     {
-        /// <summary>
-        /// Storage implementation for <see cref="ICategoryController"/>
-        /// </summary>
-        private sealed class CategoryController : BaseCategoryController
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="BaseCategoryController"/> class.
-            /// </summary>
-            /// <param name="repository">Category repository. </param>
-            public CategoryController(ICategoryRepository repository)
-                : base(repository)
-            {
-            }
-        }
-
         [Test]
         [Category("Controller")]
         [ExpectedException(typeof(ArgumentNullException))]

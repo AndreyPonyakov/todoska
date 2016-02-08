@@ -58,7 +58,6 @@
     <Compile Include="Category.cs">
       <DependentUpon>TodoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MapperHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlCeCategoryRepository.cs" />
     <Compile Include="SqlCeTodoRepository.cs" />

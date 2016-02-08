@@ -8,13 +8,13 @@ namespace TodoSystem.Model.Implementation
     /// <summary>
     /// Storage implementation for <see cref="ITodoController"/>
     /// </summary>
-    public abstract class BaseTodoController : ITodoController
+    public sealed class TodoController : ITodoController
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseTodoController"/> class.
+        /// Initializes a new instance of the <see cref="TodoController"/> class.
         /// </summary>
         /// <param name="repository">Category repository. </param>
-        protected BaseTodoController(ITodoRepository repository)
+        public TodoController(ITodoRepository repository)
         {
             if (repository == null)
             {

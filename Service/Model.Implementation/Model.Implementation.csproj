@@ -41,8 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseCategoryController.cs" />
-    <Compile Include="BaseTodoController.cs" />
+    <Compile Include="CategoryController.cs" />
+    <Compile Include="TodoController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
