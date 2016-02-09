@@ -7,8 +7,8 @@
     <ProjectGuid>{A6A33AAC-6706-461D-9D1A-C481535AFB40}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Model.SqlCe</RootNamespace>
-    <AssemblyName>Model.SqlCe</AssemblyName>
+    <RootNamespace>TodoSystem.Model.SqlCe</RootNamespace>
+    <AssemblyName>TodoSystem.Model.SqlCe</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -58,9 +58,9 @@
     <Compile Include="Category.cs">
       <DependentUpon>TodoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="SqlCeCategoryController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlCeTodoController.cs" />
+    <Compile Include="SqlCeCategoryRepository.cs" />
+    <Compile Include="SqlCeTodoRepository.cs" />
     <Compile Include="Todo.cs">
       <DependentUpon>TodoModel.tt</DependentUpon>
     </Compile>
