@@ -41,6 +41,7 @@ namespace <#=code.EscapeNamespace(codeNamespace)#>
 
 #>
 using System;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 <#
@@ -58,6 +59,18 @@ using System.Linq;
 {
     public <#=code.Escape(container)#>()
         : base("name=<#=container.Name#>")
+    {
+<#
+if (!loader.IsLazyLoadingEnabled(container))
+{
+#>
+        this.Configuration.LazyLoadingEnabled = false;
+<#
+}
+#>
+    }
+
+    public <#=code.Escape(container)#>(DbConnection connection) : base(connection, true)
     {
 <#
 if (!loader.IsLazyLoadingEnabled(container))

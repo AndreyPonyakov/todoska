@@ -10,7 +10,7 @@ namespace Host
     /// Class for behavior of parametrization constructor.
     /// </summary>
     /// <typeparam name="T">Service type. </typeparam>
-    public class InstanceProviderBehavior<T> : IInstanceProvider, IContractBehavior
+    public sealed class InstanceProviderBehavior<T> : IInstanceProvider, IContractBehavior
         where T : class
     {
         /// <summary>
