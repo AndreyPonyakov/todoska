@@ -14,21 +14,20 @@ using TodoSystem.Service.Model.Interface;
 namespace Host
 {
     /// <summary>
-    /// Class with enter point of wcf host.
+    /// Class with entry point of wcf host.
     /// </summary>
     public class Program
     {
         /// <summary>
-        /// Enter point of wcf host
+        /// Entry point of wcf host
         /// </summary>
         private static void Main()
         {
             var container =
                 new UnityContainer()
-                    .RegisterInstance(new MapperConfiguration(cfg => cfg.MapCategory().MapTodo()))
                     .RegisterType<IMapper>(
                         new ContainerControlledLifetimeManager(),
-                        new InjectionFactory(uc => uc.Resolve<MapperConfiguration>().CreateMapper()))
+                        new InjectionFactory(uc => new TodoMapperFactory().CreateMapper()))
                     .RegisterType<ICategoryRepository, SqlCeCategoryRepository>()
                     .RegisterType<ITodoRepository, SqlCeTodoRepository>()
                     .RegisterType<ICategoryController, CategoryController>()
@@ -42,7 +41,7 @@ namespace Host
 
                 categoryHost.Open();
                 todoHost.Open();
-                Console.Write($"TodoSystem service started at {DateTime.Now}");
+                Console.Write($"TodoSystem service started at {DateTime.Now}...");
                 Console.ReadLine();
             }
         }

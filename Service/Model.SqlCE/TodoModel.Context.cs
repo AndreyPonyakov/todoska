@@ -10,6 +10,7 @@
 namespace TodoSystem.Model.SqlCe
 {
     using System;
+    using System.Data.Common;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
@@ -17,6 +18,10 @@ namespace TodoSystem.Model.SqlCe
     {
         public TodoDbContext()
             : base("name=TodoDbContext")
+        {
+        }
+    
+        public TodoDbContext(DbConnection connection) : base(connection, true)
         {
         }
     
