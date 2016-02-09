@@ -18,7 +18,7 @@ namespace TodoSystem.Model.SqlCe
         public string Title { get; set; }
         public string Desc { get; set; }
         public Nullable<System.DateTime> Deadline { get; set; }
-        public int CategoryId { get; set; }
+        public Nullable<int> CategoryId { get; set; }
         public bool Checked { get; set; }
         public int Order { get; set; }
     

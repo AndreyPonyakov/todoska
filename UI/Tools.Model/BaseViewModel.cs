@@ -43,6 +43,20 @@ namespace TodoSystem.UI.Tools.Model
         public IEnumerable GetErrors(string propertyName) => ErrorContainer.GetErrors(propertyName);
 
         /// <summary>
+        /// Retrieves error from according array property object.
+        /// </summary>
+        /// <typeparam name="TS">Follower type.</typeparam>
+        /// <param name="propertyName">Target property name. </param>
+        /// <param name="followers">List of pair of objects and property name</param>
+        /// <param name="unique">False for repeatable message. </param>
+        public void RetrieveErrors<TS>(
+            string propertyName,
+            IDictionary<TS, string> followers,
+            bool unique = true)
+            where TS : class, INotifyDataErrorInfo
+            => followers.RetrieveErrors(propertyName, ClearErrors, AppendErrors, unique);
+
+        /// <summary>
         /// Raises the <see cref="PropertyChanged"/> event.
         /// </summary>
         /// <param name="propertyName">Changed property name. </param>

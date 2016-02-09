@@ -13,7 +13,7 @@ namespace TodoSystem.UI.ViewModel.Base
     /// <typeparam name="TService">Back-end service. </typeparam>
     /// <typeparam name="TItemModel">Type of model item element. </typeparam>
     /// <typeparam name="TItemViewModel">Type of item element. </typeparam>
-    public abstract class BaseOrderableControllerViewModel<TService, TItemModel, TItemViewModel> : BaseViewModel
+    public abstract class BaseOrderableControllerViewModel<TService, TItemModel, TItemViewModel> : BaseViewModel, IServiceable<TService>
         where TItemModel : class
         where TItemViewModel : BaseViewModel, IOrderableItemViewModel<TItemModel, TItemViewModel>
     {
@@ -33,7 +33,6 @@ namespace TodoSystem.UI.ViewModel.Base
             CreateItemCommand = commandFactory.CreateCommand(
                 () => CreateItem(),
                 () => Service != null && !this.HasErrors(nameof(Service)));
-            this.SetPropertyChanged(nameof(Service), Refresh);
         }
 
         /// <summary>
@@ -67,17 +66,17 @@ namespace TodoSystem.UI.ViewModel.Base
         public abstract TItemViewModel CreateItem();
 
         /// <summary>
-        /// Clear local data.
+        /// Retrieves data from the service and fill form.
         /// </summary>
-        public void Clear()
+        public abstract void Open();
+
+        /// <summary>
+        /// Closes all opened data.
+        /// </summary>
+        public void Close()
         {
             List.Clear();
         }
-
-        /// <summary>
-        /// Refresh data from the service.
-        /// </summary>
-        public abstract void Refresh();
 
         /// <summary>
         /// Commit all uncommitted changes.
@@ -96,7 +95,6 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <param name="item">Appending item. </param>
         public void AppendItem(TItemViewModel item)
         {
-            item.Order = List.Any() ? List.Max(c => c.Order) + 1 : 0;
             List.Add(item);
 
             item.Deleted += (sender, args) => List.Remove(sender as TItemViewModel);

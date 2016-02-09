@@ -129,16 +129,10 @@ namespace TodoSystem.UI.Model.CategoryControllerServiceReference {
         System.Threading.Tasks.Task<TodoSystem.UI.Model.CategoryControllerServiceReference.Category[]> SelectByNameAsync(string name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/Create", ReplyAction="http://tempuri.org/ICategoryController/CreateResponse")]
-        TodoSystem.UI.Model.CategoryControllerServiceReference.Category Create(string name, System.Nullable<System.Drawing.Color> color, int order);
+        TodoSystem.UI.Model.CategoryControllerServiceReference.Category Create(string name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/Create", ReplyAction="http://tempuri.org/ICategoryController/CreateResponse")]
-        System.Threading.Tasks.Task<TodoSystem.UI.Model.CategoryControllerServiceReference.Category> CreateAsync(string name, System.Nullable<System.Drawing.Color> color, int order);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/Update", ReplyAction="http://tempuri.org/ICategoryController/UpdateResponse")]
-        void Update(TodoSystem.UI.Model.CategoryControllerServiceReference.Category category);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/Update", ReplyAction="http://tempuri.org/ICategoryController/UpdateResponse")]
-        System.Threading.Tasks.Task UpdateAsync(TodoSystem.UI.Model.CategoryControllerServiceReference.Category category);
+        System.Threading.Tasks.Task<TodoSystem.UI.Model.CategoryControllerServiceReference.Category> CreateAsync(string name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/Delete", ReplyAction="http://tempuri.org/ICategoryController/DeleteResponse")]
         void Delete(int id);
@@ -146,11 +140,23 @@ namespace TodoSystem.UI.Model.CategoryControllerServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/Delete", ReplyAction="http://tempuri.org/ICategoryController/DeleteResponse")]
         System.Threading.Tasks.Task DeleteAsync(int id);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/ChangeText", ReplyAction="http://tempuri.org/ICategoryController/ChangeTextResponse")]
+        void ChangeText(int id, string name);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/ChangeText", ReplyAction="http://tempuri.org/ICategoryController/ChangeTextResponse")]
+        System.Threading.Tasks.Task ChangeTextAsync(int id, string name);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/ChangeOrder", ReplyAction="http://tempuri.org/ICategoryController/ChangeOrderResponse")]
         void ChangeOrder(int id, int order);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/ChangeOrder", ReplyAction="http://tempuri.org/ICategoryController/ChangeOrderResponse")]
         System.Threading.Tasks.Task ChangeOrderAsync(int id, int order);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/ChangeColor", ReplyAction="http://tempuri.org/ICategoryController/ChangeColorResponse")]
+        void ChangeColor(int id, System.Nullable<System.Drawing.Color> color);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/ChangeColor", ReplyAction="http://tempuri.org/ICategoryController/ChangeColorResponse")]
+        System.Threading.Tasks.Task ChangeColorAsync(int id, System.Nullable<System.Drawing.Color> color);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -204,20 +210,12 @@ namespace TodoSystem.UI.Model.CategoryControllerServiceReference {
             return base.Channel.SelectByNameAsync(name);
         }
         
-        public TodoSystem.UI.Model.CategoryControllerServiceReference.Category Create(string name, System.Nullable<System.Drawing.Color> color, int order) {
-            return base.Channel.Create(name, color, order);
+        public TodoSystem.UI.Model.CategoryControllerServiceReference.Category Create(string name) {
+            return base.Channel.Create(name);
         }
         
-        public System.Threading.Tasks.Task<TodoSystem.UI.Model.CategoryControllerServiceReference.Category> CreateAsync(string name, System.Nullable<System.Drawing.Color> color, int order) {
-            return base.Channel.CreateAsync(name, color, order);
-        }
-        
-        public void Update(TodoSystem.UI.Model.CategoryControllerServiceReference.Category category) {
-            base.Channel.Update(category);
-        }
-        
-        public System.Threading.Tasks.Task UpdateAsync(TodoSystem.UI.Model.CategoryControllerServiceReference.Category category) {
-            return base.Channel.UpdateAsync(category);
+        public System.Threading.Tasks.Task<TodoSystem.UI.Model.CategoryControllerServiceReference.Category> CreateAsync(string name) {
+            return base.Channel.CreateAsync(name);
         }
         
         public void Delete(int id) {
@@ -228,12 +226,28 @@ namespace TodoSystem.UI.Model.CategoryControllerServiceReference {
             return base.Channel.DeleteAsync(id);
         }
         
+        public void ChangeText(int id, string name) {
+            base.Channel.ChangeText(id, name);
+        }
+        
+        public System.Threading.Tasks.Task ChangeTextAsync(int id, string name) {
+            return base.Channel.ChangeTextAsync(id, name);
+        }
+        
         public void ChangeOrder(int id, int order) {
             base.Channel.ChangeOrder(id, order);
         }
         
         public System.Threading.Tasks.Task ChangeOrderAsync(int id, int order) {
             return base.Channel.ChangeOrderAsync(id, order);
+        }
+        
+        public void ChangeColor(int id, System.Nullable<System.Drawing.Color> color) {
+            base.Channel.ChangeColor(id, color);
+        }
+        
+        public System.Threading.Tasks.Task ChangeColorAsync(int id, System.Nullable<System.Drawing.Color> color) {
+            return base.Channel.ChangeColorAsync(id, color);
         }
     }
 }

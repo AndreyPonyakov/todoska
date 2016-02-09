@@ -52,30 +52,17 @@ namespace TodoSystem.Model.Implementation
         /// Creates new category with target attributes.
         /// </summary>
         /// <param name="name">Short name. </param>
-        /// <param name="color">Preferable color. </param>
-        /// <param name="order">New priority. </param>
         /// <returns>Category instance. </returns>
-        public Category Create(string name, Color? color, int order)
+        public Category Create(string name)
         {
-            var category = new Category
-                               {
-                                   Order = order,
-                                   Name = name,
-                                   Color = color
-                               };
+            var category =
+                new Category
+                {
+                    Name = name,
+                    Color = null,
+                    Order = (Repository.FindLast()?.Order ?? default(int) - 1) + 1
+                };
             return Repository.Save(category);
-        }
-
-        /// <summary>
-        /// Update category with target attributes.
-        /// </summary>
-        /// <param name="category">Update category local instance.</param>
-        public void Update(Category category)
-        {
-            if (category.Id != default(int))
-            {
-                Repository.Save(category);
-            }
         }
 
         /// <summary>
@@ -83,6 +70,23 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="id">Primary key of category. </param>
         public void Delete(int id) => Repository.Delete(Repository.Get(id));
+
+        /// <summary>
+        /// Change name of item by primary key.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="name">Target name. </param>
+        public void ChangeText(int id, string name)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            var category = Repository.Get(id);
+            category.Name = name;
+            Repository.Save(category);
+        }
 
         /// <summary>
         /// Change priority of order.
@@ -93,6 +97,18 @@ namespace TodoSystem.Model.Implementation
         {
             var category = Repository.Get(id);
             category.Order = order;
+            Repository.Save(category);
+        }
+
+        /// <summary>
+        /// Change color of item by primary key.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="color">Target color. </param>
+        public void ChangeColor(int id, Color? color)
+        {
+            var category = Repository.Get(id);
+            category.Color = color;
             Repository.Save(category);
         }
     }

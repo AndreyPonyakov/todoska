@@ -43,12 +43,11 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// Update from service.
         /// </summary>
-        public override void Refresh()
+        public override void Open()
         {
             ClearErrors(nameof(Service));
             try
             {
-                List.Clear();
                 Service.TodoController.SelectAll()
                     .OrderBy(t => t.Order)
                     .ToList()

@@ -28,6 +28,7 @@ namespace Host
                     .RegisterType<IMapper>(
                         new ContainerControlledLifetimeManager(),
                         new InjectionFactory(uc => new TodoMapperFactory().CreateMapper()))
+                    .RegisterType<TodoDbContext>(new InjectionFactory(uc => new TodoDbContext()))
                     .RegisterType<ICategoryRepository, SqlCeCategoryRepository>()
                     .RegisterType<ITodoRepository, SqlCeTodoRepository>()
                     .RegisterType<ICategoryController, CategoryController>()

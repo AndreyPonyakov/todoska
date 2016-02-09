@@ -120,20 +120,68 @@ namespace TodoSystem.Model.Implementation.Test
         public void Create_ArgumentList_Category()
         {
             var repository = MockRepository.GenerateStub<ICategoryRepository>();
+            var last = new Category
+            {
+                Id = 10,
+                Name = "last name",
+                Color = null,
+                Order = 14
+            };
             var name = "some name";
-            var color = Color.Chartreuse;
-            var order = 100;
             var category = new Category();
+            repository.Stub(r => r.FindLast()).Return(last);
             repository
                 .Stub(r => r.Save(
                     Arg<Category>.Matches(
-                        c => c.Name == name && c.Color == color 
-                        && c.Order == order && c.Id == default(int))))
+                        c => c.Name == name && c.Color == null 
+                        && c.Order == last.Order + 1 && c.Id == default(int))))
                 .Return(category);
             var controller = new CategoryController(repository);
 
             Assert.That(
-                controller.Create(name, color, order),
+                controller.Create(name),
+                Is.SameAs(category));
+        }
+
+        [Test]
+        [Category("Controller")]
+        public void Create_FirstItem_CategoryWithZeroOrder()
+        {
+            var repository = MockRepository.GenerateStub<ICategoryRepository>();
+            var name = "some name";
+            var category = new Category();
+            repository.Stub(r => r.FindLast()).Return(null);
+            repository
+                .Stub(r => r.Save(
+                    Arg<Category>.Matches(
+                        c => c.Name == name && c.Color == null
+                        && c.Order == default(int) && c.Id == default(int))))
+                .Return(category);
+            var controller = new CategoryController(repository);
+
+            Assert.That(
+                controller.Create(name),
+                Is.SameAs(category));
+        }
+
+        [Test]
+        [Category("Controller")]
+        public void Create_FirstItem_Category()
+        {
+            var repository = MockRepository.GenerateStub<ICategoryRepository>();
+            var name = "some name";
+            var category = new Category();
+            repository.Stub(r => r.FindLast()).Return(null);
+            repository
+                .Stub(r => r.Save(
+                    Arg<Category>.Matches(
+                        c => c.Name == name && c.Color == null
+                        && c.Order == default(int) && c.Id == default(int))))
+                .Return(category);
+            var controller = new CategoryController(repository);
+
+            Assert.That(
+                controller.Create(name),
                 Is.SameAs(category));
         }
 
@@ -142,65 +190,26 @@ namespace TodoSystem.Model.Implementation.Test
         public void Create_ArgumentList_RightBehavior()
         {
             var repository = MockRepository.GenerateMock<ICategoryRepository>();
+            var last = new Category
+            {
+                Id = 10,
+                Name = "last name",
+                Color = null,
+                Order = 14
+            };
+
             var name = "some name";
-            var color = Color.Chartreuse;
-            var order = 100;
             var category = new Category();
+            repository.Expect(r => r.FindLast()).Return(last);
             repository
                 .Expect(r => r.Save(
                     Arg<Category>.Matches(
-                        c => c.Name == name && c.Color == color
-                        && c.Order == order && c.Id == default(int))))
+                        c => c.Name == name && c.Color == null
+                        && c.Order == last.Order + 1 && c.Id == default(int))))
                 .Return(category);
             var controller = new CategoryController(repository);
 
-            controller.Create(name, color, order);
-
-            repository.VerifyAllExpectations();
-        }
-
-        [Test]
-        [Category("Controller")]
-        public void Update_DefaultId_NoActionBehavior()
-        {
-            var repository = MockRepository.GenerateMock<ICategoryRepository>();
-            var name = "some name";
-            var color = Color.Chartreuse;
-            var order = 100;
-            var category = new Category {
-                                   Id = default(int),
-                                   Name = name,
-                                   Color = color,
-                                   Order = order
-                               };
-            var controller = new CategoryController(repository);
-
-            controller.Update(category);
-
-            repository.VerifyAllExpectations();
-        }
-
-        [Test]
-        [Category("Controller")]
-        public void Update_RightId_RightBehavior()
-        {
-            var repository = MockRepository.GenerateMock<ICategoryRepository>();
-            var id = 1;
-            var name = "some name";
-            var color = Color.Chartreuse;
-            var order = 100;
-            var category = new Category
-                               {
-                                   Id = id,
-                                   Name = name,
-                                   Color = color,
-                                   Order = order
-                               };
-            var result = new Category();
-            repository.Expect(r => r.Save(category)).Return(result);
-            var controller = new CategoryController(repository);
-
-            controller.Update(category);
+            controller.Create(name);
 
             repository.VerifyAllExpectations();
         }
@@ -233,7 +242,36 @@ namespace TodoSystem.Model.Implementation.Test
 
         [Test]
         [Category("Controller")]
-        public void ChangeOrder_RightIdAndNewOrder_RightBehavior()
+        public void ChangeText_RightIdAndNewName_RightBehavior()
+        {
+            var repository = MockRepository.GenerateMock<ICategoryRepository>();
+            var id = 1;
+            var name = "some name";
+            var color = Color.Chartreuse;
+            var order = 100;
+            var newName = "new name";
+            var category = new Category
+            {
+                Id = id,
+                Name = name,
+                Color = color,
+                Order = order
+            };
+            repository.Expect(r => r.Get(id)).Return(category);
+            repository
+                .Expect(r => r.Save(
+                    Arg<Category>.Matches(c => c.Id == id && c.Name == newName)))
+                .Return(category);
+            var controller = new CategoryController(repository);
+
+            controller.ChangeText(id, newName);
+
+            repository.VerifyAllExpectations();
+        }
+
+        [Test]
+        [Category("Controller")]
+        public void ChangeText_RightIdAndNewOrder_RightBehavior()
         {
             var repository = MockRepository.GenerateMock<ICategoryRepository>();
             var id = 1;
@@ -250,12 +288,78 @@ namespace TodoSystem.Model.Implementation.Test
                                };
             repository.Expect(r => r.Get(id)).Return(category);
             repository
-                .Expect(r =>r.Save(
+                .Expect(r => r.Save(
                     Arg<Category>.Matches(c => c.Id == id && c.Order == newOrder)))
                 .Return(category);
             var controller = new CategoryController(repository);
 
             controller.ChangeOrder(id, newOrder);
+
+            repository.VerifyAllExpectations();
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        [Category("Controller")]
+        public void ChangeName_RightIdAndNullName_ArgumentNullException()
+        {
+            var repository = MockRepository.GenerateStub<ICategoryRepository>();
+            var id = 1;
+            var controller = new CategoryController(repository);
+
+            controller.ChangeText(id, null);
+        }
+
+        [Test]
+        [Category("Controller")]
+        public void ChangeColor_RightIdAndNewColor_RightBehavior()
+        {
+            var repository = MockRepository.GenerateMock<ICategoryRepository>();
+            var id = 1;
+            var name = "some name";
+            var color = Color.Chartreuse;
+            var order = 100;
+            var newColor = Color.Turquoise;
+            var category = new Category
+            {
+                Id = id,
+                Name = name,
+                Color = color,
+                Order = order
+            };
+            repository.Expect(r => r.Get(id)).Return(category);
+            repository
+                .Expect(r => r.Save(
+                    Arg<Category>.Matches(c => c.Id == id && c.Color == newColor)))
+                .Return(category);
+            var controller = new CategoryController(repository);
+
+            controller.ChangeColor(id, newColor);
+
+            repository.VerifyAllExpectations();
+        }
+
+        [Test]
+        [Category("Controller")]
+        public void ChangeColor_RightIdAndNullColor_RightBehavior()
+        {
+            var repository = MockRepository.GenerateMock<ICategoryRepository>();
+            var id = 1;
+            var category = new Category
+            {
+                Id = id,
+                Name = "some name",
+                Color = Color.Chartreuse,
+                Order = 100
+            };
+            repository.Expect(r => r.Get(id)).Return(category);
+            repository
+                .Expect(r => r.Save(
+                    Arg<Category>.Matches(c => c.Id == id && c.Color == null)))
+                .Return(category);
+            var controller = new CategoryController(repository);
+
+            controller.ChangeColor(id, null);
 
             repository.VerifyAllExpectations();
         }

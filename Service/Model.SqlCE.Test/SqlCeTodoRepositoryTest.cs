@@ -9,7 +9,7 @@ using NUnit.Framework;
 using TodoSystem.Model.SqlCe;
 using Interface = TodoSystem.Service.Model.Interface;
 
-namespace Model.SqlCE.Test
+namespace TodoSystem.Model.SqlCE.Test
 {
     [TestFixture]
     public sealed class SqlCeTodoRepositoryTest
@@ -62,7 +62,7 @@ namespace Model.SqlCE.Test
                         Title = "Third",
                         Desc = null,
                         CategoryId = 2,
-                        Order = 2,
+                        Order = 3,
                         Deadline = DateTime.Now,
                         Checked = true
                     });
@@ -340,6 +340,55 @@ namespace Model.SqlCE.Test
             var categories = repository.Find(category);
 
             Assert.That(categories.Any(), Is.False);
+        }
+
+        [Test]
+        [Category("Repository")]
+        public void FindLast_Configuration1_IdIsThree()
+        {
+            var context = new TodoDbContext(Connection.Value);
+            ApplyConfiguration1(context);
+            var repository = new SqlCeTodoRepository(
+                context,
+                new TodoMapperFactory().CreateMapper());
+
+            Assert.That(repository.FindLast().Id, Is.EqualTo(3));
+        }
+
+        [Test]
+        [Category("Repository")]
+        public void FindLast_Configuration1AndClear_IsNull()
+        {
+            var context = new TodoDbContext(Connection.Value);
+            ApplyConfiguration1(context);
+            var repository = new SqlCeTodoRepository(
+                context,
+                new TodoMapperFactory().CreateMapper());
+            while (repository.GetAll().Any())
+            {
+                repository.Delete(repository.GetAll().Last());
+            }
+
+            var category = repository.FindLast();
+
+            Assert.That(category, Is.Null);
+        }
+
+        [Test]
+        [Category("Repository")]
+        public void FindLast_Configuration1AndChangeOrder_IdIsOne()
+        {
+            var context = new TodoDbContext(Connection.Value);
+            ApplyConfiguration1(context);
+            var repository = new SqlCeTodoRepository(
+                context,
+                new TodoMapperFactory().CreateMapper());
+
+            var todo = repository.Get(1);
+            todo.Order = 4;
+            repository.Save(todo);
+
+            Assert.That(repository.FindLast().Id, Is.EqualTo(1));
         }
     }
 }

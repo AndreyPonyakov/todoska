@@ -50,6 +50,7 @@
     <Compile Include="Base\BaseOrderableItemViewModel.cs" />
     <Compile Include="Base\IItemViewModel.cs" />
     <Compile Include="Base\IOrderableItemViewModel.cs" />
+    <Compile Include="Base\IServiceable.cs" />
     <Compile Include="CategoryViewModel.cs" />
     <Compile Include="Event\MovedEventHandlerArgs.cs" />
     <Compile Include="Event\MovedEventHelper.cs" />

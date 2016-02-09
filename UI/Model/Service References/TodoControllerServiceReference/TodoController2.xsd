@@ -8,7 +8,7 @@
   <xs:element name="ArrayOfTodo" nillable="true" type="tns:ArrayOfTodo" />
   <xs:complexType name="Todo">
     <xs:sequence>
-      <xs:element minOccurs="0" name="CategoryId" type="xs:int" />
+      <xs:element minOccurs="0" name="CategoryId" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="Checked" type="xs:boolean" />
       <xs:element minOccurs="0" name="Deadline" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Desc" nillable="true" type="xs:string" />

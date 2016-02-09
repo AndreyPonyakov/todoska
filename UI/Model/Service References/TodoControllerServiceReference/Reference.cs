@@ -23,7 +23,7 @@ namespace TodoSystem.UI.Model.TodoControllerServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int CategoryIdField;
+        private System.Nullable<int> CategoryIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool CheckedField;
@@ -54,7 +54,7 @@ namespace TodoSystem.UI.Model.TodoControllerServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int CategoryId {
+        public System.Nullable<int> CategoryId {
             get {
                 return this.CategoryIdField;
             }
@@ -183,16 +183,10 @@ namespace TodoSystem.UI.Model.TodoControllerServiceReference {
         System.Threading.Tasks.Task<TodoSystem.UI.Model.TodoControllerServiceReference.Todo[]> SelectByCategoryAsync(int categoryId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/Create", ReplyAction="http://tempuri.org/ITodoController/CreateResponse")]
-        TodoSystem.UI.Model.TodoControllerServiceReference.Todo Create(string title, string desc, System.Nullable<System.DateTime> deadline, int categoryId, int order);
+        TodoSystem.UI.Model.TodoControllerServiceReference.Todo Create(string title);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/Create", ReplyAction="http://tempuri.org/ITodoController/CreateResponse")]
-        System.Threading.Tasks.Task<TodoSystem.UI.Model.TodoControllerServiceReference.Todo> CreateAsync(string title, string desc, System.Nullable<System.DateTime> deadline, int categoryId, int order);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/Update", ReplyAction="http://tempuri.org/ITodoController/UpdateResponse")]
-        void Update(TodoSystem.UI.Model.TodoControllerServiceReference.Todo todo);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/Update", ReplyAction="http://tempuri.org/ITodoController/UpdateResponse")]
-        System.Threading.Tasks.Task UpdateAsync(TodoSystem.UI.Model.TodoControllerServiceReference.Todo todo);
+        System.Threading.Tasks.Task<TodoSystem.UI.Model.TodoControllerServiceReference.Todo> CreateAsync(string title);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/Delete", ReplyAction="http://tempuri.org/ITodoController/DeleteResponse")]
         void Delete(int id);
@@ -213,16 +207,22 @@ namespace TodoSystem.UI.Model.TodoControllerServiceReference {
         System.Threading.Tasks.Task CheckAsync(int id, bool isChecked);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/SetCategory", ReplyAction="http://tempuri.org/ITodoController/SetCategoryResponse")]
-        void SetCategory(int id, int categoryId);
+        void SetCategory(int id, System.Nullable<int> categoryId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/SetCategory", ReplyAction="http://tempuri.org/ITodoController/SetCategoryResponse")]
-        System.Threading.Tasks.Task SetCategoryAsync(int id, int categoryId);
+        System.Threading.Tasks.Task SetCategoryAsync(int id, System.Nullable<int> categoryId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/SetDeadline", ReplyAction="http://tempuri.org/ITodoController/SetDeadlineResponse")]
         void SetDeadline(int id, System.Nullable<System.DateTime> deadline);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/SetDeadline", ReplyAction="http://tempuri.org/ITodoController/SetDeadlineResponse")]
         System.Threading.Tasks.Task SetDeadlineAsync(int id, System.Nullable<System.DateTime> deadline);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/ChangeText", ReplyAction="http://tempuri.org/ITodoController/ChangeTextResponse")]
+        void ChangeText(int id, string title, string desc);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITodoController/ChangeText", ReplyAction="http://tempuri.org/ITodoController/ChangeTextResponse")]
+        System.Threading.Tasks.Task ChangeTextAsync(int id, string title, string desc);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -284,20 +284,12 @@ namespace TodoSystem.UI.Model.TodoControllerServiceReference {
             return base.Channel.SelectByCategoryAsync(categoryId);
         }
         
-        public TodoSystem.UI.Model.TodoControllerServiceReference.Todo Create(string title, string desc, System.Nullable<System.DateTime> deadline, int categoryId, int order) {
-            return base.Channel.Create(title, desc, deadline, categoryId, order);
+        public TodoSystem.UI.Model.TodoControllerServiceReference.Todo Create(string title) {
+            return base.Channel.Create(title);
         }
         
-        public System.Threading.Tasks.Task<TodoSystem.UI.Model.TodoControllerServiceReference.Todo> CreateAsync(string title, string desc, System.Nullable<System.DateTime> deadline, int categoryId, int order) {
-            return base.Channel.CreateAsync(title, desc, deadline, categoryId, order);
-        }
-        
-        public void Update(TodoSystem.UI.Model.TodoControllerServiceReference.Todo todo) {
-            base.Channel.Update(todo);
-        }
-        
-        public System.Threading.Tasks.Task UpdateAsync(TodoSystem.UI.Model.TodoControllerServiceReference.Todo todo) {
-            return base.Channel.UpdateAsync(todo);
+        public System.Threading.Tasks.Task<TodoSystem.UI.Model.TodoControllerServiceReference.Todo> CreateAsync(string title) {
+            return base.Channel.CreateAsync(title);
         }
         
         public void Delete(int id) {
@@ -324,11 +316,11 @@ namespace TodoSystem.UI.Model.TodoControllerServiceReference {
             return base.Channel.CheckAsync(id, isChecked);
         }
         
-        public void SetCategory(int id, int categoryId) {
+        public void SetCategory(int id, System.Nullable<int> categoryId) {
             base.Channel.SetCategory(id, categoryId);
         }
         
-        public System.Threading.Tasks.Task SetCategoryAsync(int id, int categoryId) {
+        public System.Threading.Tasks.Task SetCategoryAsync(int id, System.Nullable<int> categoryId) {
             return base.Channel.SetCategoryAsync(id, categoryId);
         }
         
@@ -338,6 +330,14 @@ namespace TodoSystem.UI.Model.TodoControllerServiceReference {
         
         public System.Threading.Tasks.Task SetDeadlineAsync(int id, System.Nullable<System.DateTime> deadline) {
             return base.Channel.SetDeadlineAsync(id, deadline);
+        }
+        
+        public void ChangeText(int id, string title, string desc) {
+            base.Channel.ChangeText(id, title, desc);
+        }
+        
+        public System.Threading.Tasks.Task ChangeTextAsync(int id, string title, string desc) {
+            return base.Channel.ChangeTextAsync(id, title, desc);
         }
     }
 }

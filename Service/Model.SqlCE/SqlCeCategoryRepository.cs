@@ -121,11 +121,20 @@ namespace TodoSystem.Model.SqlCe
         }
 
         /// <summary>
+        /// Finds item item by order attribute.
+        /// </summary>
+        /// <returns>Last item by priority. </returns>
+        public Interface.Category FindLast()
+        {
+            var last = Context.Categories
+                    .OrderByDescending(t => t.Order)
+                    .FirstOrDefault();
+            return last != null ? Mapper.Map<Interface.Category>(last) : null;
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
-            Context?.Dispose();
-        }
+        public void Dispose() => Context?.Dispose();
     }
 }

@@ -17,7 +17,8 @@ namespace TodoSystem.UI.ViewModel
         private string _name = string.Empty;
         private Color? _color;
 
-        private bool _dataModified;
+        private bool _nameModified;
+        private bool _colorModified;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CategoryViewModel"/> class.
@@ -27,14 +28,17 @@ namespace TodoSystem.UI.ViewModel
         public CategoryViewModel(ICommandFactory commandFactory, ITodoService service)
             : base(service, commandFactory)
         {
-            this.SetPropertyChanged(
-                new[] { nameof(Name), nameof(Color) },
-                () => DataModified = true)
+            this
+                .SetPropertyChanged(nameof(Name), () => NameModified = true)
+                .SetPropertyChanged(nameof(Color), () => ColorModified = true)
                 .SetPropertyChanged(
-                    new[] { nameof(OrderModified), nameof(DataModified) },
-                    () => { Modified = DataModified || OrderModified; })
+                    new[] { nameof(OrderModified), nameof(NameModified), nameof(ColorModified) },
+                    () => { Modified = NameModified || ColorModified || OrderModified; })
                 .SetPropertyChangedWithExecute(
-                    nameof(Name), () => Validate(Name.Length > 3, nameof(Name), "Name must be more 3 characters."))
+                    nameof(Name), () => Validate(
+                        Name.Length > 3 && Name.Length < 100,
+                        nameof(Name),
+                        "Name must be more 3 characters and less 100 characters."))
                 .SetPropertyChanged(Attributes, ItemChanged);
         }
 
@@ -57,12 +61,21 @@ namespace TodoSystem.UI.ViewModel
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether change notification flag of name or color.
+        /// Gets or sets a value indicating whether change notification flag of name
         /// </summary>
-        public bool DataModified
+        public bool NameModified
         {
-            get { return _dataModified; }
-            set { SetField(ref _dataModified, value); }
+            get { return _nameModified; }
+            set { SetField(ref _nameModified, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether change notification flag of name
+        /// </summary>
+        public bool ColorModified
+        {
+            get { return _colorModified; }
+            set { SetField(ref _colorModified, value); }
         }
 
         /// <summary>
@@ -81,7 +94,8 @@ namespace TodoSystem.UI.ViewModel
         /// <returns>True in case of operation successfulness. </returns>
         public override bool Create()
         {
-            Model = Service.CategoryController.Create(Name, Color, Order);
+            Model = Service.CategoryController.Create(Name);
+            NameModified = false;
             return true;
         }
 
@@ -90,12 +104,18 @@ namespace TodoSystem.UI.ViewModel
         /// </summary>
         public override void Update()
         {
-            if (DataModified)
+            if (NameModified)
             {
                 Model.Name = Name;
+                Service.CategoryController.ChangeText(Model.Id, Name);
+                NameModified = false;
+            }
+
+            if (ColorModified)
+            {
                 Model.Color = Color;
-                Service.CategoryController.Update(Model);
-                DataModified = false;
+                Service.CategoryController.ChangeColor(Model.Id, Color);
+                ColorModified = false;
             }
 
             if (OrderModified)
@@ -122,12 +142,24 @@ namespace TodoSystem.UI.ViewModel
         /// <param name="model">Back-end DTO category. </param>
         public override void Refresh(Category model)
         {
-            Model = Service.CategoryController.SelectById(model.Id);
-            Name = Model.Name;
-            Color = Model.Color;
-            Order = Model.Order;
-            Service.CategoryController.Update(Model);
-            base.Refresh(model);
+            if (Refreshing)
+            {
+                return;
+            }
+
+            Refreshing = true;
+            try
+            {
+                Model = Service.CategoryController.SelectById(model.Id);
+                Name = Model.Name;
+                Color = Model.Color;
+                Order = Model.Order;
+                base.Refresh(model);
+            }
+            finally
+            {
+                Refreshing = false;
+            }
         }
 
         /// <summary>
@@ -136,7 +168,8 @@ namespace TodoSystem.UI.ViewModel
         public override void ClearMofidied()
         {
             base.ClearMofidied();
-            DataModified = false;
+            NameModified = false;
+            ColorModified = false;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace TodoSystem.UI.ViewModel
 
         private string _title = string.Empty;
         private string _desc;
-        private DateTime? _deadline = DateTime.Now;
+        private DateTime? _deadline;
         private bool _checked;
 
         private bool _textModified;
@@ -70,10 +70,7 @@ namespace TodoSystem.UI.ViewModel
                         })
                 .SetPropertyChangedWithExecute(
                     nameof(Title),
-                    () => Validate(Title.Length > 4, nameof(Title), "Title must have more 4 characters."))
-                .SetPropertyChangedWithExecute(
-                    nameof(Category),
-                    () => Validate(Category != null, nameof(Category), "Category must be not null."))
+                    () => Validate(Title?.Length > 4 && Title.Length < 100, nameof(Title), "Title must have more 4 characters and less 100 characters."))
                 .SetPropertyChanged(Attributes, ItemChanged);
         }
 
@@ -192,15 +189,27 @@ namespace TodoSystem.UI.ViewModel
         /// <param name="model">DTO back-end of current todo. </param>
         public override void Refresh(Todo model)
         {
-            Model = model;
-            Title = Model.Title;
-            Desc = Model.Desc;
-            Order = Model.Order;
-            Category = CategoryList.FirstOrDefault(c => c.Model.Id == model.CategoryId);
-            Deadline = Model.Deadline;
-            Checked = Model.Checked;
-            Service.TodoController.Update(Model);
-            base.Refresh(model);
+            if (Refreshing)
+            {
+                return;
+            }
+
+            Refreshing = true;
+            try
+            {
+                Model = model;
+                Title = Model.Title;
+                Desc = Model.Desc;
+                Order = Model.Order;
+                Category = CategoryList.FirstOrDefault(c => c.Model.Id == model.CategoryId);
+                Deadline = Model.Deadline;
+                Checked = Model.Checked;
+                base.Refresh(model);
+            }
+            finally
+            {
+                Refreshing = false;
+            }
         }
 
         /// <summary>
@@ -212,7 +221,7 @@ namespace TodoSystem.UI.ViewModel
             {
                 Model.Title = Title;
                 Model.Desc = Desc;
-                Service.TodoController.Update(Model);
+                Service.TodoController.ChangeText(Model.Id, Title, Desc);
                 TextModified = false;
             }
 
@@ -230,10 +239,11 @@ namespace TodoSystem.UI.ViewModel
                 CheckedModified = false;
             }
 
-            if (CategoryModified && Category?.Model != null)
+            if (CategoryModified)
             {
-                Service.TodoController.SetCategory(Model.Id, Category.Model.Id);
-                Model.CategoryId = Category.Model.Id;
+                var categoryId = Category?.Model?.Id;
+                Service.TodoController.SetCategory(Model.Id, categoryId);
+                Model.CategoryId = categoryId;
                 CategoryModified = false;
             }
 
@@ -251,14 +261,9 @@ namespace TodoSystem.UI.ViewModel
         /// <returns>True in case of operation successfulness. </returns>
         public override bool Create()
         {
-            if (Category?.Model != null)
-            {
-                var categoryId = Category.Model.Id;
-                Model = Service.TodoController.Create(Title, Desc, Deadline, categoryId, Order);
-                return true;
-            }
-
-            return false;
+            Model = Service.TodoController.Create(Title);
+            TextModified = TextModified && Desc == null;
+            return true;
         }
 
         /// <summary>

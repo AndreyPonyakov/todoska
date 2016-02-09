@@ -116,8 +116,7 @@ namespace TodoSystem.UI.Tools.Model
         /// <param name="notificator">Notification delegate. </param>
         /// <param name="propertyName">The name of the property. </param>
         public static void ClearErrors(
-            this IDictionary<string,
-            ICollection<string>> errorContainer,
+            this IDictionary<string, ICollection<string>> errorContainer,
             Action<string> notificator,
             string propertyName)
         {
@@ -148,5 +147,37 @@ namespace TodoSystem.UI.Tools.Model
         /// <returns>True if this property has errors. </returns>
         public static bool HasErrors(this INotifyDataErrorInfo sender, IEnumerable<string> propertyNames)
             => propertyNames.Any(p => sender.HasErrors(p));
+
+        /// <summary>
+        /// Retrieves error from according array property object.
+        /// </summary>
+        /// <typeparam name="TS">Follower type.</typeparam>
+        /// <param name="followers">List of pair of objects and property name</param>
+        /// <param name="propertyName">Target property name. </param>
+        /// <param name="clearErrorsAction">Clear error delegate. </param>
+        /// <param name="appendErrorsAction">Append errors delegate. </param>
+        /// <param name="unique">False for repeatable message. </param>
+        public static void RetrieveErrors<TS>(
+            this IDictionary<TS, string> followers,
+            string propertyName,
+            Action<string> clearErrorsAction,
+            Action<string, string, bool> appendErrorsAction,
+            bool unique = true)
+            where TS : class, INotifyDataErrorInfo
+        {
+            var followerList = followers.ToList();
+            followerList.ForEach(
+                follower => follower.Key.SetDataErrorInfo(
+                    follower.Value,
+                    () =>
+                        {
+                            clearErrorsAction(propertyName);
+                            followerList
+                                .Select(f => f.Key.GetErrors(f.Value) ?? Enumerable.Empty<string>())
+                                .SelectMany(errors => errors.Cast<string>())
+                                .ToList()
+                                .ForEach(message => appendErrorsAction(propertyName, message, unique));
+                        }));
+        }
     }
 }

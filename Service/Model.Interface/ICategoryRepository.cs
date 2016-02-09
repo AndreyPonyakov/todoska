@@ -13,5 +13,11 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="name">Filtering category. </param>
         /// <returns>Filtered item list. </returns>
         IEnumerable<Category> Find(string name);
+
+        /// <summary>
+        /// Finds item item by order attribute.
+        /// </summary>
+        /// <returns>Last item by priority. </returns>
+        Category FindLast();
     }
 }
