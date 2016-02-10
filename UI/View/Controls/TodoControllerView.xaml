@@ -64,14 +64,13 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
-                                <StackPanel>
-                                    <Separator x:Name="Separator" Visibility="Collapsed"/>
-                                    <ContentPresenter/>
-                                    <Separator />
+                                <StackPanel x:Name="Item" Visibility="Visible">
+                                    <ContentPresenter />
+                                    <Separator />                                    
                                 </StackPanel>
                                 <ControlTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
-                                        <Setter Property="Visibility" TargetName="Separator" Value="Visible"/>
+                                    <DataTrigger Binding="{Binding Checked}" Value="True">
+                                        <Setter Property="Visibility" TargetName="Item" Value="Collapsed"/>
                                     </DataTrigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>

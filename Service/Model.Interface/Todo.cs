@@ -37,7 +37,7 @@ namespace TodoSystem.Service.Model.Interface
         /// Gets or sets primary key of compounded category.
         /// </summary>
         [DataMember]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether checked state.

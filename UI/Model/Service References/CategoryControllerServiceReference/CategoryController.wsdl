@@ -32,23 +32,29 @@
   <wsdl:message name="ICategoryController_Create_OutputMessage">
     <wsdl:part name="parameters" element="tns:CreateResponse" />
   </wsdl:message>
-  <wsdl:message name="ICategoryController_Update_InputMessage">
-    <wsdl:part name="parameters" element="tns:Update" />
-  </wsdl:message>
-  <wsdl:message name="ICategoryController_Update_OutputMessage">
-    <wsdl:part name="parameters" element="tns:UpdateResponse" />
-  </wsdl:message>
   <wsdl:message name="ICategoryController_Delete_InputMessage">
     <wsdl:part name="parameters" element="tns:Delete" />
   </wsdl:message>
   <wsdl:message name="ICategoryController_Delete_OutputMessage">
     <wsdl:part name="parameters" element="tns:DeleteResponse" />
   </wsdl:message>
+  <wsdl:message name="ICategoryController_ChangeText_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeText" />
+  </wsdl:message>
+  <wsdl:message name="ICategoryController_ChangeText_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeTextResponse" />
+  </wsdl:message>
   <wsdl:message name="ICategoryController_ChangeOrder_InputMessage">
     <wsdl:part name="parameters" element="tns:ChangeOrder" />
   </wsdl:message>
   <wsdl:message name="ICategoryController_ChangeOrder_OutputMessage">
     <wsdl:part name="parameters" element="tns:ChangeOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICategoryController_ChangeColor_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeColor" />
+  </wsdl:message>
+  <wsdl:message name="ICategoryController_ChangeColor_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeColorResponse" />
   </wsdl:message>
   <wsdl:portType name="ICategoryController">
     <wsdl:operation name="SelectAll">
@@ -67,17 +73,21 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ICategoryController/Create" message="tns:ICategoryController_Create_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICategoryController/CreateResponse" message="tns:ICategoryController_Create_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="Update">
-      <wsdl:input wsaw:Action="http://tempuri.org/ICategoryController/Update" message="tns:ICategoryController_Update_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/ICategoryController/UpdateResponse" message="tns:ICategoryController_Update_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation name="Delete">
       <wsdl:input wsaw:Action="http://tempuri.org/ICategoryController/Delete" message="tns:ICategoryController_Delete_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICategoryController/DeleteResponse" message="tns:ICategoryController_Delete_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="ChangeText">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICategoryController/ChangeText" message="tns:ICategoryController_ChangeText_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICategoryController/ChangeTextResponse" message="tns:ICategoryController_ChangeText_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="ChangeOrder">
       <wsdl:input wsaw:Action="http://tempuri.org/ICategoryController/ChangeOrder" message="tns:ICategoryController_ChangeOrder_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICategoryController/ChangeOrderResponse" message="tns:ICategoryController_ChangeOrder_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeColor">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICategoryController/ChangeColor" message="tns:ICategoryController_ChangeColor_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICategoryController/ChangeColorResponse" message="tns:ICategoryController_ChangeColor_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_ICategoryController" type="tns:ICategoryController">
@@ -118,15 +128,6 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="Update">
-      <soap:operation soapAction="http://tempuri.org/ICategoryController/Update" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="Delete">
       <soap:operation soapAction="http://tempuri.org/ICategoryController/Delete" style="document" />
       <wsdl:input>
@@ -136,8 +137,26 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="ChangeText">
+      <soap:operation soapAction="http://tempuri.org/ICategoryController/ChangeText" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="ChangeOrder">
       <soap:operation soapAction="http://tempuri.org/ICategoryController/ChangeOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeColor">
+      <soap:operation soapAction="http://tempuri.org/ICategoryController/ChangeColor" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

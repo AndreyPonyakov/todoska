@@ -59,37 +59,31 @@ namespace TodoSystem.Service.Model.Fake
         /// Creates new category with target attributes.
         /// </summary>
         /// <param name="name">Short name. </param>
-        /// <param name="color">Preferable color. </param>
-        /// <param name="order">Priority in the controller. </param>
         /// <returns>Category instance. </returns>
-        public Category Create(string name, Color? color, int order)
+        public Category Create(string name)
         {
             var category = new Category
                                {
                                    Id = GeterateId(),
                                    Name = name,
-                                   Color = color,
-                                   Order = order
-                               };
+                                   Color = null,
+                                   Order = GeterateId()
+            };
             _service.CategoryList.Add(category);
             return category;
         }
 
         /// <summary>
-        /// Update category with target attributes.
+        /// Change name of item by primary key.
         /// </summary>
-        /// <param name="category">Update category local instance.</param>
-        public void Update(Category category)
+        /// <param name="id">Primary key. </param>
+        /// <param name="name">Target name. </param>
+        public void ChangeText(int id, string name)
         {
             _service.CategoryList
-                .Where(c => c.Id == category.Id)
+                .Where(t => t.Id == id)
                 .ToList()
-                .ForEach(c =>
-                {
-                    c.Name = category.Name;
-                    c.Order = category.Order;
-                    c.Color = category.Color;
-                });
+                .ForEach(t => t.Name = name);
         }
 
         /// <summary>
@@ -103,6 +97,19 @@ namespace TodoSystem.Service.Model.Fake
                 .Where(t => t.Id == id)
                 .ToList()
                 .ForEach(t => t.Order = order);
+        }
+
+        /// <summary>
+        /// Change color of item by primary key.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="color">Target priority in list. </param>
+        public void ChangeColor(int id, Color? color)
+        {
+            _service.CategoryList
+                .Where(t => t.Id == id)
+                .ToList()
+                .ForEach(t => t.Color = color);
         }
 
         /// <summary>

@@ -45,20 +45,9 @@ namespace TodoSystem.Service.Model.Interface
         /// Creates a new Todo and appends in the controller.
         /// </summary>
         /// <param name="title">New title value. </param>
-        /// <param name="desc">New description value. </param>
-        /// <param name="deadline">New deadline value. </param>
-        /// <param name="categoryId">New category primary key. </param>
-        /// <param name="order">New priority value. </param>
         /// <returns>Created todo. </returns>
         [OperationContract]
-        Todo Create(string title, string desc, DateTime? deadline, int categoryId, int order);
-
-        /// <summary>
-        /// Updates from other DTO todo instance.
-        /// </summary>
-        /// <param name="todo">Updated todo. </param>
-        [OperationContract]
-        void Update(Todo todo);
+        Todo Create(string title);
 
         /// <summary>
         /// Delete todo by its id
@@ -89,7 +78,7 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="id">Primary key. </param>
         /// <param name="categoryId">Primary key of new category. </param>
         [OperationContract]
-        void SetCategory(int id, int categoryId);
+        void SetCategory(int id, int? categoryId);
 
         /// <summary>
         /// Set deadline time.
@@ -98,5 +87,14 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="deadline">Deadline time. </param>
         [OperationContract]
         void SetDeadline(int id, DateTime? deadline);
+
+        /// <summary>
+        /// Set new title and description by primary key.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="title">New title. </param>
+        /// <param name="desc">New description. </param>
+        [OperationContract]
+        void ChangeText(int id, string title, string desc);
     }
 }

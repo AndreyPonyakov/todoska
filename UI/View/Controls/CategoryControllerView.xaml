@@ -47,15 +47,9 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
                                 <StackPanel>
-                                    <Separator x:Name="Separator" Visibility="Collapsed"/>
                                     <ContentPresenter/>
                                     <Separator />
                                 </StackPanel>
-                                <ControlTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
-                                        <Setter Property="Visibility" TargetName="Separator" Value="Visible"/>
-                                    </DataTrigger>
-                                </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using TodoSystem.UI.Model;
 using TodoSystem.UI.Tools.Model;
+using TodoSystem.UI.ViewModel.Base;
 
 namespace TodoSystem.UI.ViewModel
 {
@@ -31,7 +33,6 @@ namespace TodoSystem.UI.ViewModel
         {
             _serviceFactory = serviceFactory;
 
-            RefreshCommand = commandFactory.CreateCommand(Refresh);
             ApplyCommand = commandFactory.CreateCommand(Apply);
             ApplyAddressCommand = commandFactory.CreateCommand(ApplyAddress);
 
@@ -46,18 +47,14 @@ namespace TodoSystem.UI.ViewModel
                         CategoryController.Service = Service;
                         TodoController.Service = Service;
                     });
-            Action serviceNotifyError = () =>
-                {
-                    ClearErrors(nameof(Address));
-                    var todoErrors = TodoController.GetErrors(nameof(TodoController.Service)) ?? Enumerable.Empty<string>();
-                    var categoryErrors = CategoryController.GetErrors(nameof(CategoryController.Service)) ?? Enumerable.Empty<string>();
-                    todoErrors.Cast<string>()
-                        .Union(categoryErrors.OfType<string>())
-                        .ToList()
-                        .ForEach(message => AppendErrors(nameof(Address), message));
-                };
-            TodoController.SetDataErrorInfo(nameof(TodoController.Service), serviceNotifyError);
-            CategoryController.SetDataErrorInfo(nameof(CategoryController.Service), serviceNotifyError);
+
+            RetrieveErrors(
+                nameof(Address),
+                new Dictionary<IServiceable<ITodoService>, string>
+                    {
+                        [CategoryController] = nameof(CategoryController.Service),
+                        [TodoController] = nameof(TodoController.Service)
+                    });
         }
 
         /// <summary>
@@ -99,11 +96,6 @@ namespace TodoSystem.UI.ViewModel
         public ICommand ApplyAddressCommand { get; }
 
         /// <summary>
-        /// Gets refresh command.
-        /// </summary>
-        public ICommand RefreshCommand { get; }
-
-        /// <summary>
         /// Gets apply command.
         /// </summary>
         public ICommand ApplyCommand { get; }
@@ -128,18 +120,6 @@ namespace TodoSystem.UI.ViewModel
         public TodoControllerViewModel TodoController { get; }
 
         /// <summary>
-        /// Refreshes data from service.
-        /// </summary>
-        public void Refresh()
-        {
-            CategoryController.Clear();
-            TodoController.Clear();
-
-            CategoryController.Refresh();
-            TodoController.Refresh();
-        }
-
-        /// <summary>
         /// Commits all uncommitted changes.
         /// </summary>
         public void Apply()
@@ -155,6 +135,12 @@ namespace TodoSystem.UI.ViewModel
         {
             ClearErrors(nameof(Address));
             Service = _serviceFactory(Address);
+
+            TodoController.Close();
+            CategoryController.Close();
+
+            CategoryController.Open();
+            TodoController.Open();
         }
     }
 }

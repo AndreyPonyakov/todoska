@@ -69,41 +69,20 @@ namespace TodoSystem.Service.Model.Fake
         /// Create new todo.
         /// </summary>
         /// <param name="title">Todo title. </param>
-        /// <param name="desc">Todo description. </param>
-        /// <param name="deadline">Todo deadline. </param>
-        /// <param name="categoryId">Primary key of category. </param>
-        /// <param name="order">Priority in the controller. </param>
         /// <returns>Created todo. </returns>
-        public Todo Create(string title, string desc, DateTime? deadline, int categoryId, int order)
+        public Todo Create(string title)
         {
             var todo = new Todo
             {
                 Id = GeterateId(),
                 Title = title,
-                Desc = desc,
-                Order = order,
-                CategoryId = categoryId,
-                Deadline = deadline
+                Desc = null,
+                Order = GeterateId(),
+                CategoryId = null,
+                Deadline = null
             };
             _service.TodoList.Add(todo);
             return todo;
-        }
-
-        /// <summary>
-        /// Updates from other todo by primary key.
-        /// </summary>
-        /// <param name="todo">Updated todo. </param>
-        public void Update(Todo todo)
-        {
-            _service.TodoList
-                .Where(t => t.Id == todo.Id)
-                .ToList()
-                .ForEach(t =>
-                {
-                    t.Title = todo.Title;
-                    t.Desc = todo.Desc;
-                    t.Order = todo.Order;
-                });
         }
 
         /// <summary>
@@ -151,7 +130,7 @@ namespace TodoSystem.Service.Model.Fake
         /// </summary>
         /// <param name="id">Primary key. </param>
         /// <param name="categoryId">Primary key of category. </param>
-        public void SetCategory(int id, int categoryId)
+        public void SetCategory(int id, int? categoryId)
         {
             _service.TodoList
                 .Where(t => t.Id == id)
@@ -170,6 +149,25 @@ namespace TodoSystem.Service.Model.Fake
                 .Where(t => t.Id == id)
                 .ToList()
                 .ForEach(t => t.Deadline = deadline);
+        }
+
+        /// <summary>
+        /// Set new title and description by primary key.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="title">New title. </param>
+        /// <param name="desc">New description. </param>
+        public void ChangeText(int id, string title, string desc)
+        {
+            _service.TodoList
+                .Where(t => t.Id == id)
+                .ToList()
+                .ForEach(
+                    t =>
+                        {
+                            t.Title = title;
+                            t.Desc = desc;
+                        });
         }
 
         /// <summary>

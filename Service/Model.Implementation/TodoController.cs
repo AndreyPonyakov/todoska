@@ -61,29 +61,20 @@ namespace TodoSystem.Model.Implementation
         /// Creates a new Todo and appends in the controller.
         /// </summary>
         /// <param name="title">New title value. </param>
-        /// <param name="desc">New description value. </param>
-        /// <param name="deadline">New deadline value. </param>
-        /// <param name="categoryId">New category primary key. </param>
-        /// <param name="order">New priority value. </param>
         /// <returns>Created todo. </returns>
-        public Todo Create(string title, string desc, DateTime? deadline, int categoryId, int order)
+        public Todo Create(string title)
         {
             var todo = new Todo
             {
                 Title = title,
-                Desc = desc,
-                Deadline = deadline,
-                CategoryId = categoryId,
-                Order = order
+                Desc = null,
+                Deadline = null,
+                CategoryId = null,
+                Checked = false,
+                Order = (Repository.FindLast()?.Order ?? default(int) - 1) + 1
             };
             return Repository.Save(todo);
         }
-
-        /// <summary>
-        /// Updates from other DTO todo instance.
-        /// </summary>
-        /// <param name="todo">Updated todo. </param>
-        public void Update(Todo todo) => Repository.Save(todo);
 
         /// <summary>
         /// Delete todo by its id
@@ -120,7 +111,7 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="id">Primary key. </param>
         /// <param name="categoryId">Primary key of new category. </param>
-        public void SetCategory(int id, int categoryId)
+        public void SetCategory(int id, int? categoryId)
         {
             var todo = Repository.Get(id);
             todo.CategoryId = categoryId;
@@ -136,6 +127,25 @@ namespace TodoSystem.Model.Implementation
         {
             var todo = Repository.Get(id);
             todo.Deadline = deadline;
+            Repository.Save(todo);
+        }
+
+        /// <summary>
+        /// Set new title and description by primary key.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="title">New title. </param>
+        /// <param name="desc">New description. </param>
+        public void ChangeText(int id, string title, string desc)
+        {
+            if (title == null)
+            {
+                throw new ArgumentNullException(nameof(title));
+            }
+
+            var todo = Repository.Get(id);
+            todo.Title = title;
+            todo.Desc = desc;
             Repository.Save(todo);
         }
     }

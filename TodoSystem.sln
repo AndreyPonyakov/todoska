@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Implementation", "Ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Implementation.Test", "Service\Model.Implementation.Test\Model.Implementation.Test.csproj", "{188F9F73-2C5C-4C24-A7A8-5C4A2C601F5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.SqlCE.Test", "Service\Model.SqlCE.Test\Model.SqlCE.Test.csproj", "{C297ECBD-6A8A-4BDF-9285-B563F9B6F57A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.SqlCe.Test", "Service\Model.SqlCE.Test\Model.SqlCe.Test.csproj", "{C297ECBD-6A8A-4BDF-9285-B563F9B6F57A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

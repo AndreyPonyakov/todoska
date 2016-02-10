@@ -112,6 +112,11 @@ namespace TodoSystem.UI.ViewModel.Base
         public ICommand TryDeleteCommand { get; protected set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether change to refresh notification.
+        /// </summary>
+        protected bool Refreshing { get; set; }
+
+        /// <summary>
         /// Gets back-end service if ViewModel.
         /// </summary>
         protected TService Service { get; }
@@ -144,9 +149,19 @@ namespace TodoSystem.UI.ViewModel.Base
 
                 try
                 {
-                    Create();
+                    if (!Create())
+                    {
+                        AppendErrors(nameof(HasServiceError), "Service cannot append this record.");
+                        return;
+                    }
+
                     Appended?.Invoke(this, new EventArgs());
-                    ClearMofidied();
+                    if (Modified)
+                    {
+                        Update();
+                    }
+
+                    Refresh(Model);
                 }
                 catch (FaultException)
                 {
@@ -195,8 +210,8 @@ namespace TodoSystem.UI.ViewModel.Base
             {
                 try
                 {
-                    Deleted?.Invoke(this, new EventArgs());
                     ClearMofidied();
+                    Deleted?.Invoke(this, new EventArgs());
                 }
                 catch (FaultException)
                 {
@@ -270,7 +285,10 @@ namespace TodoSystem.UI.ViewModel.Base
         /// </summary>
         protected virtual void ItemChanged()
         {
-            AttributeChanged?.Invoke(this, new EventArgs());
+            if (!Refreshing)
+            {
+                AttributeChanged?.Invoke(this, new EventArgs());
+            }
         }
     }
 }

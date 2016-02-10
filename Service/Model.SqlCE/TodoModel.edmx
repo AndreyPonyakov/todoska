@@ -22,12 +22,12 @@
           <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Desc" Type="nvarchar" MaxLength="200" />
           <Property Name="Deadline" Type="datetime" />
-          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" />
           <Property Name="Checked" Type="bit" Nullable="false" />
           <Property Name="Order" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Todo_Category">
-          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
           <End Role="Todo" Type="Self.Todo" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Category">
@@ -68,7 +68,7 @@
           <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Desc" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Deadline" Type="DateTime" Precision="3" Nullable="true" />
-          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" />
           <Property Name="Checked" Type="Boolean" Nullable="false" />
           <Property Name="Order" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Category" Relationship="TodoModel.CategoryTodo" FromRole="Todo" ToRole="Category" />
@@ -82,7 +82,7 @@
           </AssociationSet>
         </EntityContainer>
         <Association Name="CategoryTodo">
-          <End Type="TodoModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="TodoModel.Category" Role="Category" Multiplicity="0..1" />
           <End Type="TodoModel.Todo" Role="Todo" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Category">

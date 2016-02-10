@@ -37,18 +37,9 @@ namespace TodoSystem.Service.Model.Interface
         /// Creates new category with target attributes.
         /// </summary>
         /// <param name="name">Short name. </param>
-        /// <param name="color">Preferable color. </param>
-        /// <param name="order">New priority. </param>
         /// <returns>Category instance. </returns>
         [OperationContract]
-        Category Create(string name, Color? color, int order);
-
-        /// <summary>
-        /// Update category with target attributes.
-        /// </summary>
-        /// <param name="category">Update category local instance.</param>
-        [OperationContract]
-        void Update(Category category);
+        Category Create(string name);
 
         /// <summary>
         /// Delete category by primary key.
@@ -58,11 +49,27 @@ namespace TodoSystem.Service.Model.Interface
         void Delete(int id);
 
         /// <summary>
-        /// Change priority of order.
+        /// Change name of item by primary key.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="name">Target name. </param>
+        [OperationContract]
+        void ChangeText(int id, string name);
+
+        /// <summary>
+        /// Change priority in the list.
         /// </summary>
         /// <param name="id">Primary key. </param>
         /// <param name="order">Target priority in list. </param>
         [OperationContract]
         void ChangeOrder(int id, int order);
+
+        /// <summary>
+        /// Change color of item by primary key.
+        /// </summary>
+        /// <param name="id">Primary key. </param>
+        /// <param name="color">Target color. </param>
+        [OperationContract]
+        void ChangeColor(int id, Color? color);
     }
 }
