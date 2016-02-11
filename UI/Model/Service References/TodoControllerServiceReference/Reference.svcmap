@@ -22,11 +22,12 @@
     <MetadataSource Address="http://localhost:8733/Design_Time_Addresses/Host/TodoController" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="TodoController.xsd" MetadataType="Schema" ID="6866bd62-27ed-4439-afe6-155381965a02" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd0" />
-    <MetadataFile FileName="TodoController1.xsd" MetadataType="Schema" ID="d8df0fd6-11d5-4bdb-bde9-89616c5b7d78" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd1" />
-    <MetadataFile FileName="TodoController.disco" MetadataType="Disco" ID="59c975bc-576a-404f-b06c-a37fe9f00e75" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?disco" />
-    <MetadataFile FileName="TodoController.wsdl" MetadataType="Wsdl" ID="7b561e8e-ee6f-4054-8582-8d19e7e6ff03" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?wsdl" />
     <MetadataFile FileName="TodoController2.xsd" MetadataType="Schema" ID="98253285-2ba4-442f-97f9-b1a42ef05898" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd2" />
+    <MetadataFile FileName="TodoController.disco" MetadataType="Disco" ID="59c975bc-576a-404f-b06c-a37fe9f00e75" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?disco" />
+    <MetadataFile FileName="TodoController.xsd" MetadataType="Schema" ID="6866bd62-27ed-4439-afe6-155381965a02" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd0" />
+    <MetadataFile FileName="TodoController.wsdl" MetadataType="Wsdl" ID="7b561e8e-ee6f-4054-8582-8d19e7e6ff03" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?wsdl" />
+    <MetadataFile FileName="TodoController3.xsd" MetadataType="Schema" ID="8631b2b5-4407-4300-b903-aec7d1d67d96" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd3" />
+    <MetadataFile FileName="TodoController1.xsd" MetadataType="Schema" ID="d8df0fd6-11d5-4bdb-bde9-89616c5b7d78" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

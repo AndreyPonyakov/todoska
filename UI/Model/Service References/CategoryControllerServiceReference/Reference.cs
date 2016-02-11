@@ -106,6 +106,112 @@ namespace TodoSystem.UI.Model.CategoryControllerServiceReference {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="DataValidationFault", Namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" +
+        "")]
+    [System.SerializableAttribute()]
+    public partial class DataValidationFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ForeignKeyConstraintFault", Namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" +
+        "")]
+    [System.SerializableAttribute()]
+    public partial class ForeignKeyConstraintFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ForeignKeyField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ForeignKey {
+            get {
+                return this.ForeignKeyField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ForeignKeyField, value) != true)) {
+                    this.ForeignKeyField = value;
+                    this.RaisePropertyChanged("ForeignKey");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ItemNotFoundFault", Namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" +
+        "")]
+    [System.SerializableAttribute()]
+    public partial class ItemNotFoundFault : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="CategoryControllerServiceReference.ICategoryController")]
     public interface ICategoryController {
@@ -129,30 +235,42 @@ namespace TodoSystem.UI.Model.CategoryControllerServiceReference {
         System.Threading.Tasks.Task<TodoSystem.UI.Model.CategoryControllerServiceReference.Category[]> SelectByNameAsync(string name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/Create", ReplyAction="http://tempuri.org/ICategoryController/CreateResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(TodoSystem.UI.Model.CategoryControllerServiceReference.DataValidationFault), Action="http://tempuri.org/ICategoryController/CreateDataValidationFaultFault", Name="DataValidationFault", Namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" +
+            "")]
         TodoSystem.UI.Model.CategoryControllerServiceReference.Category Create(string name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/Create", ReplyAction="http://tempuri.org/ICategoryController/CreateResponse")]
         System.Threading.Tasks.Task<TodoSystem.UI.Model.CategoryControllerServiceReference.Category> CreateAsync(string name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/Delete", ReplyAction="http://tempuri.org/ICategoryController/DeleteResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(TodoSystem.UI.Model.CategoryControllerServiceReference.ForeignKeyConstraintFault), Action="http://tempuri.org/ICategoryController/DeleteForeignKeyConstraintFaultFault", Name="ForeignKeyConstraintFault", Namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" +
+            "")]
         void Delete(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/Delete", ReplyAction="http://tempuri.org/ICategoryController/DeleteResponse")]
         System.Threading.Tasks.Task DeleteAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/ChangeText", ReplyAction="http://tempuri.org/ICategoryController/ChangeTextResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(TodoSystem.UI.Model.CategoryControllerServiceReference.DataValidationFault), Action="http://tempuri.org/ICategoryController/ChangeTextDataValidationFaultFault", Name="DataValidationFault", Namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" +
+            "")]
+        [System.ServiceModel.FaultContractAttribute(typeof(TodoSystem.UI.Model.CategoryControllerServiceReference.ItemNotFoundFault), Action="http://tempuri.org/ICategoryController/ChangeTextItemNotFoundFaultFault", Name="ItemNotFoundFault", Namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" +
+            "")]
         void ChangeText(int id, string name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/ChangeText", ReplyAction="http://tempuri.org/ICategoryController/ChangeTextResponse")]
         System.Threading.Tasks.Task ChangeTextAsync(int id, string name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/ChangeOrder", ReplyAction="http://tempuri.org/ICategoryController/ChangeOrderResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(TodoSystem.UI.Model.CategoryControllerServiceReference.ItemNotFoundFault), Action="http://tempuri.org/ICategoryController/ChangeOrderItemNotFoundFaultFault", Name="ItemNotFoundFault", Namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" +
+            "")]
         void ChangeOrder(int id, int order);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/ChangeOrder", ReplyAction="http://tempuri.org/ICategoryController/ChangeOrderResponse")]
         System.Threading.Tasks.Task ChangeOrderAsync(int id, int order);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/ChangeColor", ReplyAction="http://tempuri.org/ICategoryController/ChangeColorResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(TodoSystem.UI.Model.CategoryControllerServiceReference.ItemNotFoundFault), Action="http://tempuri.org/ICategoryController/ChangeColorItemNotFoundFaultFault", Name="ItemNotFoundFault", Namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" +
+            "")]
         void ChangeColor(int id, System.Nullable<System.Drawing.Color> color);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICategoryController/ChangeColor", ReplyAction="http://tempuri.org/ICategoryController/ChangeColorResponse")]

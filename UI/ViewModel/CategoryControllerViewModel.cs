@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.ServiceModel;
+using System.Windows.Input;
 
 using TodoSystem.UI.Model;
 using TodoSystem.UI.Model.CategoryControllerServiceReference;
@@ -20,7 +22,13 @@ namespace TodoSystem.UI.ViewModel
         public CategoryControllerViewModel(ICommandFactory commandFactory)
             : base(commandFactory)
         {
+            SortByNameAscCommand = CommandFactory.CreateCommand(() => Sort(c => c.Name));
         }
+
+        /// <summary>
+        /// Gets sorting by name command.
+        /// </summary>
+        public ICommand SortByNameAscCommand { get; }
 
         /// <summary>
         /// Undo create new item.

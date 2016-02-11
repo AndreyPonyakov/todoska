@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 
+using TodoSystem.Service.Model.Interface.Faults;
+
 namespace TodoSystem.Service.Model.Interface
 {
     /// <summary>
@@ -47,6 +49,7 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="title">New title value. </param>
         /// <returns>Created todo. </returns>
         [OperationContract]
+        [FaultContract(typeof(DataValidationFault))]
         Todo Create(string title);
 
         /// <summary>
@@ -62,6 +65,7 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="id">Primary key. </param>
         /// <param name="order">Priority in the controller. </param>
         [OperationContract]
+        [FaultContract(typeof(ItemNotFoundFault))]
         void ChangeOrder(int id, int order);
 
         /// <summary>
@@ -70,6 +74,7 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="id">Primary key. </param>
         /// <param name="isChecked">True if the todo is checked. </param>
         [OperationContract]
+        [FaultContract(typeof(ItemNotFoundFault))]
         void Check(int id, bool isChecked);
 
         /// <summary>
@@ -78,6 +83,8 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="id">Primary key. </param>
         /// <param name="categoryId">Primary key of new category. </param>
         [OperationContract]
+        [FaultContract(typeof(ItemNotFoundFault))]
+        [FaultContract(typeof(ForeignKeyConstraintFault))]
         void SetCategory(int id, int? categoryId);
 
         /// <summary>
@@ -86,6 +93,7 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="id">Primary key. </param>
         /// <param name="deadline">Deadline time. </param>
         [OperationContract]
+        [FaultContract(typeof(ItemNotFoundFault))]
         void SetDeadline(int id, DateTime? deadline);
 
         /// <summary>
@@ -95,6 +103,8 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="title">New title. </param>
         /// <param name="desc">New description. </param>
         [OperationContract]
+        [FaultContract(typeof(ItemNotFoundFault))]
+        [FaultContract(typeof(DataValidationFault))]
         void ChangeText(int id, string title, string desc);
     }
 }

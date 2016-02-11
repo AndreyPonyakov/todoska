@@ -59,6 +59,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Category.cs" />
+    <Compile Include="Exceptions\ForeignKeyConstraintException.cs" />
+    <Compile Include="Exceptions\DataValidationException.cs" />
+    <Compile Include="Exceptions\ItemNotFoundException.cs" />
+    <Compile Include="Faults\DataValidationFault.cs" />
+    <Compile Include="Faults\ForeignKeyConstraintFault.cs" />
+    <Compile Include="Faults\ItemNotFoundFault.cs" />
     <Compile Include="ICategoryController.cs" />
     <Compile Include="ICategoryRepository.cs" />
     <Compile Include="IRepository.cs" />

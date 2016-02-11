@@ -3,10 +3,10 @@
 namespace TodoSystem.UI.ViewModel.Base
 {
     /// <summary>
-    /// Interface for view model with service interaction.
+    /// Interface for controller view model .
     /// </summary>
     /// <typeparam name="T">Service type. </typeparam>
-    public interface IServiceable<out T> : INotifyDataErrorInfo
+    public interface IController<out T> : INotifyDataErrorInfo, INotifyPropertyChanged
     {
         /// <summary>
         /// Gets back-end service.

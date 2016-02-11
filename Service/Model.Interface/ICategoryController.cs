@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.ServiceModel;
 
+using TodoSystem.Service.Model.Interface.Faults;
+
 namespace TodoSystem.Service.Model.Interface
 {
     /// <summary>
@@ -39,6 +41,7 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="name">Short name. </param>
         /// <returns>Category instance. </returns>
         [OperationContract]
+        [FaultContract(typeof(DataValidationFault))]
         Category Create(string name);
 
         /// <summary>
@@ -46,6 +49,7 @@ namespace TodoSystem.Service.Model.Interface
         /// </summary>
         /// <param name="id">Primary key of category. </param>
         [OperationContract]
+        [FaultContract(typeof(ForeignKeyConstraintFault))]
         void Delete(int id);
 
         /// <summary>
@@ -54,6 +58,8 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="id">Primary key. </param>
         /// <param name="name">Target name. </param>
         [OperationContract]
+        [FaultContract(typeof(DataValidationFault))]
+        [FaultContract(typeof(ItemNotFoundFault))]
         void ChangeText(int id, string name);
 
         /// <summary>
@@ -62,6 +68,7 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="id">Primary key. </param>
         /// <param name="order">Target priority in list. </param>
         [OperationContract]
+        [FaultContract(typeof(ItemNotFoundFault))]
         void ChangeOrder(int id, int order);
 
         /// <summary>
@@ -70,6 +77,7 @@ namespace TodoSystem.Service.Model.Interface
         /// <param name="id">Primary key. </param>
         /// <param name="color">Target color. </param>
         [OperationContract]
+        [FaultContract(typeof(ItemNotFoundFault))]
         void ChangeColor(int id, Color? color);
     }
 }

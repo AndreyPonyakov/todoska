@@ -12,7 +12,6 @@ namespace TodoSystem.Service.Model.Interface
         /// Gets full item list.
         /// </summary>
         /// <returns>Full item list. </returns>
-        /// TODO: Implement IQueryable interface.
         IEnumerable<T> GetAll();
 
         /// <summary>

@@ -18,6 +18,9 @@
         <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
             <Label FontWeight="Bold" Width="200" Margin="6,0,6,0">
                 <TextBlock TextDecorations="Underline">Name</TextBlock>
+                <Label.InputBindings>
+                    <MouseBinding Command="{Binding SortByNameAscCommand}" MouseAction="LeftDoubleClick" />
+                </Label.InputBindings>
             </Label>
             <Label FontWeight="Bold" Width="80" Margin="6,0,6,0">
                 <TextBlock TextDecorations="Underline">Color</TextBlock>

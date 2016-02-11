@@ -35,7 +35,8 @@ namespace TodoSystem.UI.ViewModel
                     new[] { nameof(OrderModified), nameof(NameModified), nameof(ColorModified) },
                     () => { Modified = NameModified || ColorModified || OrderModified; })
                 .SetPropertyChangedWithExecute(
-                    nameof(Name), () => Validate(
+                    nameof(Name),
+                    () => Validate(
                         Name.Length > 3 && Name.Length < 100,
                         nameof(Name),
                         "Name must be more 3 characters and less 100 characters."))
@@ -142,11 +143,6 @@ namespace TodoSystem.UI.ViewModel
         /// <param name="model">Back-end DTO category. </param>
         public override void Refresh(Category model)
         {
-            if (Refreshing)
-            {
-                return;
-            }
-
             Refreshing = true;
             try
             {

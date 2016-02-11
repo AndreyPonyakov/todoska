@@ -7,7 +7,7 @@ using System.ServiceModel.Dispatcher;
 namespace Host
 {
     /// <summary>
-    /// Class for behavior of parametrization constructor.
+    /// Class for behavior of constructor with parameters.
     /// </summary>
     /// <typeparam name="T">Service type. </typeparam>
     public sealed class InstanceProviderBehavior<T> : IInstanceProvider, IContractBehavior
@@ -25,7 +25,7 @@ namespace Host
         private Func<T> InstanceProvider { get; }
 
         /// <summary>
-        /// Appends instatce builder to all contracts of host.
+        /// Appends instance builder to all contracts of host.
         /// </summary>
         /// <param name="serviceHost">Target host. </param>
         public void AddToAllContracts(ServiceHost serviceHost)

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Windows.Input;
 using TodoSystem.UI.Model;
 using TodoSystem.UI.Tools.Model;
@@ -22,7 +20,7 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// Current controller.
         /// </summary>
-        private INotifyPropertyChanged _controller;
+        private IController<ITodoService> _controller;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkspaceViewModel"/> class.
@@ -50,7 +48,7 @@ namespace TodoSystem.UI.ViewModel
 
             RetrieveErrors(
                 nameof(Address),
-                new Dictionary<IServiceable<ITodoService>, string>
+                new Dictionary<IController<ITodoService>, string>
                     {
                         [CategoryController] = nameof(CategoryController.Service),
                         [TodoController] = nameof(TodoController.Service)
@@ -76,7 +74,10 @@ namespace TodoSystem.UI.ViewModel
                 }
                 finally
                 {
-                    (last as IDisposable)?.Dispose();
+                    if (last != _service)
+                    {
+                        (last as IDisposable)?.Dispose();
+                    }
                 }
             }
         }
@@ -103,7 +104,7 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// Gets or sets current controller.
         /// </summary>
-        public INotifyPropertyChanged Controller
+        public IController<ITodoService> Controller
         {
             get { return _controller; }
             set { SetField(ref _controller, value); }

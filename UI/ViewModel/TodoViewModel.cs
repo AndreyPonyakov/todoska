@@ -189,11 +189,6 @@ namespace TodoSystem.UI.ViewModel
         /// <param name="model">DTO back-end of current todo. </param>
         public override void Refresh(Todo model)
         {
-            if (Refreshing)
-            {
-                return;
-            }
-
             Refreshing = true;
             try
             {
