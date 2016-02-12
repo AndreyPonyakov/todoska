@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1EE0F4AC-6D50-43A8-B64F-2FAF7CC0D15A}</ProjectGuid>
+    <ProjectGuid>{55ABC8C9-52E6-4BFB-A3E4-A33CA502BA3A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TodoSystem.Service.Model.Implementation</RootNamespace>
-    <AssemblyName>TodoSystem.Service.Model.Implementation</AssemblyName>
+    <RootNamespace>TodoSystem.Service.Tools</RootNamespace>
+    <AssemblyName>TodoSystem.Service.Tools</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,7 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>Model.Implementation.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Tools.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,9 +29,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>Model.Implementation.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Tools.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -58,8 +59,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -68,29 +67,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CategoryController.cs" />
-    <Compile Include="TodoController.cs" />
+    <Compile Include="Aspects\ILogger.cs" />
+    <Compile Include="Aspects\ITimeProvider.cs" />
+    <Compile Include="Aspects\LoggableAttribute.cs" />
+    <Compile Include="Aspects\LoggableCallHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnityExtension\BuildTreeItemNode.cs" />
+    <Compile Include="UnityExtension\DisposableStrategyExtension.cs" />
+    <Compile Include="UnityExtension\DisposingLifetimeManager.cs" />
+    <Compile Include="UnityExtension\DisposingLifetimeStrategy.cs" />
+    <Compile Include="UnityExtension\DisposingSharedLifetimeManager.cs" />
+    <Compile Include="UnityExtension\DisposingTransientLifetimeManager.cs" />
+    <Compile Include="UnityExtension\ReferenceCounter.cs" />
+    <Compile Include="UnityExtension\WeakReferenceComparer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Model.Interface\Model.Interface.csproj">
-      <Project>{a44b0d85-4c92-46c5-847b-4801a999e52b}</Project>
-      <Name>Model.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tools\Tools.csproj">
-      <Project>{55abc8c9-52e6-4bfb-a3e4-a33ca502ba3a}</Project>
-      <Name>Tools</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Model.Implementation.ruleset" />
     <None Include="packages.config" />
+    <None Include="Tools.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

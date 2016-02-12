@@ -6,8 +6,9 @@ using System.ServiceModel;
 using TodoSystem.Service.Model.Interface;
 using TodoSystem.Service.Model.Interface.Exceptions;
 using TodoSystem.Service.Model.Interface.Faults;
+using TodoSystem.Service.Tools.Aspects;
 
-namespace TodoSystem.Model.Implementation
+namespace TodoSystem.Service.Model.Implementation
 {
     /// <summary>
     /// Storage implementation for <see cref="ICategoryController"/>
@@ -35,6 +36,7 @@ namespace TodoSystem.Model.Implementation
         /// Gets full list if category.
         /// </summary>
         /// <returns>Category list. </returns>
+        [Loggable]
         public IEnumerable<Category> SelectAll() => Repository.GetAll();
 
         /// <summary>
@@ -42,6 +44,7 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="id">Primary key of category. </param>
         /// <returns>Category instance. </returns>
+        [Loggable]
         public Category SelectById(int id) => Repository.Get(id);
 
         /// <summary>
@@ -49,6 +52,7 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="name">Target name. </param>
         /// <returns>Category list. </returns>
+        [Loggable]
         public IEnumerable<Category> SelectByName(string name) => Repository.Find(name);
 
         /// <summary>
@@ -56,6 +60,7 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="name">Short name. </param>
         /// <returns>Category instance. </returns>
+        [Loggable]
         public Category Create(string name)
         {
             if (name == null)
@@ -66,7 +71,7 @@ namespace TodoSystem.Model.Implementation
 
             try
             {
-                var category = 
+                var category =
                     new Category
                         {
                             Name = name,
@@ -86,6 +91,7 @@ namespace TodoSystem.Model.Implementation
         /// Delete category by primary key.
         /// </summary>
         /// <param name="id">Primary key of category. </param>
+        [Loggable]
         public void Delete(int id)
         {
             var category = Repository.Get(id);
@@ -110,6 +116,7 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="id">Primary key. </param>
         /// <param name="name">Target name. </param>
+        [Loggable]
         public void ChangeText(int id, string name)
         {
             if (name == null)
@@ -143,6 +150,7 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="id">Primary key. </param>
         /// <param name="order">Target priority in list. </param>
+        [Loggable]
         public void ChangeOrder(int id, int order)
         {
             var category = Repository.Get(id);
@@ -161,9 +169,9 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="id">Primary key. </param>
         /// <param name="color">Target color. </param>
+        [Loggable]
         public void ChangeColor(int id, Color? color)
         {
-
             var category = Repository.Get(id);
             if (category == null)
             {

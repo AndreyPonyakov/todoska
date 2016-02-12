@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TodoSystem.Model.SqlCe
+namespace TodoSystem.Service.Model.SqlCe
 {
     using System;
     using System.Collections.Generic;

@@ -1,7 +1,8 @@
 ﻿using System.Drawing;
+
 using AutoMapper;
 
-namespace TodoSystem.Model.SqlCe
+namespace TodoSystem.Service.Model.SqlCe
 {
     /// <summary>
     /// Mapper factory class for todo and category.
@@ -14,7 +15,7 @@ namespace TodoSystem.Model.SqlCe
         /// <param name="config">Mapper configuration. </param>
         public static void MapCategory(IMapperConfiguration config)
         {
-            config.CreateMap<Category, Service.Model.Interface.Category>()
+            config.CreateMap<Category, Interface.Category>()
                 .ForMember(
                     dest => dest.Color,
                     opt =>

@@ -146,7 +146,7 @@ namespace TodoSystem.UI.ViewModel
             Refreshing = true;
             try
             {
-                Model = Service.CategoryController.SelectById(model.Id);
+                Model = model;
                 Name = Model.Name;
                 Color = Model.Color;
                 Order = Model.Order;

@@ -5,14 +5,16 @@ using System.Linq;
 
 using Effort;
 using Effort.Provider;
-
 using NUnit.Framework;
+
 using TodoSystem.Model.SqlCe;
 using TodoSystem.Service.Model.Interface.Exceptions;
+using TodoSystem.Service.Model.SqlCe;
 
-using Interface = TodoSystem.Service.Model.Interface;
+using Category = TodoSystem.Service.Model.SqlCe.Category;
+using Todo = TodoSystem.Service.Model.SqlCe.Todo;
 
-namespace TodoSystem.Model.SqlCE.Test
+namespace TodoSystem.Service.Model.SqlCE.Test
 {
     [TestFixture]
     class SqlCeCategoryRepositoryTest

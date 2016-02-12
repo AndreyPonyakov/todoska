@@ -1,10 +1,8 @@
 ﻿using System.Drawing;
+
 using AutoMapper;
-using TodoSystem.Model.SqlCe;
 
-using Interface = TodoSystem.Service.Model.Interface;
-
-namespace Host
+namespace TodoSystem.Service.Model.SqlCe
 {
     /// <summary>
     /// Mapper initialization helper class

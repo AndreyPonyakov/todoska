@@ -8,9 +8,7 @@ using AutoMapper;
 
 using TodoSystem.Service.Model.Interface.Exceptions;
 
-using Interface = TodoSystem.Service.Model.Interface;
-
-namespace TodoSystem.Model.SqlCe
+namespace TodoSystem.Service.Model.SqlCe
 {
     /// <summary>
     /// Interface for plain database todo table management.

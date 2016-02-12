@@ -13,7 +13,7 @@ namespace TodoSystem.Service.Model.Interface
     public interface ICategoryController
     {
         /// <summary>
-        /// Gets full list if category.
+        /// Gets full list of categories.
         /// </summary>
         /// <returns>Category list. </returns>
         [OperationContract]
@@ -36,7 +36,7 @@ namespace TodoSystem.Service.Model.Interface
         IEnumerable<Category> SelectByName(string name);
 
         /// <summary>
-        /// Creates new category with target attributes.
+        /// Creates a new category with target attributes.
         /// </summary>
         /// <param name="name">Short name. </param>
         /// <returns>Category instance. </returns>

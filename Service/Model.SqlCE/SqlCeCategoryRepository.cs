@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using AutoMapper;
 
 using TodoSystem.Service.Model.Interface.Exceptions;
+using TodoSystem.Service.Model.SqlCe;
 
 using Interface = TodoSystem.Service.Model.Interface;
 

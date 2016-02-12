@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ServiceModel;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 using TodoSystem.Service.Model.Interface;
 using TodoSystem.Service.Model.Interface.Exceptions;
 using TodoSystem.Service.Model.Interface.Faults;
 
-namespace TodoSystem.Model.Implementation.Test
+namespace TodoSystem.Service.Model.Implementation.Test
 {
     [TestFixture]
     public class TodoControllerTest

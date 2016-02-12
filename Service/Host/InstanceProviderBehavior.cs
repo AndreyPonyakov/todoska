@@ -1,10 +1,11 @@
-﻿using System;
-using System.ServiceModel;
+﻿using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
-namespace Host
+using Microsoft.Practices.Unity;
+
+namespace TodoSystem.Service.Host
 {
     /// <summary>
     /// Class for behavior of constructor with parameters.
@@ -16,13 +17,13 @@ namespace Host
         /// <summary>
         /// Initializes a new instance of the <see cref="InstanceProviderBehavior{T}"/> class.
         /// </summary>
-        /// <param name="instanceProvider">Instance creation factory. </param>
-        public InstanceProviderBehavior(Func<T> instanceProvider)
+        /// <param name="container">Unity container to manage instance lifetime. </param>
+        public InstanceProviderBehavior(IUnityContainer container)
         {
-            InstanceProvider = instanceProvider;
+            Container = container;
         }
 
-        private Func<T> InstanceProvider { get; }
+        public IUnityContainer Container { get; }
 
         /// <summary>
         /// Appends instance builder to all contracts of host.
@@ -87,7 +88,7 @@ namespace Host
         /// <param name="instanceContext">The current <see cref="T:System.ServiceModel.InstanceContext"/> object.</param>
         public object GetInstance(InstanceContext instanceContext)
         {
-            return InstanceProvider.Invoke();
+            return Container.Resolve<T>();
         }
 
         /// <summary>
@@ -110,6 +111,7 @@ namespace Host
         /// <param name="instance">The service object to be recycled.</param>
         public void ReleaseInstance(InstanceContext instanceContext, object instance)
         {
+            Container.Teardown(instance);
         }
     }
 }
