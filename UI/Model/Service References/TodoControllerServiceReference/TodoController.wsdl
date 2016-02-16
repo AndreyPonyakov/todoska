@@ -5,6 +5,7 @@
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface" />
+      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/Host/TodoController?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="ITodoController_SelectAll_InputMessage">
@@ -37,6 +38,9 @@
   <wsdl:message name="ITodoController_Create_OutputMessage">
     <wsdl:part name="parameters" element="tns:CreateResponse" />
   </wsdl:message>
+  <wsdl:message name="ITodoController_Create_DataValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q1:DataValidationFault" />
+  </wsdl:message>
   <wsdl:message name="ITodoController_Delete_InputMessage">
     <wsdl:part name="parameters" element="tns:Delete" />
   </wsdl:message>
@@ -49,11 +53,17 @@
   <wsdl:message name="ITodoController_ChangeOrder_OutputMessage">
     <wsdl:part name="parameters" element="tns:ChangeOrderResponse" />
   </wsdl:message>
+  <wsdl:message name="ITodoController_ChangeOrder_ItemNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q2:ItemNotFoundFault" />
+  </wsdl:message>
   <wsdl:message name="ITodoController_Check_InputMessage">
     <wsdl:part name="parameters" element="tns:Check" />
   </wsdl:message>
   <wsdl:message name="ITodoController_Check_OutputMessage">
     <wsdl:part name="parameters" element="tns:CheckResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_Check_ItemNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q3:ItemNotFoundFault" />
   </wsdl:message>
   <wsdl:message name="ITodoController_SetCategory_InputMessage">
     <wsdl:part name="parameters" element="tns:SetCategory" />
@@ -61,17 +71,32 @@
   <wsdl:message name="ITodoController_SetCategory_OutputMessage">
     <wsdl:part name="parameters" element="tns:SetCategoryResponse" />
   </wsdl:message>
+  <wsdl:message name="ITodoController_SetCategory_ItemNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q4:ItemNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_SetCategory_ForeignKeyConstraintFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q5:ForeignKeyConstraintFault" />
+  </wsdl:message>
   <wsdl:message name="ITodoController_SetDeadline_InputMessage">
     <wsdl:part name="parameters" element="tns:SetDeadline" />
   </wsdl:message>
   <wsdl:message name="ITodoController_SetDeadline_OutputMessage">
     <wsdl:part name="parameters" element="tns:SetDeadlineResponse" />
   </wsdl:message>
+  <wsdl:message name="ITodoController_SetDeadline_ItemNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q6:ItemNotFoundFault" />
+  </wsdl:message>
   <wsdl:message name="ITodoController_ChangeText_InputMessage">
     <wsdl:part name="parameters" element="tns:ChangeText" />
   </wsdl:message>
   <wsdl:message name="ITodoController_ChangeText_OutputMessage">
     <wsdl:part name="parameters" element="tns:ChangeTextResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_ChangeText_ItemNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q7:ItemNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="ITodoController_ChangeText_DataValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q8:DataValidationFault" />
   </wsdl:message>
   <wsdl:portType name="ITodoController">
     <wsdl:operation name="SelectAll">
@@ -93,6 +118,7 @@
     <wsdl:operation name="Create">
       <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/Create" message="tns:ITodoController_Create_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/CreateResponse" message="tns:ITodoController_Create_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ITodoController/CreateDataValidationFaultFault" name="DataValidationFaultFault" message="tns:ITodoController_Create_DataValidationFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="Delete">
       <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/Delete" message="tns:ITodoController_Delete_InputMessage" />
@@ -101,22 +127,29 @@
     <wsdl:operation name="ChangeOrder">
       <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/ChangeOrder" message="tns:ITodoController_ChangeOrder_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/ChangeOrderResponse" message="tns:ITodoController_ChangeOrder_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ITodoController/ChangeOrderItemNotFoundFaultFault" name="ItemNotFoundFaultFault" message="tns:ITodoController_ChangeOrder_ItemNotFoundFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="Check">
       <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/Check" message="tns:ITodoController_Check_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/CheckResponse" message="tns:ITodoController_Check_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ITodoController/CheckItemNotFoundFaultFault" name="ItemNotFoundFaultFault" message="tns:ITodoController_Check_ItemNotFoundFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="SetCategory">
       <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/SetCategory" message="tns:ITodoController_SetCategory_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/SetCategoryResponse" message="tns:ITodoController_SetCategory_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ITodoController/SetCategoryItemNotFoundFaultFault" name="ItemNotFoundFaultFault" message="tns:ITodoController_SetCategory_ItemNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ITodoController/SetCategoryForeignKeyConstraintFaultFault" name="ForeignKeyConstraintFaultFault" message="tns:ITodoController_SetCategory_ForeignKeyConstraintFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="SetDeadline">
       <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/SetDeadline" message="tns:ITodoController_SetDeadline_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/SetDeadlineResponse" message="tns:ITodoController_SetDeadline_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ITodoController/SetDeadlineItemNotFoundFaultFault" name="ItemNotFoundFaultFault" message="tns:ITodoController_SetDeadline_ItemNotFoundFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="ChangeText">
       <wsdl:input wsaw:Action="http://tempuri.org/ITodoController/ChangeText" message="tns:ITodoController_ChangeText_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITodoController/ChangeTextResponse" message="tns:ITodoController_ChangeText_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ITodoController/ChangeTextItemNotFoundFaultFault" name="ItemNotFoundFaultFault" message="tns:ITodoController_ChangeText_ItemNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ITodoController/ChangeTextDataValidationFaultFault" name="DataValidationFaultFault" message="tns:ITodoController_ChangeText_DataValidationFaultFault_FaultMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_ITodoController" type="tns:ITodoController">
@@ -165,6 +198,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="DataValidationFaultFault">
+        <soap:fault use="literal" name="DataValidationFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="Delete">
       <soap:operation soapAction="http://tempuri.org/ITodoController/Delete" style="document" />
@@ -183,6 +219,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="ItemNotFoundFaultFault">
+        <soap:fault use="literal" name="ItemNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="Check">
       <soap:operation soapAction="http://tempuri.org/ITodoController/Check" style="document" />
@@ -192,6 +231,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="ItemNotFoundFaultFault">
+        <soap:fault use="literal" name="ItemNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="SetCategory">
       <soap:operation soapAction="http://tempuri.org/ITodoController/SetCategory" style="document" />
@@ -201,6 +243,12 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="ItemNotFoundFaultFault">
+        <soap:fault use="literal" name="ItemNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ForeignKeyConstraintFaultFault">
+        <soap:fault use="literal" name="ForeignKeyConstraintFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="SetDeadline">
       <soap:operation soapAction="http://tempuri.org/ITodoController/SetDeadline" style="document" />
@@ -210,6 +258,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="ItemNotFoundFaultFault">
+        <soap:fault use="literal" name="ItemNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="ChangeText">
       <soap:operation soapAction="http://tempuri.org/ITodoController/ChangeText" style="document" />
@@ -219,6 +270,12 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="ItemNotFoundFaultFault">
+        <soap:fault use="literal" name="ItemNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="DataValidationFaultFault">
+        <soap:fault use="literal" name="DataValidationFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="TodoController">

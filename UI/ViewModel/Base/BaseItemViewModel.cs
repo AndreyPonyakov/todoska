@@ -5,6 +5,8 @@ using System.ServiceModel;
 using System.Windows.Input;
 
 using TodoSystem.UI.Tools.Model;
+using CategoryClient = TodoSystem.UI.Model.CategoryControllerServiceReference;
+using TodoClient = TodoSystem.UI.Model.TodoControllerServiceReference;
 
 namespace TodoSystem.UI.ViewModel.Base
 {
@@ -14,6 +16,7 @@ namespace TodoSystem.UI.ViewModel.Base
     /// <typeparam name="TService">Service type. </typeparam>
     /// <typeparam name="TModel">Model type. </typeparam>
     /// TODO: Move messages into resources.
+    /// TODO: Create error aggregator.
     public abstract class BaseItemViewModel<TService, TModel> : BaseViewModel, IItemViewModel<TModel>
         where TModel : class
     {
@@ -163,9 +166,21 @@ namespace TodoSystem.UI.ViewModel.Base
 
                     Refresh(Model);
                 }
+                catch (FaultException<TodoClient.DataValidationFault>)
+                {
+                    AppendErrors(nameof(HasServiceError), "Record cannot change: content did not pass validation.");
+                }
+                catch (FaultException<CategoryClient.DataValidationFault>)
+                {
+                    AppendErrors(nameof(HasServiceError), "Record cannot change: content did not pass validation.");
+                }
+                catch (FaultException<TodoClient.ForeignKeyConstraintFault> ex)
+                {
+                    AppendErrors(nameof(HasServiceError), $"Record cannot change: foreign key constraint in {ex.Detail.ForeignKey}.");
+                }
                 catch (FaultException)
                 {
-                    AppendErrors(nameof(HasServiceError), "Service cannot append this record.");
+                    AppendErrors(nameof(HasServiceError), "Service cannot append this record3.");
                 }
                 catch (CommunicationException)
                 {
@@ -177,6 +192,28 @@ namespace TodoSystem.UI.ViewModel.Base
                 try
                 {
                     Update();
+                }
+                catch (FaultException<TodoClient.ForeignKeyConstraintFault> ex)
+                {
+                    AppendErrors(
+                        nameof(HasServiceError),
+                        $"Record cannot update: foreign key constraint in {ex.Detail.ForeignKey}.");
+                }
+                catch (FaultException<TodoClient.ItemNotFoundFault>)
+                {
+                    AppendErrors(nameof(HasServiceError), "Record cannot change: record does not exist already.");
+                }
+                catch (FaultException<CategoryClient.ItemNotFoundFault>)
+                {
+                    AppendErrors(nameof(HasServiceError), "Record cannot change: record does not exist already.");
+                }
+                catch (FaultException<TodoClient.DataValidationFault>)
+                {
+                    AppendErrors(nameof(HasServiceError), "Record cannot change: content did not pass validation.");
+                }
+                catch (FaultException<CategoryClient.DataValidationFault>)
+                {
+                    AppendErrors(nameof(HasServiceError), "Record cannot change: content did not pass validation.");
                 }
                 catch (FaultException)
                 {
@@ -194,10 +231,17 @@ namespace TodoSystem.UI.ViewModel.Base
         /// </summary>
         public void Undo()
         {
+            ClearErrors(nameof(HasServiceError));
+
             if (Model != null)
             {
                 Refresh(Model);
                 ClearMofidied();
+            }
+
+            if (!ContentValidate())
+            {
+                AppendErrors(nameof(HasServiceError), "Content did not pass validation.");
             }
         }
 
@@ -208,19 +252,8 @@ namespace TodoSystem.UI.ViewModel.Base
         {
             if (Model == null)
             {
-                try
-                {
-                    ClearMofidied();
-                    Deleted?.Invoke(this, new EventArgs());
-                }
-                catch (FaultException)
-                {
-                    AppendErrors(nameof(HasServiceError), "Service cannot refresh this record.");
-                }
-                catch (CommunicationException)
-                {
-                    AppendErrors(nameof(HasServiceError), "Service encountered with problems.");
-                }
+                ClearMofidied();
+                Deleted?.Invoke(this, new EventArgs());
             }
             else
             {
@@ -232,13 +265,23 @@ namespace TodoSystem.UI.ViewModel.Base
                         Deleted?.Invoke(this, new EventArgs());
                     }
                 }
+                catch (FaultException<CategoryClient.ForeignKeyConstraintFault> ex)
+                {
+                    AppendErrors(
+                        nameof(HasServiceError),
+                        $"Record cannot delete: foreign key constraint in {ex.Detail.ForeignKey}.");
+                }
                 catch (FaultException)
                 {
-                    AppendErrors(nameof(HasServiceError), "Service cannot delete this record.");
+                    AppendErrors(
+                        nameof(HasServiceError),
+                        "Service cannot delete this record.");
                 }
                 catch (CommunicationException)
                 {
-                    AppendErrors(nameof(HasServiceError), "Service encountered with problems.");
+                    AppendErrors(
+                        nameof(HasServiceError),
+                        "Service encountered with problems.");
                 }
             }
         }

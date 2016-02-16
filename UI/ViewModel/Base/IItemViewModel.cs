@@ -9,7 +9,7 @@ namespace TodoSystem.UI.ViewModel.Base
     /// Interface of functionality of item ViewModel in controller.
     /// </summary>
     /// <typeparam name="TModel">Model type. </typeparam>
-    public interface IItemViewModel<TModel> : INotifyPropertyChanged
+    public interface IItemViewModel<TModel> : INotifyPropertyChanged, INotifyDataErrorInfo
         where TModel : class
     {
         /// <summary>

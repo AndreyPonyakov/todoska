@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
@@ -13,7 +14,7 @@ namespace TodoSystem.UI.ViewModel.Base
     /// <typeparam name="TService">Back-end service. </typeparam>
     /// <typeparam name="TItemModel">Type of model item element. </typeparam>
     /// <typeparam name="TItemViewModel">Type of item element. </typeparam>
-    public abstract class BaseOrderableControllerViewModel<TService, TItemModel, TItemViewModel> : BaseViewModel, IServiceable<TService>
+    public abstract class BaseOrderableControllerViewModel<TService, TItemModel, TItemViewModel> : BaseViewModel, IController<TService>
         where TItemModel : class
         where TItemViewModel : BaseViewModel, IOrderableItemViewModel<TItemModel, TItemViewModel>
     {
@@ -105,6 +106,24 @@ namespace TodoSystem.UI.ViewModel.Base
                     .ToList()
                     .ForEach(rec => rec.Value.Order = rec.Index);
             };
+        }
+
+        /// <summary>
+        /// Sort category by the expression.
+        /// </summary>
+        /// <typeparam name="T">Sort expression type. </typeparam>
+        /// <param name="keySelector">Sort expression. </param>
+        public void Sort<T>(Func<TItemViewModel, T> keySelector)
+        {
+            List.OrderBy(keySelector)
+                .Select((c, i) => new { Index = i, Value = c })
+                .ToList()
+                .ForEach(
+                    rec =>
+                    {
+                        rec.Value.Order = rec.Index;
+                        List.Move(List.IndexOf(rec.Value), rec.Index);
+                    });
         }
     }
 }

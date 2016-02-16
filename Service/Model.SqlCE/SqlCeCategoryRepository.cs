@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Linq;
 using AutoMapper;
+
+using TodoSystem.Service.Model.Interface.Exceptions;
 
 using Interface = TodoSystem.Service.Model.Interface;
 
@@ -11,7 +15,7 @@ namespace TodoSystem.Model.SqlCe
     /// <summary>
     /// Class for plain database category table management.
     /// </summary>
-    public sealed class SqlCeCategoryRepository : Interface.ICategoryRepository, IDisposable
+    public sealed class SqlCeCategoryRepository : Interface.ICategoryRepository
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlCeCategoryRepository"/> class.
@@ -20,6 +24,16 @@ namespace TodoSystem.Model.SqlCe
         /// <param name="mapper">Transform object from DTO to Entity and conversely.</param>
         public SqlCeCategoryRepository(TodoDbContext context, IMapper mapper)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            if (mapper == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             Context = context;
             Mapper = mapper;
         }
@@ -76,8 +90,9 @@ namespace TodoSystem.Model.SqlCe
                 var entry = Context.Entry(entity);
                 if (entry.State == EntityState.Detached)
                 {
-                    var attachedEntity = Context.Categories.Local
-                        .SingleOrDefault(e => e.Id == entity.Id);
+                    var attachedEntity =
+                        Context.Categories.Local.SingleOrDefault(
+                            e => e.Id == entity.Id);
                     if (attachedEntity != null)
                     {
                         var attachedEntry = Context.Entry(attachedEntity);
@@ -90,7 +105,15 @@ namespace TodoSystem.Model.SqlCe
                 }
             }
 
-            Context.SaveChanges();
+            try
+            {
+                Context.SaveChanges();
+            }
+            catch (DbEntityValidationException)
+            {
+                throw new DataValidationException();
+            }
+
             return Mapper.Map<Interface.Category>(entity);
         }
 
@@ -103,7 +126,15 @@ namespace TodoSystem.Model.SqlCe
             Context.Categories
                 .Where(c => c.Id == item.Id)
                 .ToList()
-                .ForEach(c => Context.Categories.Remove(c));
+                .ForEach(c =>
+                    {
+                        if (c.Todoes.Any())
+                        {
+                            throw new ForeignKeyConstraintException($"{nameof(Todo)} - {nameof(Category)}");
+                        }
+
+                        Context.Categories.Remove(c);
+                    });
             Context.SaveChanges();
         }
 
@@ -131,10 +162,5 @@ namespace TodoSystem.Model.SqlCe
                     .FirstOrDefault();
             return last != null ? Mapper.Map<Interface.Category>(last) : null;
         }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose() => Context?.Dispose();
     }
 }

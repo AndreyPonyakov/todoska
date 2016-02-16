@@ -90,6 +90,9 @@
     <None Include="Service References\CategoryControllerServiceReference\CategoryController3.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\CategoryControllerServiceReference\CategoryController4.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\CategoryControllerServiceReference\TodoSystem.UI.Model.CategoryControllerServiceReference.Category.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -101,6 +104,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\TodoControllerServiceReference\TodoController2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\TodoControllerServiceReference\TodoController3.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\TodoControllerServiceReference\TodoSystem.UI.Model.TodoControllerServiceReference.Todo.datasource">

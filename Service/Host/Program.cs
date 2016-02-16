@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Drawing;
-using System.Linq;
 using System.ServiceModel;
 
 using AutoMapper;
-
 using Microsoft.Practices.Unity;
 
 using TodoSystem.Model.Implementation;
@@ -28,7 +25,9 @@ namespace Host
                     .RegisterType<IMapper>(
                         new ContainerControlledLifetimeManager(),
                         new InjectionFactory(uc => new TodoMapperFactory().CreateMapper()))
-                    .RegisterType<TodoDbContext>(new InjectionFactory(uc => new TodoDbContext()))
+                    .RegisterType<TodoDbContext>(
+                        new HierarchicalLifetimeManager(),
+                        new InjectionFactory(uc => new TodoDbContext()))
                     .RegisterType<ICategoryRepository, SqlCeCategoryRepository>()
                     .RegisterType<ITodoRepository, SqlCeTodoRepository>()
                     .RegisterType<ICategoryController, CategoryController>()
@@ -37,12 +36,13 @@ namespace Host
             using (var categoryHost = new ServiceHost(typeof(CategoryController)))
             using (var todoHost = new ServiceHost(typeof(TodoController)))
             {
-                new InstanceProviderBehavior<ICategoryController>(() => container.Resolve<ICategoryController>()).AddToAllContracts(categoryHost);
-                new InstanceProviderBehavior<ITodoController>(() => container.Resolve<ITodoController>()).AddToAllContracts(todoHost);
+                categoryHost.SetFactory(() => container.Resolve<ICategoryController>());
+                todoHost.SetFactory(() => container.Resolve<ITodoController>());
 
                 categoryHost.Open();
                 todoHost.Open();
-                Console.Write($"TodoSystem service started at {DateTime.Now}...");
+
+                Console.WriteLine($"TodoSystem service started at {DateTime.Now}...");
                 Console.ReadLine();
             }
         }

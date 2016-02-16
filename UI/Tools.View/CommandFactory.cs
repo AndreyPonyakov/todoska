@@ -5,7 +5,7 @@ using TodoSystem.UI.Tools.Model;
 namespace TodoSystem.UI.Tools.View
 {
     /// <summary>
-    /// Relay command factory
+    /// Relay command factory.
     /// </summary>
     public sealed class CommandFactory : ICommandFactory
     {

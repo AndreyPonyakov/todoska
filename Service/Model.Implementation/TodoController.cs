@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ServiceModel;
 
 using TodoSystem.Service.Model.Interface;
+using TodoSystem.Service.Model.Interface.Exceptions;
+using TodoSystem.Service.Model.Interface.Faults;
 
 namespace TodoSystem.Model.Implementation
 {
@@ -64,6 +67,12 @@ namespace TodoSystem.Model.Implementation
         /// <returns>Created todo. </returns>
         public Todo Create(string title)
         {
+            if (title == null)
+            {
+                throw new FaultException<DataValidationFault>(
+                    new DataValidationFault());
+            }
+
             var todo = new Todo
             {
                 Title = title,
@@ -73,14 +82,30 @@ namespace TodoSystem.Model.Implementation
                 Checked = false,
                 Order = (Repository.FindLast()?.Order ?? default(int) - 1) + 1
             };
-            return Repository.Save(todo);
+
+            try
+            { 
+                return Repository.Save(todo);
+            }
+            catch (DataValidationException)
+            {
+                throw new FaultException<DataValidationFault>(
+                    new DataValidationFault());
+            }
         }
 
         /// <summary>
         /// Delete todo by its id
         /// </summary>
         /// <param name="id">Primary key. </param>
-        public void Delete(int id) => Repository.Delete(Repository.Get(id));
+        public void Delete(int id)
+        {
+            var todo = Repository.Get(id);
+            if (todo != null)
+            {
+                Repository.Delete(Repository.Get(id));
+            }
+        }
 
         /// <summary>
         /// Change priority of order.
@@ -90,6 +115,12 @@ namespace TodoSystem.Model.Implementation
         public void ChangeOrder(int id, int order)
         {
             var todo = Repository.Get(id);
+            if (todo == null)
+            {
+                throw new FaultException<ItemNotFoundFault>(
+                    new ItemNotFoundFault());
+            }
+
             todo.Order = order;
             Repository.Save(todo);
         }
@@ -101,8 +132,16 @@ namespace TodoSystem.Model.Implementation
         /// <param name="isChecked">True if the todo is checked. </param>
         public void Check(int id, bool isChecked)
         {
+
             var todo = Repository.Get(id);
+            if (todo == null)
+            {
+                throw new FaultException<ItemNotFoundFault>(
+                    new ItemNotFoundFault());
+            }
+
             todo.Checked = isChecked;
+
             Repository.Save(todo);
         }
 
@@ -114,8 +153,23 @@ namespace TodoSystem.Model.Implementation
         public void SetCategory(int id, int? categoryId)
         {
             var todo = Repository.Get(id);
+            if (todo == null)
+            {
+                throw new FaultException<ItemNotFoundFault>(
+                    new ItemNotFoundFault());
+            }
+
             todo.CategoryId = categoryId;
-            Repository.Save(todo);
+
+            try
+            {
+                Repository.Save(todo);
+            }
+            catch (ForeignKeyConstraintException ex)
+            {
+                throw new FaultException<ForeignKeyConstraintFault>(
+                    new ForeignKeyConstraintFault { ForeignKey = ex.ForeignKey });
+            }
         }
 
         /// <summary>
@@ -126,6 +180,12 @@ namespace TodoSystem.Model.Implementation
         public void SetDeadline(int id, DateTime? deadline)
         {
             var todo = Repository.Get(id);
+            if (todo == null)
+            {
+                throw new FaultException<ItemNotFoundFault>(
+                    new ItemNotFoundFault());
+            }
+
             todo.Deadline = deadline;
             Repository.Save(todo);
         }
@@ -140,13 +200,30 @@ namespace TodoSystem.Model.Implementation
         {
             if (title == null)
             {
-                throw new ArgumentNullException(nameof(title));
+                throw new FaultException<DataValidationFault>(
+                    new DataValidationFault());
             }
 
             var todo = Repository.Get(id);
+            if (todo == null)
+            {
+                throw new FaultException<ItemNotFoundFault>(
+                    new ItemNotFoundFault());
+            }
+
             todo.Title = title;
             todo.Desc = desc;
-            Repository.Save(todo);
+
+            try
+            {
+
+                Repository.Save(todo);
+            }
+            catch (DataValidationException)
+            {
+                throw new FaultException<DataValidationFault>(
+                    new DataValidationFault());
+            }
         }
     }
 }

@@ -58,9 +58,6 @@
             </TextBox>
             <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="0" >
                 <ComboBox Width="80" ItemsSource="{Binding CategoryList}" SelectedItem="{Binding Category}" Margin="6" Height="26">
-                    <ComboBox.Background>
-                        <SolidColorBrush Color="{Binding Category.Color, Converter={StaticResource DrawingColorToMediaColorConverter}}" Opacity="0.6"/>
-                    </ComboBox.Background>
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Height="30">

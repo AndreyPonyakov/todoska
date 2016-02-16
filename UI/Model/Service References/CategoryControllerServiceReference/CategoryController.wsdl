@@ -6,6 +6,7 @@
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/Host/CategoryController?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/Host/CategoryController?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface" />
       <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/Host/CategoryController?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Drawing" />
+      <xsd:import schemaLocation="http://localhost:8733/Design_Time_Addresses/Host/CategoryController?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="ICategoryController_SelectAll_InputMessage">
@@ -32,11 +33,17 @@
   <wsdl:message name="ICategoryController_Create_OutputMessage">
     <wsdl:part name="parameters" element="tns:CreateResponse" />
   </wsdl:message>
+  <wsdl:message name="ICategoryController_Create_DataValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q1:DataValidationFault" />
+  </wsdl:message>
   <wsdl:message name="ICategoryController_Delete_InputMessage">
     <wsdl:part name="parameters" element="tns:Delete" />
   </wsdl:message>
   <wsdl:message name="ICategoryController_Delete_OutputMessage">
     <wsdl:part name="parameters" element="tns:DeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICategoryController_Delete_ForeignKeyConstraintFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q2:ForeignKeyConstraintFault" />
   </wsdl:message>
   <wsdl:message name="ICategoryController_ChangeText_InputMessage">
     <wsdl:part name="parameters" element="tns:ChangeText" />
@@ -44,17 +51,29 @@
   <wsdl:message name="ICategoryController_ChangeText_OutputMessage">
     <wsdl:part name="parameters" element="tns:ChangeTextResponse" />
   </wsdl:message>
+  <wsdl:message name="ICategoryController_ChangeText_DataValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q3:DataValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="ICategoryController_ChangeText_ItemNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q4:ItemNotFoundFault" />
+  </wsdl:message>
   <wsdl:message name="ICategoryController_ChangeOrder_InputMessage">
     <wsdl:part name="parameters" element="tns:ChangeOrder" />
   </wsdl:message>
   <wsdl:message name="ICategoryController_ChangeOrder_OutputMessage">
     <wsdl:part name="parameters" element="tns:ChangeOrderResponse" />
   </wsdl:message>
+  <wsdl:message name="ICategoryController_ChangeOrder_ItemNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q5:ItemNotFoundFault" />
+  </wsdl:message>
   <wsdl:message name="ICategoryController_ChangeColor_InputMessage">
     <wsdl:part name="parameters" element="tns:ChangeColor" />
   </wsdl:message>
   <wsdl:message name="ICategoryController_ChangeColor_OutputMessage">
     <wsdl:part name="parameters" element="tns:ChangeColorResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICategoryController_ChangeColor_ItemNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/TodoSystem.Service.Model.Interface.Faults" name="detail" element="q6:ItemNotFoundFault" />
   </wsdl:message>
   <wsdl:portType name="ICategoryController">
     <wsdl:operation name="SelectAll">
@@ -72,22 +91,28 @@
     <wsdl:operation name="Create">
       <wsdl:input wsaw:Action="http://tempuri.org/ICategoryController/Create" message="tns:ICategoryController_Create_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICategoryController/CreateResponse" message="tns:ICategoryController_Create_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ICategoryController/CreateDataValidationFaultFault" name="DataValidationFaultFault" message="tns:ICategoryController_Create_DataValidationFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="Delete">
       <wsdl:input wsaw:Action="http://tempuri.org/ICategoryController/Delete" message="tns:ICategoryController_Delete_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICategoryController/DeleteResponse" message="tns:ICategoryController_Delete_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ICategoryController/DeleteForeignKeyConstraintFaultFault" name="ForeignKeyConstraintFaultFault" message="tns:ICategoryController_Delete_ForeignKeyConstraintFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="ChangeText">
       <wsdl:input wsaw:Action="http://tempuri.org/ICategoryController/ChangeText" message="tns:ICategoryController_ChangeText_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICategoryController/ChangeTextResponse" message="tns:ICategoryController_ChangeText_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ICategoryController/ChangeTextDataValidationFaultFault" name="DataValidationFaultFault" message="tns:ICategoryController_ChangeText_DataValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ICategoryController/ChangeTextItemNotFoundFaultFault" name="ItemNotFoundFaultFault" message="tns:ICategoryController_ChangeText_ItemNotFoundFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="ChangeOrder">
       <wsdl:input wsaw:Action="http://tempuri.org/ICategoryController/ChangeOrder" message="tns:ICategoryController_ChangeOrder_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICategoryController/ChangeOrderResponse" message="tns:ICategoryController_ChangeOrder_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ICategoryController/ChangeOrderItemNotFoundFaultFault" name="ItemNotFoundFaultFault" message="tns:ICategoryController_ChangeOrder_ItemNotFoundFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="ChangeColor">
       <wsdl:input wsaw:Action="http://tempuri.org/ICategoryController/ChangeColor" message="tns:ICategoryController_ChangeColor_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ICategoryController/ChangeColorResponse" message="tns:ICategoryController_ChangeColor_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ICategoryController/ChangeColorItemNotFoundFaultFault" name="ItemNotFoundFaultFault" message="tns:ICategoryController_ChangeColor_ItemNotFoundFaultFault_FaultMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_ICategoryController" type="tns:ICategoryController">
@@ -127,6 +152,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="DataValidationFaultFault">
+        <soap:fault use="literal" name="DataValidationFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="Delete">
       <soap:operation soapAction="http://tempuri.org/ICategoryController/Delete" style="document" />
@@ -136,6 +164,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="ForeignKeyConstraintFaultFault">
+        <soap:fault use="literal" name="ForeignKeyConstraintFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="ChangeText">
       <soap:operation soapAction="http://tempuri.org/ICategoryController/ChangeText" style="document" />
@@ -145,6 +176,12 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="DataValidationFaultFault">
+        <soap:fault use="literal" name="DataValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ItemNotFoundFaultFault">
+        <soap:fault use="literal" name="ItemNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="ChangeOrder">
       <soap:operation soapAction="http://tempuri.org/ICategoryController/ChangeOrder" style="document" />
@@ -154,6 +191,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="ItemNotFoundFaultFault">
+        <soap:fault use="literal" name="ItemNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="ChangeColor">
       <soap:operation soapAction="http://tempuri.org/ICategoryController/ChangeColor" style="document" />
@@ -163,6 +203,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="ItemNotFoundFaultFault">
+        <soap:fault use="literal" name="ItemNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="CategoryController">

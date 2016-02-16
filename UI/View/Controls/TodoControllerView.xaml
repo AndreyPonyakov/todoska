@@ -28,9 +28,17 @@
             </Label>
             <Label FontWeight="Bold" Grid.Column="1">
                 <TextBlock TextDecorations="Underline">Title</TextBlock>
+                <Label.InputBindings>
+                    <MouseBinding Command="{Binding SortByTitleAscCommand}" MouseAction="LeftDoubleClick" />
+                </Label.InputBindings>
+
             </Label>
             <Label FontWeight="Bold" Grid.Column="2">
                 <TextBlock TextDecorations="Underline">Description</TextBlock>
+                <Label.InputBindings>
+                    <MouseBinding Command="{Binding SortByDescAscCommand}" MouseAction="LeftDoubleClick" />
+                </Label.InputBindings>
+
             </Label>
             <StackPanel Orientation="Horizontal" Grid.Column="3">
                 <Label FontWeight="Bold" Width="184">

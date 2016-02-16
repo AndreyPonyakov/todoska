@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.ServiceModel;
+using System.Windows.Input;
 
 using TodoSystem.UI.Model;
 using TodoSystem.UI.Model.TodoControllerServiceReference;
@@ -27,7 +28,22 @@ namespace TodoSystem.UI.ViewModel
             : base(commandFactory)
         {
             _workspace = workspace;
+
+            SortByTitleAscCommand =
+                commandFactory.CreateCommand(() => Sort(t => t.Title));
+            SortByDescAscCommand =
+                commandFactory.CreateCommand(() => Sort(t => t.Desc));
         }
+
+        /// <summary>
+        /// Gets sorting by title command.
+        /// </summary>
+        public ICommand SortByTitleAscCommand { get; }
+
+        /// <summary>
+        /// Gets sorting by description command.
+        /// </summary>
+        public ICommand SortByDescAscCommand { get; }
 
         /// <summary>
         /// Create new item in the todo list.

@@ -5,7 +5,7 @@ using System.Windows.Data;
 namespace TodoSystem.UI.Tools.View
 {
     /// <summary>
-    /// Class for the listening dependency property owner class.
+    /// Class to the listening dependency property owner class.
     /// </summary>
     public sealed class DependencyPropertyListener
     {
