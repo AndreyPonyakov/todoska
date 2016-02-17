@@ -176,11 +176,9 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// Delete action.
         /// </summary>
-        /// <returns>True in case of operation successfulness. </returns>
-        public override bool Delete()
+        public override void Delete()
         {
             Service.TodoController.Delete(Model.Id);
-            return Service.TodoController.SelectById(Model.Id) == null;
         }
 
         /// <summary>
@@ -253,12 +251,10 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// Create at service.
         /// </summary>
-        /// <returns>True in case of operation successfulness. </returns>
-        public override bool Create()
+        public override void Create()
         {
             Model = Service.TodoController.Create(Title);
-            TextModified = TextModified && Desc != null;
-            return true;
+            TextModified = Desc != null;
         }
 
         /// <summary>

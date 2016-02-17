@@ -138,7 +138,7 @@ namespace TodoSystem.UI.ViewModel.Base
 
             if (!ContentValidate())
             {
-                AppendErrors(nameof(HasServiceError), "Content did not pass validation.");
+                AppendErrors(nameof(HasServiceError), "Content did not pass client validation.");
                 return;
             }
 
@@ -152,12 +152,7 @@ namespace TodoSystem.UI.ViewModel.Base
 
                 try
                 {
-                    if (!Create())
-                    {
-                        AppendErrors(nameof(HasServiceError), "Service cannot append this record.");
-                        return;
-                    }
-
+                    Create();
                     Appended?.Invoke(this, new EventArgs());
                     if (Modified)
                     {
@@ -241,7 +236,7 @@ namespace TodoSystem.UI.ViewModel.Base
 
             if (!ContentValidate())
             {
-                AppendErrors(nameof(HasServiceError), "Content did not pass validation.");
+                AppendErrors(nameof(HasServiceError), "Content did not pass client validation.");
             }
         }
 
@@ -260,10 +255,8 @@ namespace TodoSystem.UI.ViewModel.Base
                 ClearErrors(nameof(HasServiceError));
                 try
                 {
-                    if (Delete())
-                    {
-                        Deleted?.Invoke(this, new EventArgs());
-                    }
+                    Delete();
+                    Deleted?.Invoke(this, new EventArgs());
                 }
                 catch (FaultException<CategoryClient.ForeignKeyConstraintFault> ex)
                 {
@@ -289,8 +282,7 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// Delete action.
         /// </summary>
-        /// <returns>True if records doesn't exist already. </returns>
-        public abstract bool Delete();
+        public abstract void Delete();
 
         /// <summary>
         /// Refresh from service.
@@ -309,8 +301,7 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// Create at service.
         /// </summary>
-        /// <returns>True in case of operation successfulness. </returns>
-        public abstract bool Create();
+        public abstract void Create();
 
         /// <summary>
         /// Set false for all modified properties.

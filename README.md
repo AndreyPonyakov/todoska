@@ -436,7 +436,7 @@ Faults:
 
 |Name|Condition|Description|
 |:-:|:--|:--|
-|DataValidationFault|title is null or isn't validated by the data base||
+|DataValidationFault|Title is null or isn't validated by the data base||
 |ItemNotFoundFault|Todo with the target primary key doesn't exist||
 
 ## ITodoController ChangeOrder
@@ -453,7 +453,7 @@ Arguments:
 |Name|Type|Nallable|Description|
 |:--|:--|:-:|:--|:--|
 |id|```int```|False|Primary key of the todo|
-|order|```int```|False|Target priority in list|
+|order|```int```|False|Target priority in the list|
 
 Faults:
 
@@ -475,7 +475,7 @@ Arguments:
 |Name|Type|Nallable|Description|
 |:--|:--|:-:|:--|:--|
 |id|```int```|False|Primary key of the todo|
-|deadline|```DateTime?```|False|New deadline time|
+|deadline|```DateTime?```|True|New deadline time|
 
 Faults:
 

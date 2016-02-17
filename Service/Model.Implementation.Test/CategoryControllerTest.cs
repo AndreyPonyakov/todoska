@@ -31,8 +31,7 @@ namespace TodoSystem.Service.Model.Implementation.Test
             Assert.DoesNotThrow(
                 () =>
                     {
-                        var repository =
-                            MockRepository.GenerateStub<ICategoryRepository>();
+                        var repository = MockRepository.GenerateStub<ICategoryRepository>();
                         var controller = new CategoryController(repository);
                     });
         }
@@ -318,17 +317,7 @@ namespace TodoSystem.Service.Model.Implementation.Test
         {
             var repository = MockRepository.GenerateStub<ICategoryRepository>();
             var id = 1;
-            var name = "some name";
-            var color = Color.Chartreuse;
-            var order = 100;
             var newName = "new name";
-            var category = new Category
-            {
-                Id = id,
-                Name = name,
-                Color = color,
-                Order = order
-            };
             repository.Stub(r => r.Get(id)).Return(null);
             var controller = new CategoryController(repository);
 

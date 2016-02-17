@@ -27,8 +27,8 @@ namespace TodoSystem.Service.Model.SqlCE.Test
             Assert.DoesNotThrow(
                 () =>
                     {
-                        var config = ApplyConfiguration1();
-                        var repository = CreateRepository();
+                        ApplyConfiguration1();
+                        CreateRepository();
                     });
         }
 
