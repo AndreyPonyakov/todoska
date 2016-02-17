@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Security;
 
 namespace TodoSystem.Service.Model.Interface.Exceptions
 {
@@ -44,5 +45,18 @@ namespace TodoSystem.Service.Model.Interface.Exceptions
         /// Gets external table with foreign key constraint.
         /// </summary>
         public string ForeignKey { get; }
+
+        /// <summary>
+        /// When overridden in a derived class, sets the <see cref="SerializationInfo"/> with information about the exception.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> that holds the serialized object data about the exception being thrown. </param>
+        /// <param name="context">The <see cref="StreamingContext"/> that contains contextual information about the source or destination. </param>
+        /// <exception cref="ArgumentNullException">The <paramref name="info"/> parameter is a null reference (Nothing in Visual Basic). </exception>
+        [SecurityCritical]
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(ForeignKey), ForeignKey);
+            base.GetObjectData(info, context);
+        }
     }
 }

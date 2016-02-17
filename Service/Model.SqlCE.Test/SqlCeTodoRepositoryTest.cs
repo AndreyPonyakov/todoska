@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Data.Common;
 using System.Linq;
-
-using Effort;
-using Effort.Provider;
 
 using NUnit.Framework;
 
 using TodoSystem.Service.Model.Interface;
 using TodoSystem.Service.Model.Interface.Exceptions;
 using TodoSystem.Service.Model.SqlCe;
-
-using Category = TodoSystem.Service.Model.SqlCe.Category;
-using Todo = TodoSystem.Service.Model.SqlCe.Todo;
 
 using static TodoSystem.Service.Model.SqlCE.Test.SqlCeTestHelper;
 
@@ -34,8 +27,8 @@ namespace TodoSystem.Service.Model.SqlCE.Test
             Assert.DoesNotThrow(
                 () =>
                     {
-                        var config = ApplyConfiguration3();
-                        var repository = CreateRepository();
+                        ApplyConfiguration3();
+                        CreateRepository();
                     });
         }
 
@@ -315,7 +308,7 @@ namespace TodoSystem.Service.Model.SqlCE.Test
                                Title = "Fourth",
                                Desc = "new descition",
                                Checked = false,
-                               Order = 5,
+                               Order = 5
                            };
             repository.Delete(todo);
 
@@ -338,7 +331,7 @@ namespace TodoSystem.Service.Model.SqlCE.Test
                                Title = "Fourth",
                                Desc = "new descition",
                                Checked = false,
-                               Order = 5,
+                               Order = 5
                            };
             repository.Delete(todo);
 
@@ -361,7 +354,7 @@ namespace TodoSystem.Service.Model.SqlCE.Test
                 Title = "Fourth",
                 Desc = "new descition",
                 Checked = false,
-                Order = 5,
+                Order = 5
             };
 
             Assert.DoesNotThrow(() => repository.Delete(todo));

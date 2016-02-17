@@ -92,12 +92,10 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// Create at service.
         /// </summary>
-        /// <returns>True in case of operation successfulness. </returns>
-        public override bool Create()
+        public override void Create()
         {
             Model = Service.CategoryController.Create(Name);
             NameModified = false;
-            return true;
         }
 
         /// <summary>
@@ -130,11 +128,9 @@ namespace TodoSystem.UI.ViewModel
         /// <summary>
         /// Delete action.
         /// </summary>
-        /// <returns>True in case of operation successfulness. </returns>
-        public override bool Delete()
+        public override void Delete()
         {
             Service.CategoryController.Delete(Model.Id);
-            return Service.CategoryController.SelectById(Model.Id) == null;
         }
 
         /// <summary>

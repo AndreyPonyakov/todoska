@@ -30,8 +30,7 @@ namespace TodoSystem.Service.Model.Implementation.Test
             Assert.DoesNotThrow(
                 () =>
                 {
-                    var repository =
-                        MockRepository.GenerateStub<ITodoRepository>();
+                    var repository = MockRepository.GenerateStub<ITodoRepository>();
                     var controller = new TodoController(repository);
                 });
         }
@@ -217,7 +216,6 @@ namespace TodoSystem.Service.Model.Implementation.Test
             var repository = MockRepository.GenerateStub<ITodoRepository>();
             var title = "some name";
 
-            var todo = new Todo();
             var last = new Todo
             {
                 Id = 100,
@@ -249,7 +247,6 @@ namespace TodoSystem.Service.Model.Implementation.Test
             var repository = MockRepository.GenerateMock<ITodoRepository>();
             var title = "some name";
 
-            var todo = new Todo();
             var last = new Todo
             {
                 Id = 100,

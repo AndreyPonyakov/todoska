@@ -90,8 +90,7 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// Delete action.
         /// </summary>
-        /// <returns>True if records doesn't exist already. </returns>
-        bool Delete();
+        void Delete();
 
         /// <summary>
         /// Refresh from service.
@@ -107,8 +106,7 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <summary>
         /// Create at service.
         /// </summary>
-        /// <returns>True in case of operation successfulness. </returns>
-        bool Create();
+        void Create();
 
         /// <summary>
         /// Set false for all modified properties.

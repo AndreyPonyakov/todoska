@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+
+using TodoSystem.UI.Model;
 using TodoSystem.UI.Tools.Model;
 using TodoSystem.UI.ViewModel.Event;
 
@@ -15,6 +17,7 @@ namespace TodoSystem.UI.ViewModel.Base
     /// <typeparam name="TViewModel">ViewModel type. </typeparam>
     public abstract class BaseOrderableItemViewModel<TService, TModel, TViewModel>
         : BaseItemViewModel<TService, TModel>, IOrderableItemViewModel<TModel, TViewModel>
+        where TService : IService
         where TViewModel : BaseViewModel
         where TModel : class
     {
