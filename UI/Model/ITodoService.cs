@@ -6,7 +6,7 @@ namespace TodoSystem.UI.Model
     /// <summary>
     /// Service with controllers.
     /// </summary>
-    public interface ITodoService
+    public interface ITodoService : IService
     {
         /// <summary>
         /// Gets category controller.
