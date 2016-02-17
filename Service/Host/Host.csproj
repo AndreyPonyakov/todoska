@@ -7,8 +7,8 @@
     <ProjectGuid>{742159A8-ACE5-4891-B89C-3638593F0432}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Host</RootNamespace>
-    <AssemblyName>Host</AssemblyName>
+    <RootNamespace>TodoSystem.Service.Host</RootNamespace>
+    <AssemblyName>TodoSystem.Service.Host</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -56,6 +56,14 @@
       <HintPath>..\..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.Interception.4.0.1\lib\Net45\Microsoft.Practices.Unity.Interception.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.Interception.4.0.1\lib\Net45\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
@@ -73,12 +81,15 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InstanceProviderBehavior.cs" />
     <Compile Include="InstanceProviderBehaviorHelper.cs" />
+    <Compile Include="ConsoleLogger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -96,13 +107,13 @@
       <Project>{a6a33aac-6706-461d-9d1a-c481535afb40}</Project>
       <Name>Model.SqlCe</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Model.Fake\Model.Fake.csproj">
-      <Project>{ba5f8a25-d1c9-4801-a408-0f6650affc27}</Project>
-      <Name>Model.Fake</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Model.Interface\Model.Interface.csproj">
       <Project>{a44b0d85-4c92-46c5-847b-4801a999e52b}</Project>
       <Name>Model.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tools\Tools.csproj">
+      <Project>{55abc8c9-52e6-4bfb-a3e4-a33ca502ba3a}</Project>
+      <Name>Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

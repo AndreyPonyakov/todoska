@@ -34,7 +34,7 @@ namespace TodoSystem.Service.Model.Interface
         public DateTime? Deadline { get; set; }
 
         /// <summary>
-        /// Gets or sets primary key of compounded category.
+        /// Gets or sets primary key of attached category.
         /// </summary>
         [DataMember]
         public int? CategoryId { get; set; }

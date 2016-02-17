@@ -13,7 +13,7 @@ namespace TodoSystem.Service.Model.Interface
     public interface ITodoController
     {
         /// <summary>
-        /// Select full list of todo from.
+        /// Select a full list of todoes.
         /// </summary>
         /// <returns>List of Todo. </returns>
         [OperationContract]

@@ -5,8 +5,9 @@ using System.ServiceModel;
 using TodoSystem.Service.Model.Interface;
 using TodoSystem.Service.Model.Interface.Exceptions;
 using TodoSystem.Service.Model.Interface.Faults;
+using TodoSystem.Service.Tools.Aspects;
 
-namespace TodoSystem.Model.Implementation
+namespace TodoSystem.Service.Model.Implementation
 {
     /// <summary>
     /// Storage implementation for <see cref="ITodoController"/>
@@ -33,6 +34,7 @@ namespace TodoSystem.Model.Implementation
         /// Select full list of todo from.
         /// </summary>
         /// <returns>List of Todo. </returns>
+        [Loggable]
         public IEnumerable<Todo> SelectAll() => Repository.GetAll();
 
         /// <summary>
@@ -40,6 +42,7 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="id">Primary key. </param>
         /// <returns>Todo instance. </returns>
+        [Loggable]
         public Todo SelectById(int id) => Repository.Get(id);
 
         /// <summary>
@@ -47,6 +50,7 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="title">Target title. </param>
         /// <returns>List of Todo. </returns>
+        [Loggable]
         public IEnumerable<Todo> SelectByTitle(string title) => Repository.Find(title);
 
         /// <summary>
@@ -54,6 +58,7 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="categoryId">Target category primary key</param>
         /// <returns>List of Todo. </returns>
+        [Loggable]
         public IEnumerable<Todo> SelectByCategory(int categoryId)
         {
             var category = new Category { Id = categoryId };
@@ -65,6 +70,7 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="title">New title value. </param>
         /// <returns>Created todo. </returns>
+        [Loggable]
         public Todo Create(string title)
         {
             if (title == null)
@@ -84,7 +90,7 @@ namespace TodoSystem.Model.Implementation
             };
 
             try
-            { 
+            {
                 return Repository.Save(todo);
             }
             catch (DataValidationException)
@@ -98,6 +104,7 @@ namespace TodoSystem.Model.Implementation
         /// Delete todo by its id
         /// </summary>
         /// <param name="id">Primary key. </param>
+        [Loggable]
         public void Delete(int id)
         {
             var todo = Repository.Get(id);
@@ -112,6 +119,7 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="id">Primary key. </param>
         /// <param name="order">Priority in the controller. </param>
+        [Loggable]
         public void ChangeOrder(int id, int order)
         {
             var todo = Repository.Get(id);
@@ -130,9 +138,9 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="id">Primary key. </param>
         /// <param name="isChecked">True if the todo is checked. </param>
+        [Loggable]
         public void Check(int id, bool isChecked)
         {
-
             var todo = Repository.Get(id);
             if (todo == null)
             {
@@ -150,6 +158,7 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="id">Primary key. </param>
         /// <param name="categoryId">Primary key of new category. </param>
+        [Loggable]
         public void SetCategory(int id, int? categoryId)
         {
             var todo = Repository.Get(id);
@@ -177,6 +186,7 @@ namespace TodoSystem.Model.Implementation
         /// </summary>
         /// <param name="id">Primary key. </param>
         /// <param name="deadline">Deadline time. </param>
+        [Loggable]
         public void SetDeadline(int id, DateTime? deadline)
         {
             var todo = Repository.Get(id);
@@ -196,6 +206,7 @@ namespace TodoSystem.Model.Implementation
         /// <param name="id">Primary key. </param>
         /// <param name="title">New title. </param>
         /// <param name="desc">New description. </param>
+        [Loggable]
         public void ChangeText(int id, string title, string desc)
         {
             if (title == null)
@@ -216,7 +227,6 @@ namespace TodoSystem.Model.Implementation
 
             try
             {
-
                 Repository.Save(todo);
             }
             catch (DataValidationException)

@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
+
 using AutoMapper;
 
 using TodoSystem.Service.Model.Interface.Exceptions;
 
-using Interface = TodoSystem.Service.Model.Interface;
-
-namespace TodoSystem.Model.SqlCe
+namespace TodoSystem.Service.Model.SqlCe
 {
     /// <summary>
     /// Class for plain database category table management.
@@ -20,28 +18,28 @@ namespace TodoSystem.Model.SqlCe
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlCeCategoryRepository"/> class.
         /// </summary>
-        /// <param name="context">Database context. </param>
+        /// <param name="contextFactory">Database context factory. </param>
         /// <param name="mapper">Transform object from DTO to Entity and conversely.</param>
-        public SqlCeCategoryRepository(TodoDbContext context, IMapper mapper)
+        public SqlCeCategoryRepository(ITodoDbContextFactory contextFactory, IMapper mapper)
         {
-            if (context == null)
+            if (contextFactory == null)
             {
-                throw new ArgumentNullException(nameof(context));
+                throw new ArgumentNullException(nameof(contextFactory));
             }
 
             if (mapper == null)
             {
-                throw new ArgumentNullException(nameof(context));
+                throw new ArgumentNullException(nameof(contextFactory));
             }
 
-            Context = context;
+            ContextFactory = contextFactory;
             Mapper = mapper;
         }
 
         /// <summary>
-        /// Gets database context.
+        /// Gets database context factory.
         /// </summary>
-        private TodoDbContext Context { get; }
+        private ITodoDbContextFactory ContextFactory { get; }
 
         /// <summary>
         /// Gets mapper for transform from DTO to Entity and conversely.
@@ -54,9 +52,12 @@ namespace TodoSystem.Model.SqlCe
         /// <returns>Full item list. </returns>
         public IEnumerable<Interface.Category> GetAll()
         {
-            return
-                Context.Categories.ToList()
-                    .Select(c => Mapper.Map<Interface.Category>(c));
+            using (var context = ContextFactory.CreateContext())
+            {
+                return
+                    context.Categories.ToList()
+                        .Select(c => Mapper.Map<Interface.Category>(c));
+            }
         }
 
         /// <summary>
@@ -66,11 +67,14 @@ namespace TodoSystem.Model.SqlCe
         /// <returns>Todo instance. </returns>
         public Interface.Category Get(int id)
         {
-            return
-                Context.Categories.Where(c => c.Id == id)
-                    .ToList()
-                    .Select(c => Mapper.Map<Interface.Category>(c))
-                    .FirstOrDefault();
+            using (var context = ContextFactory.CreateContext())
+            {
+                return
+                    context.Categories.Where(c => c.Id == id)
+                        .ToList()
+                        .Select(c => Mapper.Map<Interface.Category>(c))
+                        .FirstOrDefault();
+            }
         }
 
         /// <summary>
@@ -80,41 +84,44 @@ namespace TodoSystem.Model.SqlCe
         /// <returns>Saved item. </returns>
         public Interface.Category Save(Interface.Category item)
         {
-            var entity = Mapper.Map<Category>(item);
-            if (entity.Id == default(int))
+            using (var context = ContextFactory.CreateContext())
             {
-                Context.Categories.Add(entity);
-            }
-            else
-            {
-                var entry = Context.Entry(entity);
-                if (entry.State == EntityState.Detached)
+                var entity = Mapper.Map<Category>(item);
+                if (entity.Id == default(int))
                 {
-                    var attachedEntity =
-                        Context.Categories.Local.SingleOrDefault(
-                            e => e.Id == entity.Id);
-                    if (attachedEntity != null)
+                    context.Categories.Add(entity);
+                }
+                else
+                {
+                    var entry = context.Entry(entity);
+                    if (entry.State == EntityState.Detached)
                     {
-                        var attachedEntry = Context.Entry(attachedEntity);
-                        attachedEntry.CurrentValues.SetValues(entity);
-                    }
-                    else
-                    {
-                        entry.State = EntityState.Modified;
+                        var attachedEntity =
+                            context.Categories.Local.SingleOrDefault(
+                                e => e.Id == entity.Id);
+                        if (attachedEntity != null)
+                        {
+                            var attachedEntry = context.Entry(attachedEntity);
+                            attachedEntry.CurrentValues.SetValues(entity);
+                        }
+                        else
+                        {
+                            entry.State = EntityState.Modified;
+                        }
                     }
                 }
-            }
 
-            try
-            {
-                Context.SaveChanges();
-            }
-            catch (DbEntityValidationException)
-            {
-                throw new DataValidationException();
-            }
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException)
+                {
+                    throw new DataValidationException();
+                }
 
-            return Mapper.Map<Interface.Category>(entity);
+                return Mapper.Map<Interface.Category>(entity);
+            }
         }
 
         /// <summary>
@@ -123,19 +130,23 @@ namespace TodoSystem.Model.SqlCe
         /// <param name="item">Deleting item. </param>
         public void Delete(Interface.Category item)
         {
-            Context.Categories
-                .Where(c => c.Id == item.Id)
-                .ToList()
-                .ForEach(c =>
-                    {
-                        if (c.Todoes.Any())
-                        {
-                            throw new ForeignKeyConstraintException($"{nameof(Todo)} - {nameof(Category)}");
-                        }
+            using (var context = ContextFactory.CreateContext())
+            {
+                context.Categories.Where(c => c.Id == item.Id)
+                    .ToList()
+                    .ForEach(
+                        c =>
+                            {
+                                if (c.Todoes.Any())
+                                {
+                                    throw new ForeignKeyConstraintException(
+                                        $"{nameof(Todo)} - {nameof(Category)}");
+                                }
 
-                        Context.Categories.Remove(c);
-                    });
-            Context.SaveChanges();
+                                context.Categories.Remove(c);
+                            });
+                context.SaveChanges();
+            }
         }
 
         /// <summary>
@@ -145,10 +156,13 @@ namespace TodoSystem.Model.SqlCe
         /// <returns>Filtered item list. </returns>
         public IEnumerable<Interface.Category> Find(string name)
         {
-            return Context.Categories
-                .Where(c => c.Name == name)
-                .ToList()
-                .Select(c => Mapper.Map<Interface.Category>(c));
+            using (var context = ContextFactory.CreateContext())
+            {
+                return
+                    context.Categories.Where(c => c.Name == name)
+                        .ToList()
+                        .Select(c => Mapper.Map<Interface.Category>(c));
+            }
         }
 
         /// <summary>
@@ -157,10 +171,15 @@ namespace TodoSystem.Model.SqlCe
         /// <returns>Last item by priority. </returns>
         public Interface.Category FindLast()
         {
-            var last = Context.Categories
-                    .OrderByDescending(t => t.Order)
-                    .FirstOrDefault();
-            return last != null ? Mapper.Map<Interface.Category>(last) : null;
+            using (var context = ContextFactory.CreateContext())
+            {
+                var last =
+                    context.Categories.OrderByDescending(t => t.Order)
+                        .FirstOrDefault();
+                return last != null
+                           ? Mapper.Map<Interface.Category>(last)
+                           : null;
+            }
         }
     }
 }

@@ -257,7 +257,7 @@ namespace TodoSystem.UI.ViewModel
         public override bool Create()
         {
             Model = Service.TodoController.Create(Title);
-            TextModified = TextModified && Desc == null;
+            TextModified = TextModified && Desc != null;
             return true;
         }
 

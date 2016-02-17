@@ -180,7 +180,7 @@ namespace TodoSystem.UI.ViewModel.Base
                 }
                 catch (FaultException)
                 {
-                    AppendErrors(nameof(HasServiceError), "Service cannot append this record3.");
+                    AppendErrors(nameof(HasServiceError), "Service cannot append this record.");
                 }
                 catch (CommunicationException)
                 {

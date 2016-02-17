@@ -56,6 +56,7 @@
     <Compile Include="BindingChangedEventArgs.cs" />
     <Compile Include="BindingListener.cs" />
     <Compile Include="CommandFactory.cs" />
+    <Compile Include="Converter\BooleanImplicationConverter.cs" />
     <Compile Include="Converter\DrawingColorToMediaColorConverter.cs" />
     <Compile Include="Converter\ErrorCollectionToVisibilityConverter.cs" />
     <Compile Include="Converter\StatePatternToBooleanConverter.cs" />

@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Implementation.Test",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.SqlCe.Test", "Service\Model.SqlCE.Test\Model.SqlCe.Test.csproj", "{C297ECBD-6A8A-4BDF-9285-B563F9B6F57A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools", "Service\Tools\Tools.csproj", "{55ABC8C9-52E6-4BFB-A3E4-A33CA502BA3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{C297ECBD-6A8A-4BDF-9285-B563F9B6F57A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C297ECBD-6A8A-4BDF-9285-B563F9B6F57A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C297ECBD-6A8A-4BDF-9285-B563F9B6F57A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55ABC8C9-52E6-4BFB-A3E4-A33CA502BA3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55ABC8C9-52E6-4BFB-A3E4-A33CA502BA3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55ABC8C9-52E6-4BFB-A3E4-A33CA502BA3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55ABC8C9-52E6-4BFB-A3E4-A33CA502BA3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,5 +115,6 @@ Global
 		{1EE0F4AC-6D50-43A8-B64F-2FAF7CC0D15A} = {9FF7132B-9572-42B6-87E3-3C163ED682E8}
 		{188F9F73-2C5C-4C24-A7A8-5C4A2C601F5C} = {9FF7132B-9572-42B6-87E3-3C163ED682E8}
 		{C297ECBD-6A8A-4BDF-9285-B563F9B6F57A} = {9FF7132B-9572-42B6-87E3-3C163ED682E8}
+		{55ABC8C9-52E6-4BFB-A3E4-A33CA502BA3A} = {9FF7132B-9572-42B6-87E3-3C163ED682E8}
 	EndGlobalSection
 EndGlobal

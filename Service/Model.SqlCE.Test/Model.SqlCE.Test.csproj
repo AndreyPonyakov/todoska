@@ -7,8 +7,8 @@
     <ProjectGuid>{C297ECBD-6A8A-4BDF-9285-B563F9B6F57A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TodoSystem.Model.SqlCE.Test</RootNamespace>
-    <AssemblyName>TodoSystem.Model.SqlCE.Test</AssemblyName>
+    <RootNamespace>TodoSystem.Service.Model.SqlCE.Test</RootNamespace>
+    <AssemblyName>TodoSystem.Service.Model.SqlCE.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlCeCategoryRepositoryTest.cs" />
+    <Compile Include="SqlCeTestHelper.cs" />
     <Compile Include="SqlCeTodoRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>

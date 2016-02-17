@@ -4,73 +4,29 @@ using System.Linq;
 
 using Effort;
 using Effort.Provider;
+
 using NUnit.Framework;
 
-using TodoSystem.Model.SqlCe;
+using TodoSystem.Service.Model.Interface;
 using TodoSystem.Service.Model.Interface.Exceptions;
+using TodoSystem.Service.Model.SqlCe;
 
-using Interface = TodoSystem.Service.Model.Interface;
+using Category = TodoSystem.Service.Model.SqlCe.Category;
+using Todo = TodoSystem.Service.Model.SqlCe.Todo;
 
-namespace TodoSystem.Model.SqlCE.Test
+using static TodoSystem.Service.Model.SqlCE.Test.SqlCeTestHelper;
+
+namespace TodoSystem.Service.Model.SqlCE.Test
 {
     [TestFixture]
     public sealed class SqlCeTodoRepositoryTest
     {
-        public Lazy<DbConnection> Connection { get; set; }
-
-        [SetUp]
-        public void Init()
+        private ITodoRepository CreateRepository()
         {
-            Connection = new Lazy<DbConnection>(
-                () =>
-                    {
-                        EffortProviderConfiguration.RegisterProvider();
-                        return
-                            EntityConnectionFactory.CreateTransient(
-                                "name=TodoDbContext");
-                    });
+            return new SqlCeTodoRepository(CreateFakeContextFactory(), new TodoMapperFactory().CreateMapper());
         }
 
-        private static void ApplyConfiguration1(TodoDbContext context)
-        {
-            context.Categories.Add(
-                new Category { Name = "First", Color = -1245, Order = 1 });
-            context.Categories.Add(
-                new Category { Name = "Second", Color = -12, Order = 2 });
-            context.SaveChanges();
-            context.Todoes.Add(
-                new Todo
-                    {
-                        Title = "First",
-                        Desc = null,
-                        CategoryId = 1,
-                        Order = 1,
-                        Deadline = DateTime.Now,
-                        Checked = false
-                    });
-            context.Todoes.Add(
-                new Todo
-                    {
-                        Title = "Second",
-                        Desc = "Description",
-                        CategoryId = 1,
-                        Order = 2,
-                        Deadline = null,
-                        Checked = false
-                    });
-            context.Todoes.Add(
-                new Todo
-                    {
-                        Title = "Third",
-                        Desc = null,
-                        CategoryId = 2,
-                        Order = 3,
-                        Deadline = DateTime.Now,
-                        Checked = true
-                    });
-            context.SaveChanges();
-        }
-
+        
         [Test]
         [Category("Repository")]
         public void Constructor_NotNullContext_NoException()
@@ -78,10 +34,8 @@ namespace TodoSystem.Model.SqlCE.Test
             Assert.DoesNotThrow(
                 () =>
                     {
-                        var context = new TodoDbContext(Connection.Value);
-                        var repository = new SqlCeTodoRepository(
-                            context,
-                            new TodoMapperFactory().CreateMapper());
+                        var config = ApplyConfiguration3();
+                        var repository = CreateRepository();
                     });
         }
 
@@ -99,89 +53,75 @@ namespace TodoSystem.Model.SqlCE.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_NullMapper_ArgumentNullException()
         {
-            var context = new TodoDbContext(Connection.Value);
-            var repository = new SqlCeTodoRepository(context, null);
+            var repository = new SqlCeTodoRepository(CreateFakeContextFactory(), null);
         }
 
         [Test]
         [Category("Repository")]
-        public void GetAll_Configuration1_RightItemCount()
+        public void GetAll_Configuration3_RightItemCount()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            ApplyConfiguration3();
+            var repository = CreateRepository();
             var all = repository.GetAll();
 
             Assert.That(all.Count(), Is.EqualTo(3));
         }
 
+        
         [Test]
         [Category("Repository")]
-        public void GetAll_Configuration1_RightTitleOfFirstItem()
+        public void GetAll_Configuration3_RightTitleOfFirstItem()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
             var all = repository.GetAll();
 
-            Assert.That(all.Single(t => t.Id == 1).Title, Is.EqualTo("First"));
+            Assert.That(all.Single(t => t.Id == config.Todo.Item1.Id).Title, Is.EqualTo("First"));
         }
 
         [Test]
         [Category("Repository")]
-        public void Get_Configuration1AndFirstItemId_RightTitleOfFirstItem()
+        public void Get_Configuration3AndFirstItemId_RightTitleOfFirstItem()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
-            var todo = repository.Get(1);
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
+            int id = config.Todo.Item1.Id;
+            var todo = repository.Get(id);
 
             Assert.That(todo.Title, Is.EqualTo("First"));
         }
 
+        
         [Test]
         [Category("Repository")]
-        public void Get_Configuration1AndSecondItemId_RightName()
+        public void Get_Configuration3AndSecondItemId_RightName()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
-            var todo = repository.Get(2);
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
+            int id = config.Todo.Item2.Id;
+            var todo = repository.Get(id);
 
             Assert.That(todo.Order, Is.EqualTo(2));
         }
 
         [Test]
         [Category("Repository")]
-        public void Get_Configuration1AndNonExistItemId_ItemIsNull()
+        public void Get_Configuration3AndNonExistItemId_ItemIsNull()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
-            var todo = repository.Get(4);
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
+            int id = config.Todo.Item3.Id;
+            var todo = repository.Get(id + 1);
 
             Assert.That(todo, Is.Null);
         }
-
+        
         [Test]
         [Category("Repository")]
-        public void Save_Configuration1AndNewItem_IncreaseItemCount()
+        public void Save_Configuration3AndNewItem_IncreaseItemCount()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
             var todo = new Interface.Todo
                            {
                                Id = default(int),
@@ -189,23 +129,23 @@ namespace TodoSystem.Model.SqlCE.Test
                                Desc = "new descition",
                                Checked = false,
                                Order = 5,
-                               CategoryId = 1
-                           };
+                               CategoryId = config.Category.Item1.Id
+            };
             repository.Save(todo);
 
-            Assert.That(context.Todoes.Count(), Is.EqualTo(4));
+            using (var context = CreateFakeContext())
+            {
+                Assert.That(context.Todoes.Count(), Is.EqualTo(4));
+            }
         }
 
         [Test]
         [Category("Repository")]
         [ExpectedException(typeof(DataValidationException))]
-        public void Save_Configuration1AndNewItemWithSoTitle_DataValidationException()
+        public void Save_Configuration3AndNewItemWithSoTitle_DataValidationException()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
             var todo = new Interface.Todo
             {
                 Id = default(int),
@@ -213,55 +153,51 @@ namespace TodoSystem.Model.SqlCE.Test
                 Desc = "new descition",
                 Checked = false,
                 Order = 5,
-                CategoryId = 1
+                CategoryId = config.Category.Item1.Id
             };
             repository.Save(todo);
         }
-
+        
         [Test]
         [Category("Repository")]
-        public void Save_Configuration1AndNewItem_TargetId()
+        public void Save_Configuration3AndNewItem_TargetId()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
             var todo = new Interface.Todo
                            {
                                Id = default(int),
                                Title = "Fourth",
                                Desc = "new descition",
                                Checked = false,
-                               Order = 5,
-                               CategoryId = 1
-                           };
+                               Order = 3,
+                               CategoryId = config.Category.Item1.Id
+            };
             var result = repository.Save(todo);
 
-            Assert.That(result.Id, Is.EqualTo(4));
+            Assert.That(result.Id, Is.EqualTo(config.Todo.Item3.Id + 1));
         }
 
 
         [Test]
         [Category("Repository")]
-        public void Save_Configuration1AndExistItem_RightContent()
+        public void Save_Configuration3AndExistItem_RightContent()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
+            int id = config.Todo.Item3.Id;
             var todo = new Interface.Todo
                            {
-                               Id = 3,
+                               Id = id,
                                Title = "Fourth",
                                Desc = "new descition",
                                Checked = false,
                                Order = 5,
-                               CategoryId = 1
-                           };
+                               CategoryId = config.Category.Item1.Id
+            };
             repository.Save(todo);
-            var result = repository.Get(3);
+            
+            var result = repository.Get(id);
 
             Assert.That(result.Title, Is.EqualTo(todo.Title));
             Assert.That(result.Desc, Is.EqualTo(todo.Desc));
@@ -269,25 +205,23 @@ namespace TodoSystem.Model.SqlCE.Test
             Assert.That(result.Order, Is.EqualTo(todo.Order));
             Assert.That(result.CategoryId, Is.EqualTo(todo.CategoryId));
         }
-
+        
         [Test]
         [Category("Repository")]
         [ExpectedException(typeof(DataValidationException))]
-        public void Save_Configuration1AndExistItemWithSoLongName_DataValidationException()
+        public void Save_Configuration2AndExistItemWithSoLongName_DataValidationException()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
+            int id = config.Todo.Item3.Id;
             var todo = new Interface.Todo
             {
-                Id = 1,
+                Id = id,
                 Title = new string('t', 300),
                 Desc = "new descition",
                 Checked = false,
                 Order = 5,
-                CategoryId = 1
+                CategoryId = config.Category.Item1.Id
             };
             repository.Save(todo);
         }
@@ -295,37 +229,35 @@ namespace TodoSystem.Model.SqlCE.Test
         [Test]
         [Category("Repository")]
         [ExpectedException(typeof(DataValidationException))]
-        public void Save_Configuration1AndExistItemWithSoLongDesc_DataValidationException()
+        public void Save_Configuration3AndExistItemWithSoLongDesc_DataValidationException()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
+            int id = config.Todo.Item1.Id;
+
             var todo = new Interface.Todo
             {
-                Id = 1,
+                Id = id,
                 Title = "some name",
                 Desc = new string('t', 300),
                 Checked = false,
                 Order = 5,
-                CategoryId = 1
+                CategoryId = config.Category.Item1.Id
             };
             repository.Save(todo);
         }
-
+        
         [Test]
         [Category("Repository")]
-        public void Save_Configuration1AndExistItemAndNullCategory_RightContent()
+        public void Save_Configuration3AndExistItemAndNullCategory_RightContent()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
+            int id = config.Todo.Item3.Id;
+
             var todo = new Interface.Todo
             {
-                Id = 3,
+                Id = id,
                 Title = "Fourth",
                 Desc = "new descition",
                 Checked = false,
@@ -333,7 +265,7 @@ namespace TodoSystem.Model.SqlCE.Test
                 CategoryId = null
             };
             repository.Save(todo);
-            var result = repository.Get(3);
+            var result = repository.Get(id);
 
             Assert.That(result.Title, Is.EqualTo(todo.Title));
             Assert.That(result.Desc, Is.EqualTo(todo.Desc));
@@ -345,24 +277,22 @@ namespace TodoSystem.Model.SqlCE.Test
         [Test]
         [Category("Repository")]
         [ExpectedException(typeof(ForeignKeyConstraintException))]
-        public void Save_Configuration1AndExistItemAndWrongCategory_ForeignKeyConstraintException()
+        public void Save_Configuration3AndExistItemAndWrongCategory_ForeignKeyConstraintException()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
+            int id = config.Todo.Item1.Id;
             var todo = new Interface.Todo
             {
-                Id = 3,
+                Id = id,
                 Title = "Fourth",
                 Desc = "new descition",
                 Checked = false,
                 Order = 5,
-                CategoryId = 5
+                CategoryId = config.Category.Item2.Id + 2
             };
             repository.Save(todo);
-            var result = repository.Get(3);
+            var result = repository.Get(id);
 
             Assert.That(result.Title, Is.EqualTo(todo.Title));
             Assert.That(result.Desc, Is.EqualTo(todo.Desc));
@@ -370,19 +300,18 @@ namespace TodoSystem.Model.SqlCE.Test
             Assert.That(result.Order, Is.EqualTo(todo.Order));
             Assert.That(result.CategoryId, Is.EqualTo(todo.CategoryId));
         }
-
+        
         [Test]
         [Category("Repository")]
-        public void Delete_Configuration1AndExistItem_DecreaseItemCount()
+        public void Delete_Configuration3AndExistItem_DecreaseItemCount()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
+            int id = config.Todo.Item3.Id;
+
             var todo = new Interface.Todo
                            {
-                               Id = 3,
+                               Id = id,
                                Title = "Fourth",
                                Desc = "new descition",
                                Checked = false,
@@ -390,21 +319,22 @@ namespace TodoSystem.Model.SqlCE.Test
                            };
             repository.Delete(todo);
 
-            Assert.That(context.Categories.Count(), Is.EqualTo(2));
+            using (var context = CreateFakeContext())
+            {
+                Assert.That(context.Categories.Count(), Is.EqualTo(2));
+            }
         }
 
         [Test]
         [Category("Repository")]
-        public void Delete_Configuration1AndExistItem_NoExistsItem()
+        public void Delete_Configuration3AndExistItem_NoExistsItem()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
+            int id = config.Todo.Item1.Id;
             var todo = new Interface.Todo
                            {
-                               Id = 3,
+                               Id = id,
                                Title = "Fourth",
                                Desc = "new descition",
                                Checked = false,
@@ -412,21 +342,22 @@ namespace TodoSystem.Model.SqlCE.Test
                            };
             repository.Delete(todo);
 
-            Assert.That(context.Categories.Any(t => t.Id == 3), Is.False);
+            using (var context = CreateFakeContext())
+            {
+                Assert.That(context.Todoes.Any(t => t.Id == id), Is.False);
+            }
         }
-
+        
         [Test]
         [Category("Repository")]
-        public void Delete_Configuration1AndNonExistItem_NoException()
+        public void Delete_Configuration3AndNonExistItem_NoException()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
+            int id = config.Todo.Item3.Id;
             var todo = new Interface.Todo
             {
-                Id = 3,
+                Id = id,
                 Title = "Fourth",
                 Desc = "new descition",
                 Checked = false,
@@ -438,27 +369,21 @@ namespace TodoSystem.Model.SqlCE.Test
 
         [Test]
         [Category("Repository")]
-        public void Find_Configuration1AndTitleofFirstItem_ListWithFirstItem()
+        public void Find_Configuration3AndTitleofFirstItem_ListWithFirstItem()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            ApplyConfiguration3();
+            var repository = CreateRepository();
             var categories = repository.Find("First");
 
             Assert.That(categories.Count(), Is.EqualTo(1));
         }
-
+        
         [Test]
         [Category("Repository")]
-        public void Find_Configuration1AndAbsentTitle_NoItem()
+        public void Find_Configuration3AndAbsentTitle_NoItem()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            ApplyConfiguration3();
+            var repository = CreateRepository();
             var categories = repository.Find("Fourth");
 
             Assert.That(categories.Any(), Is.False);
@@ -466,16 +391,13 @@ namespace TodoSystem.Model.SqlCE.Test
 
         [Test]
         [Category("Repository")]
-        public void Find_Configuration1AndCategoryOfFirst_ListOfTargetCategory()
+        public void Find_Configuration3AndCategoryOfFirst_ListOfTargetCategory()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
             var category = new Interface.Category
                                {
-                                   Id = 1,
+                                   Id = config.Category.Item1.Id,
                                    Name = "Fourth",
                                    Color = null,
                                    Order = 4
@@ -489,14 +411,11 @@ namespace TodoSystem.Model.SqlCE.Test
         [Category("Repository")]
         public void Find_Configuration1AndCategoryWothoutTodo_NoItem()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration1();
+            var repository = CreateRepository();
             var category = new Interface.Category
                                {
-                                   Id = 3,
+                                   Id = config.Category.Item1.Id,
                                    Name = "Fourth",
                                    Color = null,
                                    Order = 4
@@ -505,29 +424,24 @@ namespace TodoSystem.Model.SqlCE.Test
 
             Assert.That(categories.Any(), Is.False);
         }
-
+        
         [Test]
         [Category("Repository")]
-        public void FindLast_Configuration1_RightIdOfLastItem()
+        public void FindLast_Configuration3_RightIdOfLastItem()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
+            int id = config.Todo.Item3.Id;
 
-            Assert.That(repository.FindLast().Id, Is.EqualTo(3));
+            Assert.That(repository.FindLast().Id, Is.EqualTo(id));
         }
 
         [Test]
         [Category("Repository")]
-        public void FindLast_Configuration1AndDeleteAllItem_IsNull()
+        public void FindLast_Configuration3AndDeleteAllItem_IsNull()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            ApplyConfiguration3();
+            var repository = CreateRepository();
             while (repository.GetAll().Any())
             {
                 repository.Delete(repository.GetAll().Last());
@@ -540,19 +454,17 @@ namespace TodoSystem.Model.SqlCE.Test
 
         [Test]
         [Category("Repository")]
-        public void FindLast_Configuration1AndChangeOrder_RightIdOfLastItem()
+        public void FindLast_Configuration3AndChangeOrder_RightIdOfLastItem()
         {
-            var context = new TodoDbContext(Connection.Value);
-            ApplyConfiguration1(context);
-            var repository = new SqlCeTodoRepository(
-                context,
-                new TodoMapperFactory().CreateMapper());
+            var config = ApplyConfiguration3();
+            var repository = CreateRepository();
+            int id = config.Todo.Item1.Id;
 
-            var todo = repository.Get(1);
+            var todo = repository.Get(id);
             todo.Order = 4;
             repository.Save(todo);
 
-            Assert.That(repository.FindLast().Id, Is.EqualTo(1));
+            Assert.That(repository.FindLast().Id, Is.EqualTo(id));
         }
     }
 }
