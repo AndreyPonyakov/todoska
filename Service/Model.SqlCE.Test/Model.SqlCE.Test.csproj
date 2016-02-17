@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlCeCategoryRepositoryTest.cs" />
+    <Compile Include="SqlCeTestHelper.cs" />
     <Compile Include="SqlCeTodoRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>

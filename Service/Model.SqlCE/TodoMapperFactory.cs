@@ -24,7 +24,7 @@ namespace TodoSystem.Service.Model.SqlCe
                         src.Color != null
                             ? (Color?)Color.FromArgb(src.Color.Value)
                             : null));
-            config.CreateMap<Service.Model.Interface.Category, Category>()
+            config.CreateMap<Interface.Category, Category>()
                 .ForMember(
                     dest => dest.Color,
                     opt =>
@@ -41,8 +41,8 @@ namespace TodoSystem.Service.Model.SqlCe
         /// <param name="config">Mapper configuration. </param>
         public static void MapTodo(IMapperConfiguration config)
         {
-            config.CreateMap<Todo, Service.Model.Interface.Todo>();
-            config.CreateMap<Service.Model.Interface.Todo, Todo>();
+            config.CreateMap<Todo, Interface.Todo>();
+            config.CreateMap<Interface.Todo, Todo>();
         }
 
         /// <summary>

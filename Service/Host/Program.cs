@@ -6,12 +6,10 @@ using AutoMapper;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.InterceptionExtension;
 
-using TodoSystem.Model.SqlCe;
 using TodoSystem.Service.Model.Implementation;
 using TodoSystem.Service.Model.Interface;
 using TodoSystem.Service.Model.SqlCe;
 using TodoSystem.Service.Tools.Aspects;
-using TodoSystem.Service.Tools.UnityExtension;
 
 namespace TodoSystem.Service.Host
 {
@@ -27,17 +25,16 @@ namespace TodoSystem.Service.Host
         {
             using (var container = new UnityContainer())
             {
-                container
-                    .AddNewExtension<DisposableStrategyExtension>()
-                    .AddNewExtension<Interception>()
-                    .RegisterType<ITimeProvider, TimeProvider>(new ContainerControlledLifetimeManager())
-                    .RegisterType<ILogger, ConsoleLogger>(new ContainerControlledLifetimeManager())
+                container.AddNewExtension<Interception>()
+                    .RegisterType<ITimeProvider, TimeProvider>(
+                        new ContainerControlledLifetimeManager())
+                    .RegisterType<ILogger, ConsoleLogger>(
+                        new ContainerControlledLifetimeManager())
                     .RegisterType<IMapper>(
                         new ContainerControlledLifetimeManager(),
                         new InjectionFactory(uc => new TodoMapperFactory().CreateMapper()))
-                    .RegisterType<TodoDbContext>(
-                        new DisposingTransientLifetimeManager(),
-                        new InjectionFactory(uc => new TodoDbContext()))
+                    .RegisterType<ITodoDbContextFactory, TodoDbContextFactory>(
+                        new ContainerControlledLifetimeManager())
                     .RegisterType<ICategoryRepository, SqlCeCategoryRepository>()
                     .RegisterType<ITodoRepository, SqlCeTodoRepository>()
                     .RegisterType<ICategoryController, CategoryController>()

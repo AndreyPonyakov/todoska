@@ -18,14 +18,14 @@ namespace TodoSystem.Service.Model.SqlCe
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlCeTodoRepository"/> class.
         /// </summary>
-        /// <param name="context">Database context. </param>
+        /// <param name="contextFactory">Database context factory. </param>
         /// <param name="mapper">Transform object from DTO to Entity and conversely.</param>
         /// <exception cref="ArgumentNullException">Throws if any argument is null. </exception>
-        public SqlCeTodoRepository(TodoDbContext context, IMapper mapper)
+        public SqlCeTodoRepository(ITodoDbContextFactory contextFactory, IMapper mapper)
         {
-            if (context == null)
+            if (contextFactory == null)
             {
-                throw new ArgumentNullException(nameof(context));
+                throw new ArgumentNullException(nameof(contextFactory));
             }
 
             if (mapper == null)
@@ -33,14 +33,14 @@ namespace TodoSystem.Service.Model.SqlCe
                 throw new ArgumentNullException(nameof(mapper));
             }
 
-            Context = context;
+            ContextFactory = contextFactory;
             Mapper = mapper;
         }
 
         /// <summary>
         /// Gets database context.
         /// </summary>
-        public TodoDbContext Context { get; }
+        public ITodoDbContextFactory ContextFactory { get; }
 
         /// <summary>
         /// Gets mapper for transform from DTO to Entity and conversely.
@@ -53,9 +53,12 @@ namespace TodoSystem.Service.Model.SqlCe
         /// <returns>Full item list. </returns>
         public IEnumerable<Interface.Todo> GetAll()
         {
-            return
-                Context.Todoes.ToList()
-                    .Select(t => Mapper.Map<Interface.Todo>(t));
+            using (var context = ContextFactory.CreateContext())
+            {
+                return
+                    context.Todoes.ToList()
+                        .Select(t => Mapper.Map<Interface.Todo>(t));
+            }
         }
 
         /// <summary>
@@ -65,11 +68,14 @@ namespace TodoSystem.Service.Model.SqlCe
         /// <returns>Item instance. </returns>
         public Interface.Todo Get(int id)
         {
-            return
-                Context.Todoes.Where(t => t.Id == id)
-                    .ToList()
-                    .Select(t => Mapper.Map<Interface.Todo>(t))
-                    .FirstOrDefault();
+            using (var context = ContextFactory.CreateContext())
+            {
+                return
+                    context.Todoes.Where(t => t.Id == id)
+                        .ToList()
+                        .Select(t => Mapper.Map<Interface.Todo>(t))
+                        .FirstOrDefault();
+            }
         }
 
         /// <summary>
@@ -79,48 +85,51 @@ namespace TodoSystem.Service.Model.SqlCe
         /// <returns>Saved item. </returns>
         public Interface.Todo Save(Interface.Todo item)
         {
-            if (item.CategoryId != null
-                && !Context.Categories.Any(c => c.Id == item.CategoryId))
+            using (var context = ContextFactory.CreateContext())
             {
-                throw new ForeignKeyConstraintException(
-                    $"{nameof(Todo)} - {nameof(Category)}");
-            }
-
-            var entity = Mapper.Map<Todo>(item);
-            if (entity.Id == default(int))
-            {
-                Context.Todoes.Add(entity);
-            }
-            else
-            {
-                var entry = Context.Entry(entity);
-                if (entry.State == EntityState.Detached)
+                if (item.CategoryId != null
+                    && !context.Categories.Any(c => c.Id == item.CategoryId))
                 {
-                    var attachedEntity =
-                        Context.Todoes.Local.SingleOrDefault(
-                            e => e.Id == entity.Id);
-                    if (attachedEntity != null)
+                    throw new ForeignKeyConstraintException(
+                        $"{nameof(Todo)} - {nameof(Category)}");
+                }
+
+                var entity = Mapper.Map<Todo>(item);
+                if (entity.Id == default(int))
+                {
+                    context.Todoes.Add(entity);
+                }
+                else
+                {
+                    var entry = context.Entry(entity);
+                    if (entry.State == EntityState.Detached)
                     {
-                        var attachedEntry = Context.Entry(attachedEntity);
-                        attachedEntry.CurrentValues.SetValues(entity);
-                    }
-                    else
-                    {
-                        entry.State = EntityState.Modified;
+                        var attachedEntity =
+                            context.Todoes.Local.SingleOrDefault(
+                                e => e.Id == entity.Id);
+                        if (attachedEntity != null)
+                        {
+                            var attachedEntry = context.Entry(attachedEntity);
+                            attachedEntry.CurrentValues.SetValues(entity);
+                        }
+                        else
+                        {
+                            entry.State = EntityState.Modified;
+                        }
                     }
                 }
-            }
 
-            try
-            {
-                Context.SaveChanges();
-            }
-            catch (DbEntityValidationException)
-            {
-                throw new DataValidationException();
-            }
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbEntityValidationException)
+                {
+                    throw new DataValidationException();
+                }
 
-            return Mapper.Map<Interface.Todo>(entity);
+                return Mapper.Map<Interface.Todo>(entity);
+            }
         }
 
         /// <summary>
@@ -129,10 +138,13 @@ namespace TodoSystem.Service.Model.SqlCe
         /// <param name="item">Deleting item. </param>
         public void Delete(Interface.Todo item)
         {
-            Context.Todoes.Where(t => t.Id == item.Id)
-                .ToList()
-                .ForEach(t => Context.Entry(t).State = EntityState.Deleted);
-            Context.SaveChanges();
+            using (var context = ContextFactory.CreateContext())
+            {
+                context.Todoes.Where(t => t.Id == item.Id)
+                    .ToList()
+                    .ForEach(t => context.Entry(t).State = EntityState.Deleted);
+                context.SaveChanges();
+            }
         }
 
         /// <summary>
@@ -142,10 +154,13 @@ namespace TodoSystem.Service.Model.SqlCe
         /// <returns>Filtered item list. </returns>
         public IEnumerable<Interface.Todo> Find(string title)
         {
-            return
-                Context.Todoes.Where(t => t.Title == title)
-                    .ToList()
-                    .Select(t => Mapper.Map<Interface.Todo>(t));
+            using (var context = ContextFactory.CreateContext())
+            {
+                return
+                    context.Todoes.Where(t => t.Title == title)
+                        .ToList()
+                        .Select(t => Mapper.Map<Interface.Todo>(t));
+            }
         }
 
         /// <summary>
@@ -155,10 +170,13 @@ namespace TodoSystem.Service.Model.SqlCe
         /// <returns>Filtered item list. </returns>
         public IEnumerable<Interface.Todo> Find(Interface.Category category)
         {
-            return
-                Context.Todoes.Where(t => t.CategoryId == category.Id)
-                    .ToList()
-                    .Select(t => Mapper.Map<Interface.Todo>(t));
+            using (var context = ContextFactory.CreateContext())
+            {
+                return
+                    context.Todoes.Where(t => t.CategoryId == category.Id)
+                        .ToList()
+                        .Select(t => Mapper.Map<Interface.Todo>(t));
+            }
         }
 
         /// <summary>
@@ -167,10 +185,13 @@ namespace TodoSystem.Service.Model.SqlCe
         /// <returns>Last item by priority. </returns>
         public Interface.Todo FindLast()
         {
-            var last = Context.Todoes
-                    .OrderByDescending(t => t.Order)
-                    .FirstOrDefault();
-            return last != null ? Mapper.Map<Interface.Todo>(last) : null;
+            using (var context = ContextFactory.CreateContext())
+            {
+                var last =
+                    context.Todoes.OrderByDescending(t => t.Order)
+                        .FirstOrDefault();
+                return last != null ? Mapper.Map<Interface.Todo>(last) : null;
+            }
         }
     }
 }

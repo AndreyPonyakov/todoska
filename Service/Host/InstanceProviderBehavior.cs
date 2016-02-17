@@ -23,7 +23,7 @@ namespace TodoSystem.Service.Host
             Container = container;
         }
 
-        public IUnityContainer Container { get; }
+        private IUnityContainer Container { get; }
 
         /// <summary>
         /// Appends instance builder to all contracts of host.
