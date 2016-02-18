@@ -95,7 +95,7 @@
             <Button Height="23" Width="23" HorizontalAlignment="Left" Grid.Column="4" Grid.Row="0" 
                 Visibility="{Binding CanDelete, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Command="{Binding TryDeleteCommand}">
-                <Image Source="http://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/128/Actions-edit-delete-icon.png" />
+                <Image Source="/TodoSystem.UI.View;component/Image/Delete.png" />
                 <Button.ToolTip>
                     <ToolTip Content="Delete current todo..."/>
                 </Button.ToolTip>

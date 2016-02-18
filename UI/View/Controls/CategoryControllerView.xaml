@@ -34,7 +34,7 @@
             <Button  Margin="0,6,0,0" Height="23" Grid.Column="1"
                      HorizontalAlignment="Left" Command="{Binding CreateItemCommand}">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="http://icons.iconarchive.com/icons/hopstarter/button/128/Button-Add-icon.png" />
+                    <Image Source="/TodoSystem.UI.View;component/Image/Add.png" />
                     <TextBlock Margin="6,0,6,0">Add</TextBlock>
                 </StackPanel>
                 <Button.ToolTip>

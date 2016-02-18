@@ -27,7 +27,7 @@ namespace TodoSystem.UI.Model
                     new BasicHttpBinding(),
                     new EndpointAddress(new Uri(new Uri(address), nameof(TodoController))));
 
-            FaultExceptionManager =
+            ExceptionManager =
                 new FaultExceptionManager("Service encountered with problems.")
                     .Register<FaultException<TodoClient.DataValidationFault>>(
                         "Operation cannot continue: content did not pass validation.")
@@ -57,7 +57,7 @@ namespace TodoSystem.UI.Model
         /// <summary>
         /// Gets exceptions' resolver.
         /// </summary>
-        public IFaultExceptionManager FaultExceptionManager { get; }
+        public IExceptionManager ExceptionManager { get; }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
+using TodoSystem.UI.Model;
 using TodoSystem.UI.Tools.Model;
 using TodoSystem.UI.ViewModel.Event;
 
@@ -15,6 +16,7 @@ namespace TodoSystem.UI.ViewModel.Base
     /// <typeparam name="TItemModel">Type of model item element. </typeparam>
     /// <typeparam name="TItemViewModel">Type of item element. </typeparam>
     public abstract class BaseOrderableControllerViewModel<TService, TItemModel, TItemViewModel> : BaseViewModel, IController<TService>
+        where TService : IService
         where TItemModel : class
         where TItemViewModel : BaseViewModel, IOrderableItemViewModel<TItemModel, TItemViewModel>
     {
@@ -102,9 +104,7 @@ namespace TodoSystem.UI.ViewModel.Base
             item.Moved += (sender, args) =>
             {
                 List.MoveTo(args.DataTransition);
-                List.Select((val, i) => new { Value = val, Index = i })
-                    .ToList()
-                    .ForEach(rec => rec.Value.Order = rec.Index);
+                Cardinalize();
             };
         }
 
@@ -115,15 +115,19 @@ namespace TodoSystem.UI.ViewModel.Base
         /// <param name="keySelector">Sort expression. </param>
         public void Sort<T>(Func<TItemViewModel, T> keySelector)
         {
-            List.OrderBy(keySelector)
+            List.Sort(keySelector);
+            Cardinalize();
+        }
+
+        /// <summary>
+        /// Changes order property into the nonnegative integer sequence (0..n-1).
+        /// </summary>
+        public void Cardinalize()
+        {
+            List
                 .Select((c, i) => new { Index = i, Value = c })
                 .ToList()
-                .ForEach(
-                    rec =>
-                    {
-                        rec.Value.Order = rec.Index;
-                        List.Move(List.IndexOf(rec.Value), rec.Index);
-                    });
+                .ForEach(rec => rec.Value.Order = rec.Index);
         }
     }
 }

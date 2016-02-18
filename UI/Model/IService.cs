@@ -8,6 +8,6 @@
         /// <summary>
         /// Gets exceptions' resolver.
         /// </summary>
-        IFaultExceptionManager FaultExceptionManager { get; }
+        IExceptionManager ExceptionManager { get; }
     }
 }

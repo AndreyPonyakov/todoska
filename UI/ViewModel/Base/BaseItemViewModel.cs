@@ -154,14 +154,9 @@ namespace TodoSystem.UI.ViewModel.Base
                 {
                     Create();
                     Appended?.Invoke(this, new EventArgs());
-                    if (Modified)
-                    {
-                        Update();
-                    }
-
-                    Refresh(Model);
                 }
-                else
+
+                if (Modified)
                 {
                     Update();
                 }
@@ -170,7 +165,7 @@ namespace TodoSystem.UI.ViewModel.Base
             {
                 AppendErrors(
                     nameof(HasServiceError),
-                    Service.FaultExceptionManager.Resolve(exception));
+                    Service.ExceptionManager.Resolve(exception));
             }
         }
 
@@ -215,7 +210,7 @@ namespace TodoSystem.UI.ViewModel.Base
                 {
                     AppendErrors(
                         nameof(HasServiceError),
-                        Service.FaultExceptionManager.Resolve(exception));
+                        Service.ExceptionManager.Resolve(exception));
                 }
             }
         }

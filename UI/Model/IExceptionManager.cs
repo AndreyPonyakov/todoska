@@ -5,7 +5,7 @@ namespace TodoSystem.UI.Model
     /// <summary>
     /// Abstract manager to resolve server fault message.
     /// </summary>
-    public interface IFaultExceptionManager
+    public interface IExceptionManager
     {
         /// <summary>
         /// Resolves a caught exception.
