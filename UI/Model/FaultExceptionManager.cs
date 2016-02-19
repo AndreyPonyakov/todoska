@@ -7,7 +7,7 @@ namespace TodoSystem.UI.Model
     /// <summary>
     /// Class-aggregator to store error message.
     /// </summary>
-    public class FaultExceptionManager : IFaultExceptionManager
+    public class FaultExceptionManager : IExceptionManager
     {
         private readonly IDictionary<Type, string> _container = new Dictionary<Type, string>();
 
@@ -42,7 +42,7 @@ namespace TodoSystem.UI.Model
         /// Resolves a caught exception.
         /// </summary>
         /// <param name="exception">A received exception. </param>
-        /// <returns>The appropriate message. </returns>
+        /// <returns>An appropriate message. </returns>
         public string Resolve(Exception exception)
         {
             if (exception == null)
@@ -51,6 +51,12 @@ namespace TodoSystem.UI.Model
             }
 
             var exeptionType = exception.GetType();
+
+            if (_container.ContainsKey(exeptionType))
+            {
+                return _container[exeptionType];
+            }
+
             var key = _container.Keys.Aggregate<Type, Type>(
                 null,
                 (result, current) =>
